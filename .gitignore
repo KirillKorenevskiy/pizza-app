@@ -50,5 +50,6 @@ android/app/build
 **/*.graphql.dart
 **/*.gr.dart
 *.env
+*.lock
 
 .vscode
