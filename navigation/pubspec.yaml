@@ -13,8 +13,8 @@ dependencies:
     path: ../core
   core_ui:
     path: ../core_ui
-  screens:
-    path: ../features/screens
+  welcome:
+    path: ../features/welcome
 
   auto_route: ^7.3.2
 

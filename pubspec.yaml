@@ -20,10 +20,10 @@ dependencies:
     path: ./data
   navigation:
     path: ./navigation
-  screens:
-    path: ./features/screens
 
   cupertino_icons: ^1.0.8
+  firebase_core: ^2.16.0
+
 
 dev_dependencies:
   flutter_test:
