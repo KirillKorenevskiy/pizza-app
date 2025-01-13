@@ -8,7 +8,7 @@ part 'pizza_entity.g.dart';
 class PizzaEntity {
   String pizzaId;
   String picture;
-  bool isVeg;
+  bool isVegetarian;
   int spicy;
   String name;
   String description;
@@ -19,7 +19,7 @@ class PizzaEntity {
   PizzaEntity({
     required this.pizzaId,
     required this.picture,
-    required this.isVeg,
+    required this.isVegetarian,
     required this.spicy,
     required this.name,
     required this.description,

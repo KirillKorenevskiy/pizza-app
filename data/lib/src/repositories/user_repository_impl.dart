@@ -1,26 +1,30 @@
 import 'package:domain/domain.dart';
-import '../providers/user_provider.dart';
+import '../../data.dart';
+import '../providers/remote_user_provider.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final MyUserProvider _userProvider;
+  final RemoteUserProvider _userProvider;
 
   const UserRepositoryImpl(this._userProvider);
 
   @override
-  Stream<MyUser?> get user {
-    return _userProvider.user;
+  Stream<MyUser?> get user async* {
+    await for (final userEntity in _userProvider.user) {
+      yield userEntity != null ? UserMapper.fromEntity(userEntity) : null;
+    }
   }
 
   @override
-  Future<void> signIn(String email, String password) async {
-      await _userProvider.signIn(email, password);
+  Future<void> signIn(SignInPayload payload) async {
+    await _userProvider.signIn(payload.email, payload.password);
   }
 
   @override
-  Future<MyUser> signUp(MyUser user, String password) async {
-    final MyUser newUser = await _userProvider.signUp(user, password);
-    await _userProvider.setUserData(newUser);
-    return newUser;
+  Future<MyUser> signUp(SignUpPayload payload) async {
+    final UserEntity userEntity = UserMapper.toEntity(payload.myUser);
+    final UserEntity newUserEntity = await _userProvider.signUp(userEntity, payload.password);
+
+    return UserMapper.fromEntity(newUserEntity);
   }
 
   @override
@@ -30,6 +34,6 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> setUserData(MyUser user) async {
-    await _userProvider.setUserData(user);
+    await _userProvider.setUserData(UserMapper.toEntity(user));
   }
 }

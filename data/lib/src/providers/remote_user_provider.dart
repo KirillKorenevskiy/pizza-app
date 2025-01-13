@@ -1,27 +1,26 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:domain/domain.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../data.dart';
 
-class MyUserProvider {
+class RemoteUserProvider {
   final FirebaseAuth _firebaseAuth;
-	final CollectionReference<Map<String, dynamic>> usersCollection = FirebaseFirestore.instance.collection('users');
+  final CollectionReference<Map<String, dynamic>> usersCollection = FirebaseFirestore.instance.collection('users');
 
-  MyUserProvider({
+  RemoteUserProvider({
     FirebaseAuth? firebaseAuth,
   }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
-  Stream<MyUser?> get user {
+  Stream<UserEntity?> get user {
     return _firebaseAuth.authStateChanges().flatMap((User? firebaseUser) async* {
       if(firebaseUser == null) {
-        yield MyUser.empty;
+        yield null;
       } else {
         yield await usersCollection
           .doc(firebaseUser.uid)
           .get()
-          .then((value) => UserMapper.fromEntity(MyUserEntity.fromJson(value.data()!)));
+          .then((value) => UserEntity.fromJson(value.data()!));
       }
     });
   }
@@ -35,14 +34,18 @@ class MyUserProvider {
     }
   }
 
-  Future<MyUser> signUp(MyUser myUser, String password) async {
+  Future<UserEntity> signUp(UserEntity entity, String password) async {
     try {
-      UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: myUser.email, 
+      final UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: entity.email,
         password: password
       );
-      myUser.userId = user.user!.uid;
-      return myUser;
+      final String? uid = user.user?.uid;
+      if (uid != null) {
+        entity.userId = uid;
+      }
+
+      return entity;
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -53,11 +56,11 @@ class MyUserProvider {
     await _firebaseAuth.signOut();
   }
 
-  Future<void> setUserData(MyUser myUser) async {
+  Future<void> setUserData(UserEntity user) async {
     try {
       await usersCollection
-        .doc(myUser.userId)
-        .set(UserMapper.toEntity(myUser).toJson());
+        .doc(user.userId)
+        .set(user.toJson());
     } catch (e) {
       log(e.toString());
       rethrow;

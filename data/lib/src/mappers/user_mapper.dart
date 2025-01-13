@@ -3,8 +3,7 @@ import 'package:domain/domain.dart';
 import '../../data.dart';
 
 class UserMapper{
-
-  static MyUser fromEntity(MyUserEntity entity){
+  static MyUser fromEntity(UserEntity entity){
     return MyUser(
       userId: entity.userId, 
       email: entity.email, 
@@ -13,8 +12,8 @@ class UserMapper{
     );
   }
 
-  static MyUserEntity toEntity(MyUser model){
-    return MyUserEntity(
+  static UserEntity toEntity(MyUser model){
+    return UserEntity(
       userId: model.userId, 
       email: model.email, 
       name: model.name, 

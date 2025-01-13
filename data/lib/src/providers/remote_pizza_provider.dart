@@ -1,20 +1,16 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:domain/domain.dart';
-
 import '../../data.dart';
 
+class RemotePizzaProvider {
+  final _pizzaCollection = FirebaseFirestore.instance.collection('pizzas');
 
-class PizzaProvider {
-  final pizzaCollection = FirebaseFirestore.instance.collection('pizzas');
-
-  Future<List<Pizza>> getPizzas() async {
+  Future<List<PizzaEntity>> getPizzas() async {
     try {
-      return await pizzaCollection
+      return await _pizzaCollection
         .get()
         .then((QuerySnapshot<Map<String, dynamic>> value) => value.docs.map((QueryDocumentSnapshot<Map<String, dynamic>> e) => 
-          PizzaMapper.fromEntity(PizzaEntity.fromJson(e.data()))
+          PizzaEntity.fromJson(e.data())
         ).toList());
     } catch (e) {
       log(e.toString());
