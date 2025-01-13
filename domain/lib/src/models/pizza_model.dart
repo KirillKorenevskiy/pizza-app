@@ -9,7 +9,7 @@ class Pizza {
   final String description;
   final int price;
   final int discount;
-  Macros macros;
+  final Macros macros;
 
   Pizza({
     required this.pizzaId,
