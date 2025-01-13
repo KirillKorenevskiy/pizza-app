@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:welcome/welcome.dart';
 
-
 part 'app_router.gr.dart';
 
 @AutoRouterConfig(
@@ -16,8 +15,3 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: WelcomeScreen.page, initial: true)
   ];
 }
-
-
-
-
-

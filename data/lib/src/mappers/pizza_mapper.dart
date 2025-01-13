@@ -1,4 +1,5 @@
 import 'package:domain/domain.dart';
+
 import '../../data.dart';
 
 class PizzaMapper {
@@ -6,7 +7,7 @@ class PizzaMapper {
     return Pizza(
       pizzaId: entity.pizzaId,
       picture: entity.picture,
-      isVeg: entity.isVegetarian,
+      isVegetarian: entity.isVegetarian,
       spicy: entity.spicy,
       name: entity.name,
       description: entity.description,
@@ -20,7 +21,7 @@ class PizzaMapper {
     return PizzaEntity(
       pizzaId: model.pizzaId,
       picture: model.picture,
-      isVegetarian: model.isVeg,
+      isVegetarian: model.isVegetarian,
       spicy: model.spicy,
       name: model.name,
       description: model.description,

@@ -3,7 +3,7 @@ import 'macros_model.dart';
 class Pizza {
   final String pizzaId;
   final String picture;
-  final bool isVeg;
+  final bool isVegetarian;
   final int spicy;
   final String name;
   final String description;
@@ -14,7 +14,7 @@ class Pizza {
   Pizza({
     required this.pizzaId,
     required this.picture,
-    required this.isVeg,
+    required this.isVegetarian,
     required this.spicy,
     required this.name,
     required this.description,
@@ -26,7 +26,7 @@ class Pizza {
   Pizza copyWith({
     String? pizzaId,
     String? picture,
-    bool? isVeg,
+    bool? isVegetarian,
     int? spicy,
     String? name,
     String? description,
@@ -37,7 +37,7 @@ class Pizza {
     return Pizza(
       pizzaId: pizzaId ?? this.pizzaId,
       picture: picture ?? this.picture,
-      isVeg: isVeg ?? this.isVeg,
+      isVegetarian: isVegetarian ?? this.isVegetarian,
       spicy: spicy ?? this.spicy,
       name: name ?? this.name,
       description: description ?? this.description,

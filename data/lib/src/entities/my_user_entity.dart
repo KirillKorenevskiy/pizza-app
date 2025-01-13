@@ -4,10 +4,10 @@ part 'my_user_entity.g.dart';
 
 @JsonSerializable()
 class UserEntity {
-  String userId;
-  String email;
-  String name;
-  bool hasActiveCart;
+  final String userId;
+  final String email;
+  final String name;
+  final bool hasActiveCart;
 
   UserEntity({
     required this.userId,
@@ -19,4 +19,18 @@ class UserEntity {
   factory UserEntity.fromJson(Map<String, dynamic> json) => _$MyUserEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$MyUserEntityToJson(this);
+
+  UserEntity copyWith({
+    String? userId,
+    String? email,
+    String? name,
+    bool? hasActiveCart,
+  }) {
+    return UserEntity(
+      userId: userId ?? this.userId,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      hasActiveCart: hasActiveCart ?? this.hasActiveCart,
+    );
+  }
 }

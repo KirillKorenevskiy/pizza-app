@@ -18,7 +18,6 @@ dependencies:
 
   auto_route: ^7.3.2
 
-
 dev_dependencies:
   flutter_lints: ^3.0.1
   auto_route_generator: ^7.3.2

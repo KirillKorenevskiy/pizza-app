@@ -2,11 +2,14 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rxdart/rxdart.dart';
+
 import '../../data.dart';
+import '../entities/requests/sign_in_request.dart';
+import '../entities/requests/sign_up_request.dart';
 
 class RemoteUserProvider {
   final FirebaseAuth _firebaseAuth;
-  final CollectionReference<Map<String, dynamic>> usersCollection = FirebaseFirestore.instance.collection('users');
+  final CollectionReference<Map<String, dynamic>> _usersCollection = FirebaseFirestore.instance.collection('users');
 
   RemoteUserProvider({
     FirebaseAuth? firebaseAuth,
@@ -17,7 +20,7 @@ class RemoteUserProvider {
       if(firebaseUser == null) {
         yield null;
       } else {
-        yield await usersCollection
+        yield await _usersCollection
           .doc(firebaseUser.uid)
           .get()
           .then((value) => UserEntity.fromJson(value.data()!));
@@ -25,27 +28,27 @@ class RemoteUserProvider {
     });
   }
 
-  Future<void> signIn(String email, String password) async {
+  Future<void> signIn(SignInRequest request) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.signInWithEmailAndPassword(email: request.email, password: request.password);
     } catch (e) {
       log(e.toString());
       rethrow;
     }
   }
 
-  Future<UserEntity> signUp(UserEntity entity, String password) async {
+  Future<UserEntity> signUp(SignUpRequest request) async {
     try {
       final UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: entity.email,
-        password: password
+        email: request.myUser.email,
+        password: request.password
       );
       final String? uid = user.user?.uid;
       if (uid != null) {
-        entity.userId = uid;
+        request.myUser.copyWith(userId: uid);
       }
 
-      return entity;
+      return request.myUser;
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -58,7 +61,7 @@ class RemoteUserProvider {
 
   Future<void> setUserData(UserEntity user) async {
     try {
-      await usersCollection
+      await _usersCollection
         .doc(user.userId)
         .set(user.toJson());
     } catch (e) {

@@ -1,5 +1,8 @@
 import 'package:domain/domain.dart';
+
 import '../../data.dart';
+import '../entities/requests/sign_in_request.dart';
+import '../entities/requests/sign_up_request.dart';
 import '../providers/remote_user_provider.dart';
 
 class UserRepositoryImpl implements UserRepository {
@@ -16,13 +19,20 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> signIn(SignInPayload payload) async {
-    await _userProvider.signIn(payload.email, payload.password);
+    final SignInRequest request = SignInRequest(
+      email: payload.email,
+      password: payload.password,
+    );
+    await _userProvider.signIn(request);
   }
 
   @override
   Future<MyUser> signUp(SignUpPayload payload) async {
-    final UserEntity userEntity = UserMapper.toEntity(payload.myUser);
-    final UserEntity newUserEntity = await _userProvider.signUp(userEntity, payload.password);
+    final SignUpRequest request = SignUpRequest(
+      myUser: UserMapper.toEntity(payload.myUser),
+      password: payload.password,
+    );
+    final UserEntity newUserEntity = await _userProvider.signUp(request);
 
     return UserMapper.fromEntity(newUserEntity);
   }
