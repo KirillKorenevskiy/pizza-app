@@ -1,19 +1,33 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
+import 'package:nested/nested.dart';
 
-@RoutePage<String>()
+import 'bloc/sign_in/sign_in_cubit.dart';
+import 'bloc/sign_up/sign_up_cubit.dart';
+import 'widgets/welcome_body.dart';
+
+@RoutePage()
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+  const WelcomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Welcome",
-      debugShowCheckedModeBanner: false,
-        theme: ThemeData(colorScheme: ColorScheme.light(surface: Colors.grey.shade200, onSurface: Colors.black, primary: Colors.blue, onPrimary: Colors.white)),
-        home: const Center(
-          child: Text("Welcome"),
-        )
+    return MultiBlocProvider(
+      providers: <SingleChildWidget>[
+        BlocProvider<SignInCubit>(
+          create: (BuildContext context) => SignInCubit(
+            appLocator.get(),
+            appLocator.get(),
+          ),
+        ),
+        BlocProvider<SignUpCubit>(
+          create: (BuildContext context) => SignUpCubit(
+            appLocator.get(),
+          ),
+        ),
+      ],
+      child: const WelcomeScreenBody(),
     );
   }
 }

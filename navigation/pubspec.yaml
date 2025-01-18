@@ -15,6 +15,10 @@ dependencies:
     path: ../core_ui
   welcome:
     path: ../features/welcome
+  pizzas:
+    path: ../features/pizzas
+  main:
+    path: ../features/main
 
   auto_route: ^7.3.2
 

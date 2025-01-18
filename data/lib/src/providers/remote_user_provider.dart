@@ -44,11 +44,12 @@ class RemoteUserProvider {
         password: request.password
       );
       final String? uid = user.user?.uid;
+      final UserEntity newUser = request.myUser;
       if (uid != null) {
-        request.myUser.copyWith(userId: uid);
+        return request.myUser.copyWith(userId: uid);
       }
 
-      return request.myUser;
+      return newUser;
     } catch (e) {
       log(e.toString());
       rethrow;

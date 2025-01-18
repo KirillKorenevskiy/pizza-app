@@ -29,7 +29,7 @@ class ErrorHandler {
       case 401:
         {
           _eventNotifier.notify(const UnauthorizedEvent());
-          throw AppException(error.response?.data['message'] ?? 'no auth');
+          throw AppException(error.response?.data['message'] ?? 'no auth.dart');
         }
       case 500:
         {
