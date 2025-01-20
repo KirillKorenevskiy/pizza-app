@@ -36,22 +36,22 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
           listeners: <SingleChildWidget>[
             BlocListener<SignInCubit, SignInState>(
               listenWhen: (SignInState previous, SignInState current) =>
-                  current is SignInData && current.successMessage != null,
+                  previous.successMessage == null &&
+                  current.successMessage != null,
               listener: (BuildContext context, SignInState state) {
-                final String? successMessage =
-                    (state as SignInData).successMessage;
+                final String? successMessage = state.successMessage;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(successMessage!)),
+                  SnackBar(content: Text(successMessage ?? 'success!!!')),
                 );
               },
             ),
             BlocListener<SignInCubit, SignInState>(
               listenWhen: (SignInState previous, SignInState current) =>
-                  current is SignInData && current.errorMessage != null,
+                  previous.errorMessage == null && current.errorMessage != null,
               listener: (BuildContext context, SignInState state) {
-                final String? errorMessage = (state as SignInData).errorMessage;
+                final String? errorMessage = state.errorMessage;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(errorMessage!)),
+                  SnackBar(content: Text(errorMessage ?? 'error(')),
                 );
               },
             )
@@ -92,8 +92,7 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                   child: FormTextField(
                     controller: _passwordController,
                     hintText: 'Password',
-                    obscureText:
-                        (state is SignInData) ? state.obscurePassword : true,
+                    obscureText: state.obscurePassword,
                     keyboardType: TextInputType.visiblePassword,
                     prefixIcon: const Icon(CupertinoIcons.lock_fill),
                     style: TextStyle(color: colors.black),
@@ -113,7 +112,7 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                         context.read<SignInCubit>().togglePasswordVisibility();
                       },
                       icon: Icon(
-                        (state is SignInData && state.obscurePassword)
+                        state.obscurePassword
                             ? CupertinoIcons.eye_fill
                             : CupertinoIcons.eye_slash_fill,
                       ),
@@ -121,7 +120,7 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                if ((state as SignInData).isLoading)
+                if (state.isLoading)
                   const CircularProgressIndicator()
                 else
                   TextButton(
@@ -135,7 +134,7 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                     },
                     style: TextButton.styleFrom(
                       elevation: 3.0,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      backgroundColor: colors.primaryBg,
                       foregroundColor: colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(60),
@@ -143,7 +142,9 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 5),
+                        horizontal: 25,
+                        vertical: 5,
+                      ),
                       child: Text(
                         'Sign In',
                         textAlign: TextAlign.center,
@@ -162,5 +163,12 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _emailController.dispose();
+    super.dispose();
   }
 }

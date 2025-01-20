@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
 import 'authentication_tab.dart';
 import 'registration_tab.dart';
@@ -12,16 +13,22 @@ class WelcomeScreenBody extends StatefulWidget {
 
 class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
     with TickerProviderStateMixin {
-  late TabController tabController;
+  late TabController _tabController;
 
   @override
   void initState() {
-    tabController = TabController(
+    _tabController = TabController(
       initialIndex: 0,
       length: 2,
       vsync: this,
     );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -43,7 +50,7 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
                       width: screenSize.width,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Theme.of(context).colorScheme.tertiary,
+                        color: AppColors.of(context).primaryBg,
                       ),
                     ),
                   ),
@@ -54,17 +61,16 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
                       width: screenSize.width / 1.3,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: AppColors.of(context).primaryBg,
                       ),
                     ),
                   ),
                   BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 100.0, sigmaY: 100.0),
-                    child: Container(),
+                    child: const SizedBox.shrink(),
                   ),
                 ],
               ),
-              // Main Content
               Align(
                 child: SizedBox(
                   height: screenSize.height / 1.8,
@@ -75,12 +81,10 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
                           horizontal: 50.0,
                         ),
                         child: TabBar(
-                          controller: tabController,
-                          unselectedLabelColor: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withOpacity(0.5),
-                          labelColor: Theme.of(context).colorScheme.onSurface,
+                          controller: _tabController,
+                          unselectedLabelColor:
+                              AppColors.of(context).black.withOpacity(0.5),
+                          labelColor: AppColors.of(context).black,
                           tabs: const <Widget>[
                             Padding(
                               padding: EdgeInsets.all(12.0),
@@ -105,7 +109,7 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
                       ),
                       Expanded(
                         child: TabBarView(
-                          controller: tabController,
+                          controller: _tabController,
                           children: const <Widget>[
                             AuthenticationTab(),
                             RegistrationTab(),

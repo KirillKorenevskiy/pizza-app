@@ -10,37 +10,45 @@ class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit(
     this._signUpUseCase,
   ) : super(
-          SignUpData(
+          const SignUpState(
             obscurePassword: true,
             isLoading: false,
             containsUpperCase: false,
             containsLowerCase: false,
             containsNumber: false,
             containsSpecialChar: false,
-            contains8Length: false,
+            containsMinLength: false,
           ),
         );
 
   Future<void> signUp(String email, String name, String password) async {
     emit(
-      (state as SignUpData).copyWith(
+      state.copyWith(
         isLoading: true,
       ),
     );
-    final MyUser user =
-        MyUser(userId: '', email: email, name: name, hasActiveCart: false);
+    final MyUser user = MyUser(
+      userId: '',
+      email: email,
+      name: name,
+      hasActiveCart: false,
+    );
     try {
-      await _signUpUseCase
-          .execute(SignUpPayload(myUser: user, password: password));
+      await _signUpUseCase.execute(
+        SignUpPayload(
+          myUser: user,
+          password: password,
+        ),
+      );
       emit(
-        (state as SignUpData).copyWith(
+        state.copyWith(
           isLoading: false,
           successMessage: 'success',
         ),
       );
     } catch (e) {
       emit(
-        (state as SignUpData).copyWith(
+        state.copyWith(
           isLoading: false,
           errorMessage: e.toString(),
         ),
@@ -49,22 +57,22 @@ class SignUpCubit extends Cubit<SignUpState> {
   }
 
   void togglePasswordVisibility() {
-    final SignUpData currentState = state as SignUpData;
     emit(
-      currentState.copyWith(obscurePassword: !currentState.obscurePassword),
+      state.copyWith(
+        obscurePassword: !state.obscurePassword,
+      ),
     );
   }
 
   void updatePasswordValidation(String password) {
-    final SignUpData currentState = state as SignUpData;
     emit(
-      currentState.copyWith(
-        containsUpperCase: password.contains(RegExp(r'[A-Z]')),
-        containsLowerCase: password.contains(RegExp(r'[a-z]')),
-        containsNumber: password.contains(RegExp(r'[0-9]')),
+      state.copyWith(
+        containsUpperCase: password.contains(RegExp('[A-Z]')),
+        containsLowerCase: password.contains(RegExp('[a-z]')),
+        containsNumber: password.contains(RegExp('[0-9]')),
         containsSpecialChar: password
             .contains(RegExp(r'^(?=.*?[!@#$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^])')),
-        contains8Length: password.length >= 8,
+        containsMinLength: password.length >= 8,
       ),
     );
   }

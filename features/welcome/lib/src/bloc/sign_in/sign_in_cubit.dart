@@ -10,31 +10,35 @@ class SignInCubit extends Cubit<SignInState> {
   SignInCubit(
     this._signInUseCase,
   ) : super(
-          SignInData(
+          const SignInState(
             obscurePassword: true,
             isLoading: false,
           ),
         );
 
   Future<void> signIn(String email, String password) async {
-    emit(SignInData(
-      obscurePassword: true,
-      isLoading: true,
-    ));
+    emit(
+      state.copyWith(
+        isLoading: true,
+      ),
+    );
 
     try {
       await _signInUseCase.execute(
-        SignInPayload(email: email, password: password),
+        SignInPayload(
+          email: email,
+          password: password,
+        ),
       );
       emit(
-        (state as SignInData).copyWith(
+        state.copyWith(
           isLoading: false,
           successMessage: 'success',
         ),
       );
     } catch (e) {
       emit(
-        (state as SignInData).copyWith(
+        state.copyWith(
           isLoading: false,
           errorMessage: e.toString(),
         ),
@@ -43,9 +47,10 @@ class SignInCubit extends Cubit<SignInState> {
   }
 
   void togglePasswordVisibility() {
-    final SignInData currentState = state as SignInData;
     emit(
-      currentState.copyWith(obscurePassword: !currentState.obscurePassword),
+      state.copyWith(
+        obscurePassword: !state.obscurePassword,
+      ),
     );
   }
 }

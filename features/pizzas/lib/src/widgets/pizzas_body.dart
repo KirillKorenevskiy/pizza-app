@@ -23,7 +23,10 @@ class PizzasScreenBody extends StatelessWidget {
           ],
         ),
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: const Icon(CupertinoIcons.cart)),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(CupertinoIcons.cart),
+          ),
           IconButton(
             onPressed: _logOutUseCase.execute,
             icon: const Icon(CupertinoIcons.arrow_right_to_line),

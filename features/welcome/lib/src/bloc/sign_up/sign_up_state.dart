@@ -1,43 +1,41 @@
 part of 'sign_up_cubit.dart';
 
 @immutable
-sealed class SignUpState {}
-
-class SignUpData extends SignUpState {
+class SignUpState {
   final bool obscurePassword;
   final bool isLoading;
   final bool containsUpperCase;
   final bool containsLowerCase;
   final bool containsNumber;
   final bool containsSpecialChar;
-  final bool contains8Length;
+  final bool containsMinLength;
   final String? successMessage;
   final String? errorMessage;
 
-  SignUpData({
+  const SignUpState({
     required this.obscurePassword,
     required this.isLoading,
     required this.containsUpperCase,
     required this.containsLowerCase,
     required this.containsNumber,
     required this.containsSpecialChar,
-    required this.contains8Length,
+    required this.containsMinLength,
     this.successMessage,
     this.errorMessage,
   });
 
-  SignUpData copyWith({
+  SignUpState copyWith({
     bool? obscurePassword,
     bool? isLoading,
     bool? containsUpperCase,
     bool? containsLowerCase,
     bool? containsNumber,
     bool? containsSpecialChar,
-    bool? contains8Length,
+    bool? containsMinLength,
     String? successMessage,
     String? errorMessage,
   }) {
-    return SignUpData(
+    return SignUpState(
       obscurePassword: obscurePassword ?? this.obscurePassword,
       isLoading: isLoading ?? this.isLoading,
       successMessage: successMessage,
@@ -46,7 +44,7 @@ class SignUpData extends SignUpState {
       containsLowerCase: containsLowerCase ?? this.containsLowerCase,
       containsNumber: containsNumber ?? this.containsNumber,
       containsSpecialChar: containsSpecialChar ?? this.containsSpecialChar,
-      contains8Length: contains8Length ?? this.contains8Length,
+      containsMinLength: containsMinLength ?? this.containsMinLength,
     );
   }
 }

@@ -19,12 +19,6 @@ class _RegistrationTabState extends State<RegistrationTab> {
   final TextEditingController _nameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool containsUpperCase = false;
-  bool containsLowerCase = false;
-  bool containsNumber = false;
-  bool containsSpecialChar = false;
-  bool contains8Length = false;
-
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -36,22 +30,22 @@ class _RegistrationTabState extends State<RegistrationTab> {
           listeners: <SingleChildWidget>[
             BlocListener<SignUpCubit, SignUpState>(
               listenWhen: (SignUpState previous, SignUpState current) =>
-                  current is SignUpData && current.successMessage != null,
+                  previous.successMessage == null &&
+                  current.successMessage != null,
               listener: (BuildContext context, SignUpState state) {
-                final String? successMessage =
-                    (state as SignUpData).successMessage;
+                final String? successMessage = state.successMessage;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(successMessage!)),
+                  SnackBar(content: Text(successMessage ?? 'success!!!')),
                 );
               },
             ),
             BlocListener<SignUpCubit, SignUpState>(
               listenWhen: (SignUpState previous, SignUpState current) =>
-                  current is SignUpData && current.errorMessage != null,
+                  previous.errorMessage == null && current.errorMessage != null,
               listener: (BuildContext context, SignUpState state) {
-                final String? errorMessage = (state as SignUpData).errorMessage;
+                final String? errorMessage = state.errorMessage;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(errorMessage!)),
+                  SnackBar(content: Text(errorMessage ?? 'error(')),
                 );
               },
             ),
@@ -91,8 +85,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                   child: FormTextField(
                     controller: _passwordController,
                     hintText: 'Password',
-                    obscureText:
-                        (state is SignUpData) ? state.obscurePassword : true,
+                    obscureText: state.obscurePassword,
                     keyboardType: TextInputType.visiblePassword,
                     prefixIcon: const Icon(CupertinoIcons.lock_fill),
                     style: TextStyle(color: colors.black),
@@ -104,7 +97,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                         context.read<SignUpCubit>().togglePasswordVisibility();
                       },
                       icon: Icon(
-                        (state is SignUpData && state.obscurePassword)
+                        state.obscurePassword
                             ? CupertinoIcons.eye_fill
                             : CupertinoIcons.eye_slash_fill,
                       ),
@@ -132,7 +125,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                         Text(
                           '⚈  1 uppercase',
                           style: TextStyle(
-                            color: (state as SignUpData).containsUpperCase
+                            color: state.containsUpperCase
                                 ? colors.green
                                 : colors.black,
                           ),
@@ -169,7 +162,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                         Text(
                           '⚈  8 minimum characters',
                           style: TextStyle(
-                            color: state.contains8Length
+                            color: state.containsMinLength
                                 ? colors.green
                                 : colors.black,
                           ),
@@ -228,7 +221,9 @@ class _RegistrationTabState extends State<RegistrationTab> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 25, vertical: 5),
+                          horizontal: 25,
+                          vertical: 5,
+                        ),
                         child: Text(
                           'Sign Up',
                           textAlign: TextAlign.center,
@@ -248,5 +243,13 @@ class _RegistrationTabState extends State<RegistrationTab> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _emailController.dispose();
+    _nameController.dispose();
+    super.dispose();
   }
 }
