@@ -26,10 +26,12 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: screenSize.height,
           child: Stack(
             children: <Widget>[
               Stack(
@@ -37,8 +39,8 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
                   Align(
                     alignment: const AlignmentDirectional(1.7, 2.2),
                     child: Container(
-                      height: MediaQuery.of(context).size.width,
-                      width: MediaQuery.of(context).size.width,
+                      height: screenSize.width,
+                      width: screenSize.width,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Theme.of(context).colorScheme.tertiary,
@@ -48,8 +50,8 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
                   Align(
                     alignment: const AlignmentDirectional(3.7, -1.4),
                     child: Container(
-                      height: MediaQuery.of(context).size.width / 1.3,
-                      width: MediaQuery.of(context).size.width / 1.3,
+                      height: screenSize.width / 1.3,
+                      width: screenSize.width / 1.3,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: Theme.of(context).colorScheme.primary,
@@ -65,11 +67,13 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
               // Main Content
               Align(
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.height / 1.8,
+                  height: screenSize.height / 1.8,
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 50.0,
+                        ),
                         child: TabBar(
                           controller: tabController,
                           unselectedLabelColor: Theme.of(context)

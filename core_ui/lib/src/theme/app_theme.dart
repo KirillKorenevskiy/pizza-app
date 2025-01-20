@@ -13,7 +13,7 @@ final ThemeData lightTheme = ThemeData.light().copyWith(
   colorScheme: ColorScheme.fromSwatch().copyWith(
     secondary: _appColors.primaryBg,
     primary: _appColors.primaryBg,
-    surface: Colors.grey.shade200,
+    surface: _appColors.grey,
   ),
 );
 

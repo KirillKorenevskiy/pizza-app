@@ -6,27 +6,66 @@ part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   final SignUpUseCase _signUpUseCase;
-  bool _obscurePassword = true;
 
   SignUpCubit(
     this._signUpUseCase,
-  ) : super(SignUpInitial());
+  ) : super(
+          SignUpData(
+            obscurePassword: true,
+            isLoading: false,
+            containsUpperCase: false,
+            containsLowerCase: false,
+            containsNumber: false,
+            containsSpecialChar: false,
+            contains8Length: false,
+          ),
+        );
 
-  Future<void> signUp(MyUser user, String password) async {
-    emit(SignUpProcess());
+  Future<void> signUp(String email, String name, String password) async {
+    emit(
+      (state as SignUpData).copyWith(
+        isLoading: true,
+      ),
+    );
+    final MyUser user =
+        MyUser(userId: '', email: email, name: name, hasActiveCart: false);
     try {
       await _signUpUseCase
           .execute(SignUpPayload(myUser: user, password: password));
-      emit(SignUpSuccess());
-    } catch (e, stackTrace) {
-      emit(SignUpError(e.toString(), stackTrace));
+      emit(
+        (state as SignUpData).copyWith(
+          isLoading: false,
+          successMessage: 'success',
+        ),
+      );
+    } catch (e) {
+      emit(
+        (state as SignUpData).copyWith(
+          isLoading: false,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
-  bool get obscurePassword => _obscurePassword;
-
   void togglePasswordVisibility() {
-    _obscurePassword = !_obscurePassword;
-    emit(SignUpPasswordVisibilityChanged(_obscurePassword));
+    final SignUpData currentState = state as SignUpData;
+    emit(
+      currentState.copyWith(obscurePassword: !currentState.obscurePassword),
+    );
+  }
+
+  void updatePasswordValidation(String password) {
+    final SignUpData currentState = state as SignUpData;
+    emit(
+      currentState.copyWith(
+        containsUpperCase: password.contains(RegExp(r'[A-Z]')),
+        containsLowerCase: password.contains(RegExp(r'[a-z]')),
+        containsNumber: password.contains(RegExp(r'[0-9]')),
+        containsSpecialChar: password
+            .contains(RegExp(r'^(?=.*?[!@#$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^])')),
+        contains8Length: password.length >= 8,
+      ),
+    );
   }
 }

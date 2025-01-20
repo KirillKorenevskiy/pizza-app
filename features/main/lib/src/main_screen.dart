@@ -9,20 +9,12 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AppCubit>(
+      lazy: false,
       create: (BuildContext context) => AppCubit(
         appLocator.get(),
         appLocator.get(),
       ),
-      child: BlocListener<AppCubit, AppState>(
-        listener: (BuildContext context, AppState state) {
-          if (state.status == AppStatus.authenticated) {
-            context.read<AppCubit>().goToPizzasScreen();
-          } else if (state.status == AppStatus.unauthenticated) {
-            context.read<AppCubit>().goToWelcomeScreen();
-          }
-        },
-        child: const CircularProgressIndicator(),
-      ),
+      child: const CircularProgressIndicator(),
     );
   }
 }

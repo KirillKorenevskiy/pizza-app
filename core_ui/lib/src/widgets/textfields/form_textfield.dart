@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../core_ui.dart';
+
 class FormTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
@@ -11,15 +13,15 @@ class FormTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final FocusNode? focusNode;
   final String? errorMsg;
-  final String? Function(String?)? onChanged;
+  final ValueChanged<String>? onChanged;
   final TextStyle? style;
 
   const FormTextField({
-    super.key,
     required this.controller,
     required this.hintText,
     required this.obscureText,
     required this.keyboardType,
+    super.key,
     this.suffixIcon,
     this.onTap,
     this.prefixIcon,
@@ -51,13 +53,14 @@ class FormTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide:
-              BorderSide(color: Theme.of(context).colorScheme.secondary),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.secondary,
+          ),
         ),
-        fillColor: Colors.grey.shade200,
+        fillColor: Theme.of(context).colorScheme.surface,
         filled: true,
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey[500]),
+        hintStyle: TextStyle(color: AppColors.of(context).grey500),
         errorText: errorMsg,
       ),
     );

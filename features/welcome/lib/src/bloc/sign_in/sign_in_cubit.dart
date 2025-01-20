@@ -6,33 +6,46 @@ part 'sign_in_state.dart';
 
 class SignInCubit extends Cubit<SignInState> {
   final SignInUseCase _signInUseCase;
-  final LogOutUseCase _logOutUseCase;
-  bool _obscurePassword = true;
 
   SignInCubit(
     this._signInUseCase,
-    this._logOutUseCase,
-  ) : super(SignInInitial());
+  ) : super(
+          SignInData(
+            obscurePassword: true,
+            isLoading: false,
+          ),
+        );
 
   Future<void> signIn(String email, String password) async {
-    emit(SignInProcess());
+    emit(SignInData(
+      obscurePassword: true,
+      isLoading: true,
+    ));
+
     try {
-      await _signInUseCase
-          .execute(SignInPayload(email: email, password: password));
-      emit(SignInSuccess());
+      await _signInUseCase.execute(
+        SignInPayload(email: email, password: password),
+      );
+      emit(
+        (state as SignInData).copyWith(
+          isLoading: false,
+          successMessage: 'success',
+        ),
+      );
     } catch (e) {
-      emit(SignInError(e.toString()));
+      emit(
+        (state as SignInData).copyWith(
+          isLoading: false,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
-  Future<void> signOut() async {
-    await _logOutUseCase.execute();
-  }
-
-  bool get obscurePassword => _obscurePassword;
-
   void togglePasswordVisibility() {
-    _obscurePassword = !_obscurePassword;
-    emit(SignInPasswordVisibilityChanged(_obscurePassword));
+    final SignInData currentState = state as SignInData;
+    emit(
+      currentState.copyWith(obscurePassword: !currentState.obscurePassword),
+    );
   }
 }

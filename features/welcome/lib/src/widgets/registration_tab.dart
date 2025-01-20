@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
-import 'package:domain/domain.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nested/nested.dart';
@@ -15,9 +14,9 @@ class RegistrationTab extends StatefulWidget {
 }
 
 class _RegistrationTabState extends State<RegistrationTab> {
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool containsUpperCase = false;
@@ -28,25 +27,31 @@ class _RegistrationTabState extends State<RegistrationTab> {
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
+    final AppColors colors = AppColors.of(context);
+
     return BlocBuilder<SignUpCubit, SignUpState>(
       builder: (BuildContext context, SignUpState state) {
         return MultiBlocListener(
           listeners: <SingleChildWidget>[
             BlocListener<SignUpCubit, SignUpState>(
               listenWhen: (SignUpState previous, SignUpState current) =>
-                  current is SignUpSuccess,
+                  current is SignUpData && current.successMessage != null,
               listener: (BuildContext context, SignUpState state) {
+                final String? successMessage =
+                    (state as SignUpData).successMessage;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Success!')),
+                  SnackBar(content: Text(successMessage!)),
                 );
               },
             ),
             BlocListener<SignUpCubit, SignUpState>(
               listenWhen: (SignUpState previous, SignUpState current) =>
-                  current is SignUpError,
+                  current is SignUpData && current.errorMessage != null,
               listener: (BuildContext context, SignUpState state) {
+                final String? errorMessage = (state as SignUpData).errorMessage;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Error}')),
+                  SnackBar(content: Text(errorMessage!)),
                 );
               },
             ),
@@ -57,14 +62,16 @@ class _RegistrationTabState extends State<RegistrationTab> {
               children: <Widget>[
                 const Spacer(),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
                   child: FormTextField(
-                    controller: emailController,
+                    controller: _emailController,
                     hintText: 'Email',
                     obscureText: false,
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: const Icon(CupertinoIcons.mail_solid),
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(color: colors.black),
                     validator: (String? val) {
                       if (val!.isEmpty) {
                         return 'Please fill in this field';
@@ -78,31 +85,26 @@ class _RegistrationTabState extends State<RegistrationTab> {
                 ),
                 const SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
                   child: FormTextField(
-                    controller: passwordController,
+                    controller: _passwordController,
                     hintText: 'Password',
-                    obscureText: context.watch<SignUpCubit>().obscurePassword,
+                    obscureText:
+                        (state is SignUpData) ? state.obscurePassword : true,
                     keyboardType: TextInputType.visiblePassword,
                     prefixIcon: const Icon(CupertinoIcons.lock_fill),
-                    style: const TextStyle(color: Colors.black),
-                    onChanged: (String? val) {
-                      setState(() {
-                        containsUpperCase = val!.contains(RegExp(r'[A-Z]'));
-                        containsLowerCase = val.contains(RegExp(r'[a-z]'));
-                        containsNumber = val.contains(RegExp(r'[0-9]'));
-                        containsSpecialChar = val.contains(RegExp(
-                            r'^(?=.*?[!@#$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^])'));
-                        contains8Length = val.length >= 8;
-                      });
-                      return null;
+                    style: TextStyle(color: colors.black),
+                    onChanged: (String val) {
+                      context.read<SignUpCubit>().updatePasswordValidation(val);
                     },
                     suffixIcon: IconButton(
                       onPressed: () {
                         context.read<SignUpCubit>().togglePasswordVisibility();
                       },
                       icon: Icon(
-                        context.watch<SignUpCubit>().obscurePassword
+                        (state is SignUpData && state.obscurePassword)
                             ? CupertinoIcons.eye_fill
                             : CupertinoIcons.eye_slash_fill,
                       ),
@@ -130,23 +132,26 @@ class _RegistrationTabState extends State<RegistrationTab> {
                         Text(
                           '⚈  1 uppercase',
                           style: TextStyle(
-                              color: containsUpperCase
-                                  ? Colors.green
-                                  : Theme.of(context).colorScheme.onSurface),
+                            color: (state as SignUpData).containsUpperCase
+                                ? colors.green
+                                : colors.black,
+                          ),
                         ),
                         Text(
                           '⚈  1 lowercase',
                           style: TextStyle(
-                              color: containsLowerCase
-                                  ? Colors.green
-                                  : Theme.of(context).colorScheme.onSurface),
+                            color: state.containsLowerCase
+                                ? colors.green
+                                : colors.black,
+                          ),
                         ),
                         Text(
                           '⚈  1 number',
                           style: TextStyle(
-                              color: containsNumber
-                                  ? Colors.green
-                                  : Theme.of(context).colorScheme.onSurface),
+                            color: state.containsNumber
+                                ? colors.green
+                                : colors.black,
+                          ),
                         ),
                       ],
                     ),
@@ -156,16 +161,18 @@ class _RegistrationTabState extends State<RegistrationTab> {
                         Text(
                           '⚈  1 special character',
                           style: TextStyle(
-                              color: containsSpecialChar
-                                  ? Colors.green
-                                  : Theme.of(context).colorScheme.onSurface),
+                            color: state.containsSpecialChar
+                                ? colors.green
+                                : colors.black,
+                          ),
                         ),
                         Text(
                           '⚈  8 minimum characters',
                           style: TextStyle(
-                              color: contains8Length
-                                  ? Colors.green
-                                  : Theme.of(context).colorScheme.onSurface),
+                            color: state.contains8Length
+                                ? colors.green
+                                : colors.black,
+                          ),
                         ),
                       ],
                     ),
@@ -173,14 +180,16 @@ class _RegistrationTabState extends State<RegistrationTab> {
                 ),
                 const SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
                   child: FormTextField(
-                    controller: nameController,
+                    controller: _nameController,
                     hintText: 'Name',
                     obscureText: false,
                     keyboardType: TextInputType.name,
                     prefixIcon: const Icon(CupertinoIcons.person_fill),
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(color: colors.black),
                     validator: (String? val) {
                       if (val!.isEmpty) {
                         return 'Please fill in this field';
@@ -192,39 +201,39 @@ class _RegistrationTabState extends State<RegistrationTab> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                if (state is SignUpProcess)
+                if (state.isLoading)
                   const CircularProgressIndicator()
                 else
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
+                    width: screenSize.width * 0.5,
                     child: TextButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          final MyUser user = MyUser.empty.copyWith(
-                            name: nameController.text.trim(),
-                            email: emailController.text.trim(),
-                          );
+                          final String name = _nameController.text.trim();
+                          final String email = _emailController.text.trim();
+                          final String password =
+                              _passwordController.text.trim();
                           context
                               .read<SignUpCubit>()
-                              .signUp(user, passwordController.text.trim());
+                              .signUp(email, name, password);
                         }
                       },
                       style: TextButton.styleFrom(
                         elevation: 3.0,
                         backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor: Colors.white,
+                        foregroundColor: colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(60),
                         ),
                       ),
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25, vertical: 5),
                         child: Text(
                           'Sign Up',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Colors.white,
+                            color: colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),

@@ -20,18 +20,12 @@ class AppCubit extends Cubit<AppState> {
     _userSubscription = _listenUserUseCase.execute().listen((MyUser? user) {
       if (user != null && user != MyUser.empty) {
         emit(AppState.authenticated(user));
+        _appRouter.push(const PizzasScreen());
       } else {
         emit(const AppState.unauthenticated());
+        _appRouter.push(const WelcomeScreen());
       }
     });
-  }
-
-  void goToWelcomeScreen() {
-    _appRouter.push(const WelcomeScreen());
-  }
-
-  void goToPizzasScreen() {
-    _appRouter.push(const PizzasScreen());
   }
 
   @override
