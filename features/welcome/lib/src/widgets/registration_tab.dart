@@ -213,7 +213,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                       },
                       style: TextButton.styleFrom(
                         elevation: 3.0,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        backgroundColor: colors.primaryBg,
                         foregroundColor: colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(60),
