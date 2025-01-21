@@ -1,6 +1,6 @@
 import 'package:navigation/navigation.dart';
 
-export 'welcome.gm.dart';
+export 'main.gm.dart';
 
 @AutoRouterConfig.module(replaceInRouteName: 'Page|Form,Route')
-class WelcomeModule extends $WelcomeModule {}
+class MainModule extends $MainModule {}
