@@ -1,7 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cart/cart.dart';
 import 'package:main/main.dart';
 import 'package:pizzas/pizzas.dart';
 import 'package:welcome/welcome.dart';
+
+import '../utils/route_builder.dart';
 
 part 'app_router.gr.dart';
 
@@ -11,6 +14,7 @@ part 'app_router.gr.dart';
     MainModule,
     WelcomeModule,
     PizzasModule,
+    CartModule,
   ],
 )
 class AppRouter extends _$AppRouter {
@@ -25,6 +29,10 @@ class AppRouter extends _$AppRouter {
         ),
         AutoRoute(
           page: PizzasScreen.page,
-        )
+        ),
+        CustomRoute(
+          page: CartScreen.page,
+          customRouteBuilder: RouteBuilder.modalDialog,
+        ),
       ];
 }

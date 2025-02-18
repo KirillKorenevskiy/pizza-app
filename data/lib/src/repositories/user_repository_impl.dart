@@ -3,7 +3,6 @@ import 'package:domain/domain.dart';
 import '../../data.dart';
 import '../entities/requests/sign_in_request.dart';
 import '../entities/requests/sign_up_request.dart';
-import '../providers/remote_user_provider.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final RemoteUserProvider _userProvider;
@@ -12,7 +11,7 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Stream<MyUser?> get user async* {
-    await for (final userEntity in _userProvider.user) {
+    await for (final UserEntity? userEntity in _userProvider.user) {
       yield userEntity != null ? UserMapper.fromEntity(userEntity) : null;
     }
   }

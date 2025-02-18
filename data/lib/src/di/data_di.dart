@@ -2,8 +2,6 @@ import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 
 import '../../data.dart';
-import '../providers/remote_pizza_provider.dart';
-import '../providers/remote_user_provider.dart';
 
 abstract class DataDI {
   static void initDependencies(GetIt locator) {
@@ -30,6 +28,10 @@ abstract class DataDI {
         locator<DioConfig>().dio,
       ),
     );
+
+    locator.registerLazySingleton<DatabaseConfig>(
+      DatabaseConfig.new,
+    );
   }
 
   static void _initProviders(GetIt locator) {
@@ -40,6 +42,10 @@ abstract class DataDI {
     locator.registerLazySingleton<RemoteUserProvider>(
       RemoteUserProvider.new,
     );
+
+    locator.registerLazySingleton<LocalCartProvider>(
+      () => LocalCartProvider(locator<DatabaseConfig>()),
+    );
   }
 
   static void _initRepositories(GetIt locator) {
@@ -49,6 +55,13 @@ abstract class DataDI {
 
     locator.registerFactory<UserRepository>(
       () => UserRepositoryImpl(locator<RemoteUserProvider>()),
+    );
+
+    locator.registerLazySingleton<CartRepository>(
+      () => CartRepositoryImpl(
+        locator<LocalCartProvider>(),
+        locator<RemotePizzaProvider>(),
+      ),
     );
   }
 }

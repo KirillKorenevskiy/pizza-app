@@ -17,15 +17,17 @@ class AppCubit extends Cubit<AppState> {
     this._listenUserUseCase,
     this._appRouter,
   ) : super(const AppState.unknown()) {
-    _userSubscription = _listenUserUseCase.execute().listen((MyUser? user) {
-      if (user != null && user != MyUser.empty) {
-        emit(AppState.authenticated(user));
-        _appRouter.push(const PizzasScreen());
-      } else {
-        emit(const AppState.unauthenticated());
-        _appRouter.push(const WelcomeScreen());
-      }
-    });
+    _userSubscription = _listenUserUseCase.execute().listen(
+      (MyUser? user) {
+        if (user != null && user != MyUser.empty) {
+          emit(AppState.authenticated(user));
+          _appRouter.push(const PizzasScreen());
+        } else {
+          emit(const AppState.unauthenticated());
+          _appRouter.push(const WelcomeScreen());
+        }
+      },
+    );
   }
 
   @override

@@ -1,38 +1,81 @@
-import 'package:domain/domain.dart';
+import 'package:core_ui/core_ui.dart';
+import 'package:domain/src/models/pizza_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../bloc/pizzas_cubit.dart';
+import 'pizza_item_card.dart';
 
 class PizzasScreenBody extends StatelessWidget {
-  final LogOutUseCase _logOutUseCase;
-
-  const PizzasScreenBody(this._logOutUseCase);
+  const PizzasScreenBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        title: const Row(
-          children: <Widget>[
-            Text(
-              'PIZZA',
-              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
-            )
-          ],
-        ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(CupertinoIcons.cart),
+    final AppColors colors = AppColors.of(context);
+
+    return BlocBuilder<PizzasCubit, PizzasState>(
+      builder: (BuildContext context, PizzasState state) {
+        return Scaffold(
+          backgroundColor: colors.grey,
+          appBar: AppBar(
+            scrolledUnderElevation: 0,
+            automaticallyImplyLeading: false,
+            backgroundColor: colors.grey,
+            title: Row(
+              children: <Widget>[
+                Image.asset(
+                  'core_ui/assets/8.png',
+                  scale: 14,
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  'PIZZA',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontSize: 30,
+                  ),
+                )
+              ],
+            ),
+            actions: <Widget>[
+              IconButton(
+                onPressed: () {
+                  context.read<PizzasCubit>().goToCart();
+                },
+                icon: const Icon(CupertinoIcons.cart),
+              ),
+              IconButton(
+                onPressed: () {
+                  context.read<PizzasCubit>().logOut();
+                },
+                icon: const Icon(CupertinoIcons.arrow_right_to_line),
+              ),
+            ],
           ),
-          IconButton(
-            onPressed: _logOutUseCase.execute,
-            icon: const Icon(CupertinoIcons.arrow_right_to_line),
+          body: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: state.isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : state.errorMessage != null
+                    ? const Center(
+                        child: Text('An error has occurred...'),
+                      )
+                    : ListView.builder(
+                        itemCount: state.pizzas.length,
+                        itemBuilder: (BuildContext context, int i) {
+                          final Pizza pizza = state.pizzas[i];
+
+                          return PizzaCard(
+                            pizza: pizza,
+                          );
+                        },
+                      ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

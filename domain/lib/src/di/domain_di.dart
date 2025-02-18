@@ -27,5 +27,33 @@ abstract class DomainDI {
     locator.registerFactory<GetPizzasUseCase>(
       () => GetPizzasUseCase(locator.get()),
     );
+
+    locator.registerFactory<GetPizzaByIdUseCase>(
+      () => GetPizzaByIdUseCase(locator.get()),
+    );
+
+    locator.registerFactory<AddToCartUseCase>(
+      () => AddToCartUseCase(locator.get()),
+    );
+
+    locator.registerFactory<CheckCartUseCase>(
+      () => CheckCartUseCase(locator.get()),
+    );
+
+    locator.registerFactory<GetCartsUseCase>(
+      () => GetCartsUseCase(locator.get()),
+    );
+
+    locator.registerFactory<RemoveFromCartUseCase>(
+      () => RemoveFromCartUseCase(locator.get()),
+    );
+
+    locator.registerFactory<UpdateQuantityUseCase>(
+      () => UpdateQuantityUseCase(locator.get()),
+    );
+
+    locator.registerFactory<ListenCartUseCase>(
+      () => ListenCartUseCase(locator.get()),
+    );
   }
 }

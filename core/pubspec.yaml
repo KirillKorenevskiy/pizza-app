@@ -22,6 +22,7 @@ dependencies:
   observe_internet_connectivity: ^1.0.2
   http: ^1.2.1
   easy_localization: ^3.0.7
+  sqflite: ^2.4.1
 
 dev_dependencies:
   flutter_test:
