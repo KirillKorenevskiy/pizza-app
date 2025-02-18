@@ -19,6 +19,8 @@ dependencies:
     path: ../features/pizzas
   main:
     path: ../features/main
+  cart:
+    path: ../features/cart
 
   auto_route: ^7.3.2
 

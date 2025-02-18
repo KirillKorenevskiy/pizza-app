@@ -18,6 +18,7 @@ dependencies:
     path: ../../core_ui
   navigation:
     path: ../../navigation
+  flutter_spinkit: ^5.2.1
 
 dev_dependencies:
   flutter_test:

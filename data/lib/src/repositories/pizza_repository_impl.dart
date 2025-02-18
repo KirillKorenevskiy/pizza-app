@@ -1,7 +1,6 @@
 import 'package:domain/domain.dart';
 
 import '../../data.dart';
-import '../providers/remote_pizza_provider.dart';
 
 class PizzaRepositoryImpl implements PizzaRepository {
   final RemotePizzaProvider _pizzaProvider;
@@ -13,5 +12,12 @@ class PizzaRepositoryImpl implements PizzaRepository {
     final List<PizzaEntity> pizzaEntities = await _pizzaProvider.getPizzas();
 
     return pizzaEntities.map(PizzaMapper.fromEntity).toList();
+  }
+
+  @override
+  Future<Pizza> getPizzaById(String id) async {
+    final PizzaEntity entity = await _pizzaProvider.getPizzaById(id);
+
+    return PizzaMapper.fromEntity(entity);
   }
 }
