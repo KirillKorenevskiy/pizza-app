@@ -35,7 +35,7 @@ class PizzasScreenBody extends StatelessWidget {
                     fontWeight: FontWeight.w900,
                     fontSize: 30,
                   ),
-                )
+                ),
               ],
             ),
             actions: <Widget>[

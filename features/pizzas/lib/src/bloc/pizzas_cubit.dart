@@ -55,9 +55,11 @@ class PizzasCubit extends Cubit<PizzasState> {
       final Set<String> cartItems = <String>{};
 
       for (final Pizza pizza in pizzas) {
-        if (await _checkCartUseCase.execute(
+        final bool isInCart = await _checkCartUseCase.execute(
           pizza.pizzaId,
-        )) {
+        );
+
+        if (isInCart) {
           cartItems.add(pizza.pizzaId);
         }
       }

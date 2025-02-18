@@ -22,6 +22,8 @@ class PizzaCard extends StatelessWidget {
       builder: (BuildContext context, PizzasState state) {
         final AppColors colors = AppColors.of(context);
         final bool isInCart = state.cartItems.contains(pizza.pizzaId);
+        final int price = pizza.price;
+        final int discount = pizza.discount;
 
         return Container(
           margin: const EdgeInsets.only(bottom: 9),
@@ -120,7 +122,7 @@ class PizzaCard extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               pizza.discount > 0
-                                  ? '\$${(pizza.price - (pizza.price * pizza.discount / 100)).toStringAsFixed(2)}'
+                                  ? '\$${(price - (price * discount / 100)).toStringAsFixed(2)}'
                                   : '\$${pizza.price}.00',
                               style: TextStyle(
                                 fontSize: 16,
@@ -129,9 +131,9 @@ class PizzaCard extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 5),
-                            if (pizza.discount > 0)
+                            if (discount > 0)
                               Text(
-                                '\$${pizza.price}.00',
+                                '\$$price.00',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: colors.grey500,

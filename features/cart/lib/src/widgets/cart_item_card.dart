@@ -8,15 +8,18 @@ class CartItemCard extends StatelessWidget {
   final ValueChanged<int> onQuantityChanged;
 
   const CartItemCard({
-    Key? key,
+    super.key,
     required this.cartItem,
     required this.index,
     required this.onQuantityChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final AppColors colors = AppColors.of(context);
+    final int price = cartItem.pizza.price;
+    final int discount = cartItem.pizza.discount;
+    final Macros macros = cartItem.pizza.macros;
 
     return Container(
       margin: const EdgeInsets.all(6),
@@ -52,7 +55,8 @@ class CartItemCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Calories: ${cartItem.pizza.macros} '
+                      'Calories: ${macros.calories} (p: ${macros.proteins}, '
+                      'f: ${macros.fat}, c: ${macros.carbs}) '
                       '\nSpicy level: ${cartItem.pizza.spicy}',
                       style: TextStyle(
                         color: colors.black,
@@ -71,9 +75,7 @@ class CartItemCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
-                  ((cartItem.pizza.price *
-                                  (1 - (cartItem.pizza.discount / 100))) *
-                              cartItem.quantity)
+                  ((price * (1 - (discount / 100))) * cartItem.quantity)
                           .toStringAsFixed(2) +
                       r'$',
                   style: TextStyle(

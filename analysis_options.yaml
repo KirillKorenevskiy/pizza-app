@@ -229,7 +229,7 @@ linter:
     provide_deprecation_message: false
     public_member_api_docs: false
     recursive_getters: true
-    require_trailing_commas: false
+    require_trailing_commas: true
     sized_box_for_whitespace: true
     slash_for_doc_comments: true
     sort_child_properties_last: true

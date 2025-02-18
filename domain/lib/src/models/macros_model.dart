@@ -24,9 +24,4 @@ class Macros {
       carbs: carbs ?? this.carbs,
     );
   }
-
-  @override
-  String toString() {
-    return '$calories (p: $proteins, f: $fat, c: $carbs)';
-  }
 }

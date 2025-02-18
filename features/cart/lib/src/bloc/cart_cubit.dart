@@ -12,10 +12,12 @@ class CartCubit extends Cubit<CartState> {
   final UpdateQuantityUseCase _updateQuantityUseCase;
   final AppRouter _appRouter;
 
-  CartCubit(this._getCartsUseCase,
-      this._removeFromCartUseCase,
-      this._updateQuantityUseCase,
-      this._appRouter,) : super(const CartState()) {
+  CartCubit(
+    this._getCartsUseCase,
+    this._removeFromCartUseCase,
+    this._updateQuantityUseCase,
+    this._appRouter,
+  ) : super(const CartState()) {
     getCart();
   }
 

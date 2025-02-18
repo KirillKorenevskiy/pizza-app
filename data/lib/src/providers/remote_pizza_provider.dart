@@ -9,11 +9,15 @@ class RemotePizzaProvider {
 
   Future<List<PizzaEntity>> getPizzas() async {
     try {
-      return await _pizzaCollection.get().then(
-          (QuerySnapshot<Map<String, dynamic>> value) => value.docs
-              .map((QueryDocumentSnapshot<Map<String, dynamic>> e) =>
-                  PizzaEntity.fromJson(e.data()))
-              .toList());
+      final QuerySnapshot<Map<String, dynamic>> pizzas =
+          await _pizzaCollection.get();
+
+      return pizzas.docs
+          .map(
+            (QueryDocumentSnapshot<Map<String, dynamic>> e) =>
+                PizzaEntity.fromJson(e.data()),
+          )
+          .toList();
     } catch (e) {
       log(e.toString());
       rethrow;

@@ -17,23 +17,30 @@ class RemoteUserProvider {
   }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
   Stream<UserEntity?> get user {
-    return _firebaseAuth
-        .authStateChanges()
-        .flatMap((User? firebaseUser) async* {
-      if (firebaseUser == null) {
-        yield null;
-      } else {
-        yield await _usersCollection.doc(firebaseUser.uid).get().then(
-            (DocumentSnapshot<Map<String, dynamic>> value) =>
-                UserEntity.fromJson(value.data()!));
-      }
-    });
+    return _firebaseAuth.authStateChanges().flatMap(
+      (User? firebaseUser) async* {
+        if (firebaseUser == null) {
+          yield null;
+        } else {
+          final DocumentSnapshot<Map<String, dynamic>> snapshot =
+              await _usersCollection.doc(firebaseUser.uid).get();
+
+          if (snapshot.exists && snapshot.data() != null) {
+            yield UserEntity.fromJson(snapshot.data()!);
+          } else {
+            yield null;
+          }
+        }
+      },
+    );
   }
 
   Future<void> signIn(SignInRequest request) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
-          email: request.email, password: request.password);
+        email: request.email,
+        password: request.password,
+      );
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -44,11 +51,15 @@ class RemoteUserProvider {
     try {
       final UserCredential user =
           await _firebaseAuth.createUserWithEmailAndPassword(
-              email: request.myUser.email, password: request.password);
+        email: request.myUser.email,
+        password: request.password,
+      );
       final String? uid = user.user?.uid;
       final UserEntity newUser = request.myUser;
       if (uid != null) {
-        return request.myUser.copyWith(userId: uid);
+        return request.myUser.copyWith(
+          userId: uid,
+        );
       }
 
       return newUser;
