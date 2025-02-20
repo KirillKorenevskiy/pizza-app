@@ -111,8 +111,16 @@ class PizzasCubit extends Cubit<PizzasState> {
     }
   }
 
-  Future<void> goToCart() async {
-    await _appRouter.push(const CartScreen());
+  void goToCart() {
+    _appRouter.push(const CartScreen());
+  }
+
+  void goToDetails(Pizza pizza) {
+    _appRouter.push(
+      DetailsScreen(
+        pizza: pizza,
+      ),
+    );
   }
 
   Future<void> logOut() async {

@@ -8,5 +8,7 @@ export 'cart/get_carts_usecase.dart';
 export 'cart/listen_cart_usecase.dart';
 export 'cart/remove_from_cart_usecase.dart';
 export 'cart/update_quantity_usecase.dart';
+export 'ingredients/get_ingredients_by_id_usecase.dart';
+export 'ingredients/get_ingredients_usecase.dart';
 export 'pizzas/get_pizza_by_id_usecase.dart';
 export 'pizzas/get_pizzas_usecase.dart';
