@@ -50,6 +50,10 @@ abstract class DataDI {
     locator.registerLazySingleton<RemoteIngredientsProvider>(
       RemoteIngredientsProvider.new,
     );
+
+    locator.registerLazySingleton<LocalDetailsProvider>(
+      () => LocalDetailsProvider(locator<DatabaseConfig>()),
+    );
   }
 
   static void _initRepositories(GetIt locator) {
@@ -70,6 +74,10 @@ abstract class DataDI {
 
     locator.registerFactory<IngredientsRepository>(
       () => IngredientsRepositoryImpl(locator<RemoteIngredientsProvider>()),
+    );
+
+    locator.registerFactory<DetailsRepository>(
+      () => DetailsRepositoryImpl(locator<LocalDetailsProvider>()),
     );
   }
 }

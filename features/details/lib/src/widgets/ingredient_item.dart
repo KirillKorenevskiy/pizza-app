@@ -4,15 +4,21 @@ import 'package:flutter/material.dart';
 
 class IngredientItem extends StatelessWidget {
   final Ingredient ingredient;
+  final bool isSelected;
 
-  const IngredientItem({required this.ingredient});
+  const IngredientItem({
+    required this.ingredient,
+    required this.isSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0),
-        color: AppColors.of(context).white,
+        color: isSelected
+            ? AppColors.of(context).lightBlue
+            : AppColors.of(context).white,
       ),
       child: Column(
         children: <Widget>[

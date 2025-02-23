@@ -7,8 +7,8 @@ class GetIngredientsByIdUseCase implements FutureUseCase<String, Ingredient> {
   const GetIngredientsByIdUseCase(this._ingredientsRepository);
 
   @override
-  Future<Ingredient> execute(String id) async {
-    final Ingredient pizza = await _ingredientsRepository.getIngredientById(id);
+  Future<Ingredient> execute(String input) async {
+    final Ingredient pizza = await _ingredientsRepository.getIngredientById(input);
     return pizza;
   }
 }

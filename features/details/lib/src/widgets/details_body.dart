@@ -7,35 +7,57 @@ import '../bloc/details_cubit.dart';
 import 'ingredient_item.dart';
 import 'macros_item.dart';
 
-class DetailsBody extends StatelessWidget {
+class DetailsBody extends StatefulWidget {
   final Pizza pizza;
 
-  const DetailsBody(this.pizza, {super.key});
+  const DetailsBody({super.key, required this.pizza});
+
+  @override
+  State<DetailsBody> createState() => _DetailsBodyState();
+}
+
+class _DetailsBodyState extends State<DetailsBody>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
+  final List<int> pizzaSizes = <int>[25, 30, 35];
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<DetailsCubit>().getDetails(widget.pizza.pizzaId);
+    _tabController = TabController(length: 3, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
     final AppColors colors = AppColors.of(context);
 
-    return BlocBuilder<DetailsCubit, DetailsState>(
-      builder: (BuildContext context, DetailsState state) {
-        return MaterialApp(
-          home: Scaffold(
-            backgroundColor: colors.grey,
-            body: NestedScrollView(
-              floatHeaderSlivers: true,
-              physics: const BouncingScrollPhysics(),
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
+    return BlocListener<DetailsCubit, DetailsState>(
+      listenWhen: (DetailsState previous, DetailsState current) =>
+          previous.size != current.size,
+      listener: (BuildContext context, DetailsState state) {
+        final int index = pizzaSizes.indexOf(state.size);
+        if (index != -1) {
+          _tabController.index = index;
+        }
+      },
+      child: BlocBuilder<DetailsCubit, DetailsState>(
+        builder: (BuildContext context, DetailsState state) {
+          return MaterialApp(
+            home: Scaffold(
+              backgroundColor: colors.grey,
+              body: CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: <Widget>[
                   SliverAppBar(
                     scrolledUnderElevation: 0,
                     expandedHeight: 450,
                     backgroundColor: colors.grey,
                     pinned: true,
                     leading: IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_back,
-                        color: Colors.black,
+                        color: colors.black,
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -43,10 +65,10 @@ class DetailsBody extends StatelessWidget {
                     ),
                     flexibleSpace: FlexibleSpaceBar(
                       background: Image.asset(
-                        'core_ui/assets/${pizza.picture}',
+                        'core_ui/assets/${widget.pizza.picture}',
                       ),
                       title: Text(
-                        pizza.name,
+                        widget.pizza.name,
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                         ),
@@ -54,59 +76,86 @@ class DetailsBody extends StatelessWidget {
                       centerTitle: true,
                     ),
                   ),
-                ];
-              },
-              body: SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: <Widget>[
-                    DefaultTabController(
-                      length: 3,
-                      child: Container(
-                        height: 40,
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          color: AppColors.of(context).grey500.withAlpha(150),
-                        ),
-                        child: TabBar(
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          indicatorAnimation: TabIndicatorAnimation.elastic,
-                          dividerColor: Colors.transparent,
-                          indicator: BoxDecoration(
-                            color: AppColors.of(context).grey.withAlpha(130),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: <Widget>[
+                          DefaultTabController(
+                            length: 3,
+                            child: Container(
+                              height: 40,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: colors.grey500.withAlpha(150),
+                              ),
+                              child: TabBar(
+                                controller: _tabController,
+                                indicatorSize: TabBarIndicatorSize.tab,
+                                indicatorAnimation:
+                                    TabIndicatorAnimation.elastic,
+                                dividerColor: colors.transparent,
+                                indicator: BoxDecoration(
+                                  color: colors.grey.withAlpha(130),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                labelColor: colors.black,
+                                unselectedLabelColor: colors.black,
+                                tabs: const <Widget>[
+                                  Text(
+                                    '25',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  Text(
+                                    '30',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  Text(
+                                    '35',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ],
+                                onTap: (int index) {},
+                              ),
+                            ),
                           ),
-                          labelColor: AppColors.of(context).black,
-                          unselectedLabelColor: AppColors.of(context).black,
-                          tabs: const <Widget>[
-                            Text(
-                              '25',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Text(
-                              '30',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Text(
-                              '35',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
+                          const SizedBox(height: 25),
+                          const Text(
+                            'Add some ingredients',
+                            style: TextStyle(fontSize: 23),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 30),
-                    const Text(
-                      'Add some ingredients',
-                      style: TextStyle(fontSize: 20),
+                  ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 16,
                     ),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.ingredients.length,
+                    sliver: SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          final Ingredient ingredient =
+                              state.ingredients[index];
+
+                          return GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<DetailsCubit>()
+                                  .toggleIngredient(ingredient);
+                            },
+                            child: IngredientItem(
+                              ingredient: ingredient,
+                              isSelected: state.selectedIngredients
+                                  .contains(ingredient.name),
+                            ),
+                          );
+                        },
+                        childCount: state.ingredients.length,
+                      ),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
@@ -114,69 +163,95 @@ class DetailsBody extends StatelessWidget {
                         mainAxisSpacing: 13.0,
                         childAspectRatio: 0.6,
                       ),
-                      itemBuilder: (BuildContext context, int index) {
-                        final Ingredient ingredient = state.ingredients[index];
-                        return IngredientItem(ingredient: ingredient);
-                      },
                     ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        MacrosItem(
-                          title: 'Calories',
-                          value: pizza.macros.calories,
-                          icon: Icons.local_fire_department_rounded,
-                        ),
-                        MacrosItem(
-                          title: 'Protein',
-                          value: pizza.macros.proteins,
-                          icon: Icons.sports_gymnastics,
-                        ),
-                        MacrosItem(
-                          title: 'Fat',
-                          value: pizza.macros.fat,
-                          icon: Icons.fastfood_rounded,
-                        ),
-                        MacrosItem(
-                          title: 'Carbs',
-                          value: pizza.macros.carbs,
-                          icon: Icons.breakfast_dining,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          elevation: 3.0,
-                          backgroundColor: Colors.black,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 13),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              MacrosItem(
+                                title: 'Calories',
+                                value: widget.pizza.macros.calories,
+                                icon: Icons.local_fire_department_rounded,
+                              ),
+                              MacrosItem(
+                                title: 'Protein',
+                                value: widget.pizza.macros.proteins,
+                                icon: Icons.sports_gymnastics,
+                              ),
+                              MacrosItem(
+                                title: 'Fat',
+                                value: widget.pizza.macros.fat,
+                                icon: Icons.fastfood_rounded,
+                              ),
+                              MacrosItem(
+                                title: 'Carbs',
+                                value: widget.pizza.macros.carbs,
+                                icon: Icons.breakfast_dining,
+                              ),
+                            ],
                           ),
-                        ),
-                        child: const Text(
-                          '+ Add to cart',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: TextButton(
+                              onPressed: () {
+                                if (!state.isInCart) {
+                                  context.read<DetailsCubit>().addToCart(
+                                        widget.pizza.pizzaId,
+                                        pizzaSizes[_tabController.index],
+                                        state.selectedIngredients,
+                                      );
+                                } else {
+                                  context.read<DetailsCubit>().updateDetails(
+                                        widget.pizza.pizzaId,
+                                        pizzaSizes[_tabController.index],
+                                        state.selectedIngredients,
+                                      );
+                                }
+                              },
+                              style: TextButton.styleFrom(
+                                elevation: 3.0,
+                                backgroundColor: state.isInCart
+                                    ? colors.lightGreen
+                                    : colors.black,
+                                foregroundColor: colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(13),
+                                ),
+                              ),
+                              child: Text(
+                                state.isInCart ? 'Done' : '+ Add to cart',
+                                style: TextStyle(
+                                  color: colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 30),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 20),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 }
