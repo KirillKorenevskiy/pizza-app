@@ -66,7 +66,7 @@ class LightColors implements AppColors {
   Color get orange => Colors.deepOrangeAccent;
 
   @override
-  Color get lightBlue => const Color.fromRGBO(203, 227, 255, 0.8980392156862745);
+  Color get lightBlue => const Color.fromRGBO(203, 227, 255, 0.9);
 
   @override
   Color get transparent => Colors.transparent;

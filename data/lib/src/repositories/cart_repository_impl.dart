@@ -18,15 +18,12 @@ class CartRepositoryImpl implements CartRepository {
   Future<List<CartItem>> _mapCartItems(
     List<CartItemEntity> cartItemEntities,
   ) async {
-    final List<PizzaEntity> pizzaEntities = await Future.wait(
-      cartItemEntities.map(
-        (CartItemEntity entity) => _pizzaProvider.getPizzaById(entity.id),
-      ),
-    );
-
-    final List<DetailsEntity?> detailsEntities = await Future.wait(
-      cartItemEntities.map(
-        (CartItemEntity entity) => _detailsProvider.getDetailById(entity.id),
+    final List<dynamic> results = await Future.wait(
+      cartItemEntities.expand(
+        (CartItemEntity entity) => <Future<dynamic>>[
+          _pizzaProvider.getPizzaById(entity.id),
+          _detailsProvider.getDetailById(entity.id),
+        ],
       ),
     );
 
@@ -36,12 +33,15 @@ class CartRepositoryImpl implements CartRepository {
     return List<CartItem>.generate(
       cartItemEntities.length,
       (int index) {
-        final Pizza pizza = PizzaMapper.fromEntity(pizzaEntities[index]);
-        final DetailsEntity? details = detailsEntities[index];
+        final PizzaEntity pizzaEntity = results[index * 2] as PizzaEntity;
+        final DetailsEntity? detailsEntity =
+            results[index * 2 + 1] as DetailsEntity?;
+
+        final Pizza pizza = PizzaMapper.fromEntity(pizzaEntity);
 
         List<IngredientEntity> ingredients = <IngredientEntity>[];
-        if (details != null && details.ingredients.isNotEmpty) {
-          final List<String> ingredientNames = details.ingredients
+        if (detailsEntity != null && detailsEntity.ingredients.isNotEmpty) {
+          final List<String> ingredientNames = detailsEntity.ingredients
               .split(',')
               .map((String e) => e.trim())
               .toList();

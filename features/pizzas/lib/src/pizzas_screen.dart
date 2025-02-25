@@ -7,7 +7,7 @@ import 'widgets/pizzas_body.dart';
 
 @RoutePage()
 class PizzasScreen extends StatelessWidget {
-  const PizzasScreen({Key? key}) : super(key: key);
+  const PizzasScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class PizzasScreen extends StatelessWidget {
         appLocator.get(),
         appLocator.get(),
         appLocator.get(),
-      )..getPizzas(),
+      ),
       child: const PizzasScreenBody(),
     );
   }

@@ -11,8 +11,8 @@ class DetailsBody extends StatefulWidget {
   final Pizza pizza;
 
   const DetailsBody({
-    super.key,
     required this.pizza,
+    super.key,
   });
 
   @override
@@ -22,8 +22,12 @@ class DetailsBody extends StatefulWidget {
 class _DetailsBodyState extends State<DetailsBody>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
-  final List<int> pizzaSizes =
-      PizzaSize.values.map((PizzaSize size) => size.sizeInCm).toList();
+  final List<PizzaSize> sizes = PizzaSize.values;
+  final List<int> pizzaSizes = PizzaSize.values
+      .map(
+        (PizzaSize size) => size.sizeInCm,
+      )
+      .toList();
 
   @override
   void initState() {
@@ -110,9 +114,9 @@ class _DetailsBodyState extends State<DetailsBody>
                                 ),
                                 labelColor: colors.black,
                                 unselectedLabelColor: colors.black,
-                                tabs: pizzaSizes.map((int size) {
+                                tabs: sizes.map((PizzaSize size) {
                                   return Text(
-                                    size.toString(),
+                                    size.toLabel(),
                                     style: const TextStyle(fontSize: 16),
                                   );
                                 }).toList(),
@@ -199,14 +203,14 @@ class _DetailsBodyState extends State<DetailsBody>
                             height: 50,
                             child: TextButton(
                               onPressed: () {
-                                if (!state.isInCart) {
-                                  context.read<DetailsCubit>().addToCart(
+                                if (state.isInCart) {
+                                  context.read<DetailsCubit>().updateDetails(
                                         widget.pizza.pizzaId,
                                         pizzaSizes[_tabController.index],
                                         state.selectedIngredients,
                                       );
                                 } else {
-                                  context.read<DetailsCubit>().updateDetails(
+                                  context.read<DetailsCubit>().addToCart(
                                         widget.pizza.pizzaId,
                                         pizzaSizes[_tabController.index],
                                         state.selectedIngredients,

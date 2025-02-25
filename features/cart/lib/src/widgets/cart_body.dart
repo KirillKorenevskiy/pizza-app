@@ -28,6 +28,7 @@ class _CartBodyState extends State<CartBody> {
   @override
   Widget build(BuildContext context) {
     final AppColors colors = AppColors.of(context);
+    const double minOrderPrice = AppConstants.MIN_ORDER_PRICE;
 
     return BlocBuilder<CartCubit, CartState>(
       builder: (BuildContext context, CartState state) {
@@ -67,9 +68,9 @@ class _CartBodyState extends State<CartBody> {
                                 color: colors.black,
                               ),
                             ),
-                            state.totalPrice < 19.99
+                            state.totalPrice < minOrderPrice
                                 ? Text(
-                                    r'Minimal order price — 19,99 $',
+                                    'Minimal order price — $minOrderPrice \$',
                                     style: TextStyle(
                                       color: colors.red,
                                     ),
@@ -215,8 +216,8 @@ class _CartBodyState extends State<CartBody> {
             child: ElevatedButton(
               onPressed: () {},
               child: Text(
-                state.totalPrice < 19.99
-                    ? r'Add more items to reach 19,99 $'
+                state.totalPrice < minOrderPrice
+                    ? 'Add more items to reach $minOrderPrice \$'
                     : 'Proceed to checkout for ${state.totalPrice}\$',
                 style: const TextStyle(fontSize: 17),
               ),

@@ -20,11 +20,7 @@ class DetailsRepositoryImpl implements DetailsRepository {
   Future<Details?> getDetailById(String id) async {
     final DetailsEntity? entity = await _detailsProvider.getDetailById(id);
 
-    if (entity == null) {
-      return null;
-    }
-
-    return DetailsMapper.fromEntity(entity);
+    return entity != null ? DetailsMapper.fromEntity(entity) : null;
   }
 
   @override

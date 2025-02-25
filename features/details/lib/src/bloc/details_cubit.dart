@@ -21,7 +21,9 @@ class DetailsCubit extends Cubit<DetailsState> {
     this._addDetailsUseCase,
     this._checkCartUseCase,
     this._appRouter,
-  ) : super(DetailsState());
+  ) : super(DetailsState()) {
+    getIngredients();
+  }
 
   Future<void> getIngredients() async {
     try {
