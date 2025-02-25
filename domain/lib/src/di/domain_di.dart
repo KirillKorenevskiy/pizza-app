@@ -55,5 +55,33 @@ abstract class DomainDI {
     locator.registerFactory<ListenCartUseCase>(
       () => ListenCartUseCase(locator.get()),
     );
+
+    locator.registerFactory<GetIngredientsUseCase>(
+      () => GetIngredientsUseCase(locator.get()),
+    );
+
+    locator.registerFactory<GetIngredientsByIdUseCase>(
+      () => GetIngredientsByIdUseCase(locator.get()),
+    );
+
+    locator.registerFactory<GetDetailsUseCase>(
+      () => GetDetailsUseCase(locator.get()),
+    );
+
+    locator.registerFactory<GetDetailByIdUseCase>(
+      () => GetDetailByIdUseCase(locator.get()),
+    );
+
+    locator.registerFactory<UpdateDetailsUseCase>(
+      () => UpdateDetailsUseCase(locator.get()),
+    );
+
+    locator.registerFactory<DeleteDetailsUseCase>(
+      () => DeleteDetailsUseCase(locator.get()),
+    );
+
+    locator.registerFactory<AddDetailsUseCase>(
+      () => AddDetailsUseCase(locator.get()),
+    );
   }
 }

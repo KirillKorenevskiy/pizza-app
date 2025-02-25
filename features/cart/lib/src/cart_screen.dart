@@ -17,6 +17,8 @@ class CartScreen extends StatelessWidget {
         appLocator.get(),
         appLocator.get(),
         appLocator.get(),
+        appLocator.get(),
+        appLocator.get(),
       )..getCart(),
       child: const CartBody(),
     );

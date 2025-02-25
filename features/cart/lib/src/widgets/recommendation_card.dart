@@ -33,7 +33,7 @@ class RecommendationCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                  color: colors.black.withAlpha(80),
+                  color: colors.grey500.withAlpha(100),
                   blurRadius: 6,
                 ),
               ],

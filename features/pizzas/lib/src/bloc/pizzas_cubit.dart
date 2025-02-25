@@ -13,6 +13,8 @@ class PizzasCubit extends Cubit<PizzasState> {
   final RemoveFromCartUseCase _removeFromCartUseCase;
   final CheckCartUseCase _checkCartUseCase;
   final ListenCartUseCase _listenCartUseCase;
+  final DeleteDetailsUseCase _deleteDetailsUseCase;
+  final AddDetailsUseCase _addDetailsUseCase;
   final AppRouter _appRouter;
 
   late StreamSubscription<List<CartItem>> _cartSubscription;
@@ -24,6 +26,8 @@ class PizzasCubit extends Cubit<PizzasState> {
     this._removeFromCartUseCase,
     this._checkCartUseCase,
     this._listenCartUseCase,
+    this._deleteDetailsUseCase,
+    this._addDetailsUseCase,
     this._appRouter,
   ) : super(const PizzasState()) {
     _init();
@@ -89,10 +93,20 @@ class PizzasCubit extends Cubit<PizzasState> {
         await _removeFromCartUseCase.execute(
           pizzaId,
         );
+        await _deleteDetailsUseCase.execute(
+          pizzaId,
+        );
         updatedCart.remove(pizzaId);
       } else {
         await _addToCartUseCase.execute(
           pizzaId,
+        );
+        await _addDetailsUseCase.execute(
+          DetailPayload(
+            id: pizzaId,
+            size: 25,
+            ingredients: null,
+          ),
         );
         updatedCart.add(pizzaId);
       }
@@ -111,8 +125,16 @@ class PizzasCubit extends Cubit<PizzasState> {
     }
   }
 
-  Future<void> goToCart() async {
-    await _appRouter.push(const CartScreen());
+  void goToCart() {
+    _appRouter.push(const CartScreen());
+  }
+
+  void goToDetails(Pizza pizza) {
+    _appRouter.push(
+      DetailsScreen(
+        pizza: pizza,
+      ),
+    );
   }
 
   Future<void> logOut() async {

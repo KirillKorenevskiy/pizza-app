@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   core:
     path: ../core
+  domain:
+    path: ../domain
 
   flutter_svg: ^2.0.9
 

@@ -7,8 +7,9 @@ class GetPizzaByIdUseCase implements FutureUseCase<String, Pizza> {
   const GetPizzaByIdUseCase(this._pizzaRepository);
 
   @override
-  Future<Pizza> execute(String id) async {
-    final Pizza pizza = await _pizzaRepository.getPizzaById(id);
+  Future<Pizza> execute(String input) async {
+    final Pizza pizza = await _pizzaRepository.getPizzaById(input);
+
     return pizza;
   }
 }

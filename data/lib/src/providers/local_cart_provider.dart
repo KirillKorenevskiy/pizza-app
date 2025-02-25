@@ -13,8 +13,7 @@ class LocalCartProvider {
 
   List<CartItemEntity> _currentCartItems = <CartItemEntity>[];
 
-  Stream<List<CartItemEntity>> get cartStream =>
-      _cartStreamController.stream;
+  Stream<List<CartItemEntity>> get cartStream => _cartStreamController.stream;
 
   LocalCartProvider(this._databaseConfig);
 

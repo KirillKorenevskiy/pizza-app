@@ -21,6 +21,8 @@ dependencies:
     path: ../features/main
   cart:
     path: ../features/cart
+  details:
+    path: ../features/details
 
   auto_route: ^7.3.2
 

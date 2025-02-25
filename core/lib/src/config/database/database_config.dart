@@ -13,6 +13,7 @@ class DatabaseConfig {
       version: 1,
       onCreate: (Database db, _) async {
         await db.execute(StorageConstants.cartCreateCommand);
+        await db.execute(StorageConstants.detailsCreateCommand);
       },
     );
 
