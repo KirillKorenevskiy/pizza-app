@@ -10,7 +10,10 @@ import 'macros_item.dart';
 class DetailsBody extends StatefulWidget {
   final Pizza pizza;
 
-  const DetailsBody({super.key, required this.pizza});
+  const DetailsBody({
+    super.key,
+    required this.pizza,
+  });
 
   @override
   State<DetailsBody> createState() => _DetailsBodyState();
@@ -19,13 +22,17 @@ class DetailsBody extends StatefulWidget {
 class _DetailsBodyState extends State<DetailsBody>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
-  final List<int> pizzaSizes = <int>[25, 30, 35];
+  final List<int> pizzaSizes =
+      PizzaSize.values.map((PizzaSize size) => size.sizeInCm).toList();
 
   @override
   void initState() {
     super.initState();
     context.read<DetailsCubit>().getDetails(widget.pizza.pizzaId);
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(
+      length: pizzaSizes.length,
+      vsync: this,
+    );
   }
 
   @override
@@ -60,7 +67,7 @@ class _DetailsBodyState extends State<DetailsBody>
                         color: colors.black,
                       ),
                       onPressed: () {
-                        Navigator.pop(context);
+                        context.read<DetailsCubit>().goBack();
                       },
                     ),
                     flexibleSpace: FlexibleSpaceBar(
@@ -103,21 +110,12 @@ class _DetailsBodyState extends State<DetailsBody>
                                 ),
                                 labelColor: colors.black,
                                 unselectedLabelColor: colors.black,
-                                tabs: const <Widget>[
-                                  Text(
-                                    '25',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  Text(
-                                    '30',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  Text(
-                                    '35',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
-                                onTap: (int index) {},
+                                tabs: pizzaSizes.map((int size) {
+                                  return Text(
+                                    size.toString(),
+                                    style: const TextStyle(fontSize: 16),
+                                  );
+                                }).toList(),
                               ),
                             ),
                           ),

@@ -1,12 +1,21 @@
 import 'package:domain/domain.dart';
 
-import '../../data.dart';
+import '../entities/entities.dart';
+import '../mappers/ingredients_mapper.dart';
 
 class CartItemMapper {
-  static CartItem fromEntity(CartItemEntity entity, Pizza pizza) {
+  static CartItem fromEntity(
+    CartItemEntity entity,
+    Pizza pizza,
+    List<IngredientEntity> ingredientEntities,
+  ) {
+    final List<Ingredient> ingredients =
+        ingredientEntities.map(IngredientsMapper.fromEntity).toList();
+
     return CartItem(
       pizza: pizza,
       quantity: entity.quantity,
+      additionalIngredients: ingredients,
     );
   }
 

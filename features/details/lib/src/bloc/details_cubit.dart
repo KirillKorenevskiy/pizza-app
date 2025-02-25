@@ -29,7 +29,9 @@ class DetailsCubit extends Cubit<DetailsState> {
           await _getIngredientsUseCase.execute();
 
       emit(
-        state.copyWith(ingredients: ingredients),
+        state.copyWith(
+          ingredients: ingredients,
+        ),
       );
     } catch (e) {
       emit(
@@ -98,13 +100,13 @@ class DetailsCubit extends Cubit<DetailsState> {
       );
 
       if (detail != null) {
-        final List<String>? ingredients =
+        final List<String>? selectedIngredients =
             _convertStringToIngredients(detail.ingredients);
 
         emit(
           state.copyWith(
             size: detail.size,
-            selectedIngredients: ingredients,
+            selectedIngredients: selectedIngredients,
             isInCart: isInCart,
           ),
         );
@@ -133,6 +135,8 @@ class DetailsCubit extends Cubit<DetailsState> {
           ingredients: ingredientsString,
         ),
       );
+
+      await _appRouter.maybePop();
     } catch (e) {
       emit(
         state.copyWith(
@@ -157,5 +161,9 @@ class DetailsCubit extends Cubit<DetailsState> {
         selectedIngredients: updatedIngredients,
       ),
     );
+  }
+
+  void goBack() {
+    _appRouter.maybePop();
   }
 }

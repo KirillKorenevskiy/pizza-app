@@ -13,12 +13,12 @@ class IngredientItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppColors colors = AppColors.of(context);
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.0),
-        color: isSelected
-            ? AppColors.of(context).lightBlue
-            : AppColors.of(context).white,
+        color: isSelected ? colors.lightBlue : colors.white,
       ),
       child: Column(
         children: <Widget>[
@@ -45,7 +45,7 @@ class IngredientItem extends StatelessWidget {
                   '\$${ingredient.price.toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 15,
-                    color: AppColors.of(context).black,
+                    color: colors.black,
                   ),
                 ),
               ],

@@ -20,6 +20,8 @@ class PizzasScreen extends StatelessWidget {
         appLocator.get(),
         appLocator.get(),
         appLocator.get(),
+        appLocator.get(),
+        appLocator.get(),
       )..getPizzas(),
       child: const PizzasScreenBody(),
     );

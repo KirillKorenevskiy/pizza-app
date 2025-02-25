@@ -10,12 +10,16 @@ class CartCubit extends Cubit<CartState> {
   final GetCartsUseCase _getCartsUseCase;
   final RemoveFromCartUseCase _removeFromCartUseCase;
   final UpdateQuantityUseCase _updateQuantityUseCase;
+  final DeleteDetailsUseCase _deleteDetailsUseCase;
+  final GetDetailsUseCase _getDetailsUseCase;
   final AppRouter _appRouter;
 
   CartCubit(
     this._getCartsUseCase,
     this._removeFromCartUseCase,
     this._updateQuantityUseCase,
+    this._deleteDetailsUseCase,
+    this._getDetailsUseCase,
     this._appRouter,
   ) : super(const CartState()) {
     getCart();
@@ -29,11 +33,13 @@ class CartCubit extends Cubit<CartState> {
     );
     try {
       final List<CartItem> cartItems = await _getCartsUseCase.execute();
+      final List<Details> detailsItems = await _getDetailsUseCase.execute();
 
       emit(
         state.copyWith(
           isLoading: false,
           cartItems: cartItems,
+          detailsItems: detailsItems,
         ),
       );
     } catch (e) {
@@ -49,6 +55,9 @@ class CartCubit extends Cubit<CartState> {
   Future<void> removeFromCart(String id) async {
     try {
       await _removeFromCartUseCase.execute(
+        id,
+      );
+      await _deleteDetailsUseCase.execute(
         id,
       );
       await getCart();
@@ -82,6 +91,13 @@ class CartCubit extends Cubit<CartState> {
         cartItems: updatedCart,
       ),
     );
+  }
+
+  Future<void> goToDetails(Pizza pizza) async {
+    await _appRouter.push(
+      DetailsScreen(pizza: pizza),
+    );
+    await getCart();
   }
 
   void closeCart() {

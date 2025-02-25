@@ -18,25 +18,6 @@ class CartBody extends StatefulWidget {
 class _CartBodyState extends State<CartBody> {
   final TextEditingController _promoCodeController = TextEditingController();
 
-  double _getSum(List<CartItem> items) {
-    return items.fold(
-      0,
-      (double sum, CartItem item) {
-        final double discountedPrice =
-            item.pizza.price * (1 - (item.pizza.discount / 100));
-
-        return sum + (item.quantity * discountedPrice);
-      },
-    );
-  }
-
-  int _getTotalQuantity(List<CartItem> cartItems) {
-    return cartItems.fold(
-      0,
-      (int sum, CartItem item) => sum + item.quantity,
-    );
-  }
-
   void _onQuantityChanged(int index, int newQuantity) {
     context.read<CartCubit>().updateQuantity(
           index,
@@ -47,7 +28,6 @@ class _CartBodyState extends State<CartBody> {
   @override
   Widget build(BuildContext context) {
     final AppColors colors = AppColors.of(context);
-
 
     return BlocBuilder<CartCubit, CartState>(
       builder: (BuildContext context, CartState state) {
@@ -79,15 +59,15 @@ class _CartBodyState extends State<CartBody> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              '${_getTotalQuantity(state.cartItems)} item for '
-                              '${_getSum(state.cartItems)}\$',
+                              '${state.totalQuantity} item for '
+                              '${state.totalPrice}\$',
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w500,
                                 color: colors.black,
                               ),
                             ),
-                            _getSum(state.cartItems) < 19.99
+                            state.totalPrice < 19.99
                                 ? Text(
                                     r'Minimal order price — 19,99 $',
                                     style: TextStyle(
@@ -111,6 +91,16 @@ class _CartBodyState extends State<CartBody> {
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (BuildContext context, int i) {
+                                    final CartItem cartItem =
+                                        state.cartItems[i];
+
+                                    final Details pizzaDetails =
+                                        state.detailsItems.firstWhere(
+                                      (Details details) =>
+                                          details.pizzaId ==
+                                          cartItem.pizza.pizzaId,
+                                    );
+
                                     return Dismissible(
                                       key: Key(
                                         state.cartItems[i].pizza.pizzaId,
@@ -134,20 +124,28 @@ class _CartBodyState extends State<CartBody> {
                                               state.cartItems[i].pizza.pizzaId,
                                             );
                                       },
-                                      child: CartItemCard(
-                                        cartItem: state.cartItems[i],
-                                        index: i,
-                                        onQuantityChanged: (int newQuantity) {
-                                          _onQuantityChanged(i, newQuantity);
-                                          if (newQuantity == 0) {
-                                            context
-                                                .read<CartCubit>()
-                                                .removeFromCart(
-                                                  state.cartItems[i].pizza
-                                                      .pizzaId,
-                                                );
-                                          }
+                                      child: InkWell(
+                                        onTap: () {
+                                          context.read<CartCubit>().goToDetails(
+                                                state.cartItems[i].pizza,
+                                              );
                                         },
+                                        child: CartItemCard(
+                                          cartItem: state.cartItems[i],
+                                          index: i,
+                                          onQuantityChanged: (int newQuantity) {
+                                            _onQuantityChanged(i, newQuantity);
+                                            if (newQuantity == 0) {
+                                              context
+                                                  .read<CartCubit>()
+                                                  .removeFromCart(
+                                                    state.cartItems[i].pizza
+                                                        .pizzaId,
+                                                  );
+                                            }
+                                          },
+                                          size: pizzaDetails.size,
+                                        ),
                                       ),
                                     );
                                   },
@@ -203,7 +201,9 @@ class _CartBodyState extends State<CartBody> {
                               ),
                             ),
                             const SizedBox(height: 24),
-                            PromoCodeTextField(controller: _promoCodeController),
+                            PromoCodeTextField(
+                              controller: _promoCodeController,
+                            ),
                             const SizedBox(height: 16),
                           ],
                         ),
@@ -215,9 +215,9 @@ class _CartBodyState extends State<CartBody> {
             child: ElevatedButton(
               onPressed: () {},
               child: Text(
-                _getSum(state.cartItems) < 19.99
+                state.totalPrice < 19.99
                     ? r'Add more items to reach 19,99 $'
-                    : 'Proceed to checkout for ${_getSum(state.cartItems)}\$',
+                    : 'Proceed to checkout for ${state.totalPrice}\$',
                 style: const TextStyle(fontSize: 17),
               ),
             ),

@@ -69,6 +69,8 @@ abstract class DataDI {
       () => CartRepositoryImpl(
         locator<LocalCartProvider>(),
         locator<RemotePizzaProvider>(),
+        locator<LocalDetailsProvider>(),
+        locator<RemoteIngredientsProvider>(),
       ),
     );
 
