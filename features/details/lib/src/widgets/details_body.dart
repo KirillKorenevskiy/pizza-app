@@ -124,9 +124,9 @@ class _DetailsBodyState extends State<DetailsBody>
                             ),
                           ),
                           const SizedBox(height: 25),
-                          const Text(
-                            'Add some ingredients',
-                            style: TextStyle(fontSize: 23),
+                          Text(
+                            context.locale.addSomeIngredients,
+                            style: const TextStyle(fontSize: 23),
                           ),
                         ],
                       ),
@@ -176,22 +176,22 @@ class _DetailsBodyState extends State<DetailsBody>
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               MacrosItem(
-                                title: 'Calories',
+                                title: context.locale.calories,
                                 value: widget.pizza.macros.calories,
                                 icon: Icons.local_fire_department_rounded,
                               ),
                               MacrosItem(
-                                title: 'Protein',
+                                title: context.locale.proteins,
                                 value: widget.pizza.macros.proteins,
                                 icon: Icons.sports_gymnastics,
                               ),
                               MacrosItem(
-                                title: 'Fat',
+                                title: context.locale.fat,
                                 value: widget.pizza.macros.fat,
                                 icon: Icons.fastfood_rounded,
                               ),
                               MacrosItem(
-                                title: 'Carbs',
+                                title: context.locale.carbs,
                                 value: widget.pizza.macros.carbs,
                                 icon: Icons.breakfast_dining,
                               ),
@@ -228,7 +228,9 @@ class _DetailsBodyState extends State<DetailsBody>
                                 ),
                               ),
                               child: Text(
-                                state.isInCart ? 'Done' : '+ Add to cart',
+                                state.isInCart
+                                    ? context.locale.done
+                                    : context.locale.addToCart,
                                 style: TextStyle(
                                   color: colors.white,
                                   fontSize: 20,

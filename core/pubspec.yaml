@@ -23,11 +23,10 @@ dependencies:
   http: ^1.2.1
   easy_localization: ^3.0.7
   sqflite: ^2.4.1
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-flutter:
-  assets:
-    - resources/lang/

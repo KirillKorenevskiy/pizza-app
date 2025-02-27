@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
 import 'authentication_tab.dart';
@@ -18,7 +19,6 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
   @override
   void initState() {
     _tabController = TabController(
-      initialIndex: 0,
       length: 2,
       vsync: this,
     );
@@ -34,6 +34,7 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
+    final AppColors colors = AppColors.of(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -61,12 +62,15 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
                       width: screenSize.width / 1.3,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppColors.of(context).primaryBg,
+                        color: colors.primaryBg,
                       ),
                     ),
                   ),
                   BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 100.0, sigmaY: 100.0),
+                    filter: ImageFilter.blur(
+                      sigmaX: 100.0,
+                      sigmaY: 100.0,
+                    ),
                     child: const SizedBox.shrink(),
                   ),
                 ],
@@ -82,24 +86,23 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
                         ),
                         child: TabBar(
                           controller: _tabController,
-                          unselectedLabelColor:
-                              AppColors.of(context).black.withOpacity(0.5),
-                          labelColor: AppColors.of(context).black,
-                          tabs: const <Widget>[
+                          unselectedLabelColor: colors.black.withAlpha(100),
+                          labelColor: colors.black,
+                          tabs: <Widget>[
                             Padding(
-                              padding: EdgeInsets.all(12.0),
+                              padding: const EdgeInsets.all(12.0),
                               child: Text(
-                                'Sign In',
-                                style: TextStyle(
+                                context.locale.signIn,
+                                style: const TextStyle(
                                   fontSize: 18,
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.all(12.0),
+                              padding: const EdgeInsets.all(12.0),
                               child: Text(
-                                'Sign Up',
-                                style: TextStyle(
+                                context.locale.signUp,
+                                style: const TextStyle(
                                   fontSize: 18,
                                 ),
                               ),

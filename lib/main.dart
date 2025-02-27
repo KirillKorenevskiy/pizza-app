@@ -10,7 +10,6 @@ import 'error_handler/provider/app_error_handler_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp();
 
   _setupDI(Flavor.dev);
@@ -37,19 +36,22 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppRouter appRouter = appLocator<AppRouter>();
 
-    return EasyLocalization(
-      path: AppLocalization.langFolderPath,
-      supportedLocales: AppLocalization.supportedLocales,
-      fallbackLocale: AppLocalization.fallbackLocale,
-      child: Builder(
-        builder: (BuildContext context) {
+    return BlocProvider<AppCubit>(
+      create: (BuildContext context) => AppCubit(
+        appLocator.get(),
+        appLocator.get(),
+        appLocator.get(),
+        appLocator.get(),
+      ),
+      child: BlocBuilder<AppCubit, AppState>(
+        builder: (BuildContext context, AppState state) {
           return AppErrorHandlerProvider(
             child: MaterialApp.router(
               debugShowCheckedModeBanner: false,
               routerConfig: appRouter.config(),
-              localizationsDelegates: context.localizationDelegates,
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: Locale(state.language.language),
               theme: lightTheme,
             ),
           );

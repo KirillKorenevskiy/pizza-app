@@ -1,18 +1,44 @@
 part of 'app_cubit.dart';
 
 class AppState {
+  final AppStatus status;
+  final MyUser? user;
+  final LocalizationLanguages language;
+  final String? errorMessage;
+
   const AppState._({
     this.status = AppStatus.unknown,
     this.user,
+    this.language = LocalizationLanguages.english,
+    this.errorMessage,
   });
-
-  final AppStatus status;
-  final MyUser? user;
 
   const AppState.unknown() : this._();
 
-  const AppState.authenticated(MyUser myUser)
-      : this._(status: AppStatus.authenticated, user: myUser);
+  const AppState.authenticated(MyUser myUser, LocalizationLanguages language)
+      : this._(
+          status: AppStatus.authenticated,
+          user: myUser,
+          language: language,
+        );
 
-  const AppState.unauthenticated() : this._(status: AppStatus.unauthenticated);
+  const AppState.unauthenticated(LocalizationLanguages language)
+      : this._(
+          status: AppStatus.unauthenticated,
+          language: language,
+        );
+
+  AppState copyWith({
+    AppStatus? status,
+    MyUser? user,
+    LocalizationLanguages? language,
+    String? errorMessage,
+  }) {
+    return AppState._(
+      status: status ?? this.status,
+      user: user ?? this.user,
+      language: language ?? this.language,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 }

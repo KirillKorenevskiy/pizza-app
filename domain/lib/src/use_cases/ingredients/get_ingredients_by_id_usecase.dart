@@ -8,7 +8,8 @@ class GetIngredientsByIdUseCase implements FutureUseCase<String, Ingredient> {
 
   @override
   Future<Ingredient> execute(String input) async {
-    final Ingredient pizza = await _ingredientsRepository.getIngredientById(input);
+    final Ingredient pizza =
+        await _ingredientsRepository.getIngredientById(input);
     return pizza;
   }
 }

@@ -83,5 +83,13 @@ abstract class DomainDI {
     locator.registerFactory<AddDetailsUseCase>(
       () => AddDetailsUseCase(locator.get()),
     );
+
+    locator.registerFactory<ChangeLanguageUseCase>(
+      () => ChangeLanguageUseCase(locator.get()),
+    );
+
+    locator.registerFactory<GetLanguageUseCase>(
+      () => GetLanguageUseCase(locator.get()),
+    );
   }
 }

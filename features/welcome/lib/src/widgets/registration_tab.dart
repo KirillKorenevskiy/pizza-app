@@ -35,7 +35,11 @@ class _RegistrationTabState extends State<RegistrationTab> {
               listener: (BuildContext context, SignUpState state) {
                 final String? successMessage = state.successMessage;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(successMessage ?? 'success!!!')),
+                  SnackBar(
+                    content: Text(
+                      successMessage ?? context.locale.success,
+                    ),
+                  ),
                 );
               },
             ),
@@ -45,7 +49,11 @@ class _RegistrationTabState extends State<RegistrationTab> {
               listener: (BuildContext context, SignUpState state) {
                 final String? errorMessage = state.errorMessage;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(errorMessage ?? 'error(')),
+                  SnackBar(
+                    content: Text(
+                      errorMessage ?? context.locale.errorHasOccurred,
+                    ),
+                  ),
                 );
               },
             ),
@@ -61,17 +69,18 @@ class _RegistrationTabState extends State<RegistrationTab> {
                   ),
                   child: FormTextField(
                     controller: _emailController,
-                    hintText: 'Email',
+                    hintText: context.locale.email,
                     obscureText: false,
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: const Icon(CupertinoIcons.mail_solid),
                     style: TextStyle(color: colors.black),
                     validator: (String? val) {
                       if (val!.isEmpty) {
-                        return 'Please fill in this field';
-                      } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$')
+                        return context.locale.philInField;
+                      } else if (!RegExp(r'^[\w-.]+@([\w-]+.)+[\w-]{2,4}$')
                           .hasMatch(val)) {
-                        return 'Please enter a valid email';
+                        return context.locale
+                            .enterValidField(context.locale.email);
                       }
                       return null;
                     },
@@ -84,7 +93,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                   ),
                   child: FormTextField(
                     controller: _passwordController,
-                    hintText: 'Password',
+                    hintText: context.locale.password,
                     obscureText: state.obscurePassword,
                     keyboardType: TextInputType.visiblePassword,
                     prefixIcon: const Icon(CupertinoIcons.lock_fill),
@@ -104,11 +113,12 @@ class _RegistrationTabState extends State<RegistrationTab> {
                     ),
                     validator: (String? val) {
                       if (val!.isEmpty) {
-                        return 'Please fill in this field';
+                        return context.locale.philInField;
                       } else if (!RegExp(
-                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
-                          .hasMatch(val)) {
-                        return 'Please enter a valid password';
+                        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~`)%\-(_+=;:,.<>/?"[{\]}|^]).{8,}$',
+                      ).hasMatch(val)) {
+                        return context.locale
+                            .enterValidField(context.locale.password);
                       }
                       return null;
                     },
@@ -123,7 +133,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          '⚈  1 uppercase',
+                          '⚈  1 ${context.locale.uppercase}',
                           style: TextStyle(
                             color: state.containsUpperCase
                                 ? colors.green
@@ -131,7 +141,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                           ),
                         ),
                         Text(
-                          '⚈  1 lowercase',
+                          '⚈  1 ${context.locale.lowercase}',
                           style: TextStyle(
                             color: state.containsLowerCase
                                 ? colors.green
@@ -139,7 +149,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                           ),
                         ),
                         Text(
-                          '⚈  1 number',
+                          '⚈  1 ${context.locale.number}',
                           style: TextStyle(
                             color: state.containsNumber
                                 ? colors.green
@@ -152,7 +162,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          '⚈  1 special character',
+                          '⚈  1 ${context.locale.specialCharacter}',
                           style: TextStyle(
                             color: state.containsSpecialChar
                                 ? colors.green
@@ -160,7 +170,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                           ),
                         ),
                         Text(
-                          '⚈  8 minimum characters',
+                          '⚈  8 ${context.locale.minimumCharacters}',
                           style: TextStyle(
                             color: state.containsMinLength
                                 ? colors.green
@@ -178,16 +188,16 @@ class _RegistrationTabState extends State<RegistrationTab> {
                   ),
                   child: FormTextField(
                     controller: _nameController,
-                    hintText: 'Name',
+                    hintText: context.locale.name,
                     obscureText: false,
                     keyboardType: TextInputType.name,
                     prefixIcon: const Icon(CupertinoIcons.person_fill),
                     style: TextStyle(color: colors.black),
                     validator: (String? val) {
                       if (val!.isEmpty) {
-                        return 'Please fill in this field';
+                        return context.locale.philInField;
                       } else if (val.length > 30) {
-                        return 'Name too long';
+                        return context.locale.nameTooLong;
                       }
                       return null;
                     },
@@ -206,9 +216,11 @@ class _RegistrationTabState extends State<RegistrationTab> {
                           final String email = _emailController.text.trim();
                           final String password =
                               _passwordController.text.trim();
-                          context
-                              .read<SignUpCubit>()
-                              .signUp(email, name, password);
+                          context.read<SignUpCubit>().signUp(
+                                email,
+                                name,
+                                password,
+                              );
                         }
                       },
                       style: TextButton.styleFrom(
@@ -225,7 +237,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                           vertical: 5,
                         ),
                         child: Text(
-                          'Sign Up',
+                          context.locale.signUp,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: colors.white,
@@ -236,7 +248,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                       ),
                     ),
                   ),
-                const Spacer(flex: 7)
+                const Spacer(flex: 7),
               ],
             ),
           ),
