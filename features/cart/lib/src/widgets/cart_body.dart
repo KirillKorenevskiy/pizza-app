@@ -36,7 +36,7 @@ class _CartBodyState extends State<CartBody> {
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
             scrolledUnderElevation: 0,
-            title: const Text('Cart'),
+            title: Text(context.locale.cart),
             centerTitle: true,
             backgroundColor: colors.white,
             leading: IconButton(
@@ -60,8 +60,10 @@ class _CartBodyState extends State<CartBody> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              '${state.totalQuantity} item for '
-                              '${state.totalPrice}\$',
+                              context.locale.itemFor(
+                                state.totalQuantity,
+                                state.totalPrice,
+                              ),
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w500,
@@ -70,7 +72,7 @@ class _CartBodyState extends State<CartBody> {
                             ),
                             state.totalPrice < minOrderPrice
                                 ? Text(
-                                    'Minimal order price — $minOrderPrice \$',
+                                    context.locale.minOrderPrice(minOrderPrice),
                                     style: TextStyle(
                                       color: colors.red,
                                     ),
@@ -84,8 +86,8 @@ class _CartBodyState extends State<CartBody> {
                               child: CircularProgressIndicator(),
                             )
                           : state.cartItems.isEmpty
-                              ? const Center(
-                                  child: Text('Your cart is empty...'),
+                              ? Center(
+                                  child: Text(context.locale.cartIsEmpty),
                                 )
                               : ListView.builder(
                                   itemCount: state.cartItems.length,
@@ -158,7 +160,7 @@ class _CartBodyState extends State<CartBody> {
                           children: <Widget>[
                             const SizedBox(height: 24),
                             Text(
-                              'Add to your order?',
+                              context.locale.addToYourOrder,
                               style: TextStyle(
                                 fontSize: 20,
                                 color: colors.black,
@@ -217,8 +219,8 @@ class _CartBodyState extends State<CartBody> {
               onPressed: () {},
               child: Text(
                 state.totalPrice < minOrderPrice
-                    ? 'Add more items to reach $minOrderPrice \$'
-                    : 'Proceed to checkout for ${state.totalPrice}\$',
+                    ? context.locale.addMoreItems(minOrderPrice)
+                    : context.locale.proceedToCheckout(state.totalPrice),
                 style: const TextStyle(fontSize: 17),
               ),
             ),

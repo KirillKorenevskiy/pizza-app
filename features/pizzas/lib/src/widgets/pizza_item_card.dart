@@ -1,8 +1,8 @@
+import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:domain/src/models/pizza_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/pizzas_cubit.dart';
 
@@ -63,7 +63,9 @@ class PizzaCard extends StatelessWidget {
                               horizontal: 8,
                             ),
                             child: Text(
-                              pizza.isVegetarian ? 'VEG' : 'NON-VEG',
+                              pizza.isVegetarian
+                                  ? context.locale.veg
+                                  : context.locale.nonVeg,
                               style: TextStyle(
                                 color: colors.white,
                                 fontWeight: FontWeight.bold,
@@ -83,10 +85,10 @@ class PizzaCard extends StatelessWidget {
                             ),
                             child: Text(
                               pizza.spicy == 1
-                                  ? '🌶️ BLAND'
+                                  ? context.locale.bland
                                   : pizza.spicy == 2
-                                      ? '🌶️ BALANCE'
-                                      : '🌶️ SPICY',
+                                      ? context.locale.balance
+                                      : context.locale.spicy,
                               style: TextStyle(
                                 color: pizza.spicy == 1
                                     ? colors.green

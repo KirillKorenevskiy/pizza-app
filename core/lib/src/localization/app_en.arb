@@ -1,0 +1,96 @@
+{
+  "helloWorld": "Hello World!",
+  "cart": "Cart",
+  "itemFor": "{quantity} item for {price}$",
+  "@itemFor": {
+    "placeholders": {
+      "quantity": {
+        "type": "int"
+      },
+      "price": {
+        "type": "double"
+      }
+    }
+  },
+  "minOrderPrice": "Minimal order price - {price}$",
+  "@minOrderPrice": {
+    "placeholders": {
+      "price": {
+        "type": "double"
+      }
+    }
+  },
+  "cartIsEmpty": "Your cart is empty...",
+  "addToYourOrder": "Add to your order?",
+  "addMoreItems": "Add more items to reach {price}$",
+  "@addMoreItems": {
+    "placeholders": {
+      "price": {
+        "type": "double"
+      }
+    }
+  },
+  "proceedToCheckout": "Proceed to checkout for {price}$",
+  "@proceedToCheckout": {
+    "placeholders": {
+      "price": {
+        "type": "double"
+      }
+    }
+  },
+  "caloriesInCart": "Calories: {calories} (p: {proteins}, f: {fat}, c: {carbs}) ",
+  "@caloriesInCart": {
+    "calories": {
+      "type": "int"
+    },
+    "proteins": {
+      "type": "int"
+    },
+    "fat": {
+      "type": "int"
+    },
+    "carbs": {
+      "type": "int"
+    }
+  },
+  "size": "size: {size}",
+  "@size": {
+    "size": {
+      "type": "int"
+    }
+  },
+  "enterPromoCode": "Enter promo code",
+  "addSomeIngredients": "Add some ingredients",
+  "calories": "Calories",
+  "proteins": "Proteins",
+  "fat": "Fat",
+  "carbs": "Carbs",
+  "done": "Done",
+  "addToCart": "+ Add to cart",
+  "veg": "VEG",
+  "nonVeg": "NON-VEG",
+  "bland": "\uD83C\uDF36\uFE0F BLAND",
+  "balance": "\uD83C\uDF36\uFE0F BALANCE",
+  "spicy": "\uD83C\uDF36\uFE0F SPICY",
+  "pizza": "PIZZA",
+  "errorHasOccurred": "An error has occurred...",
+  "success": "Success!",
+  "email": "email",
+  "philInField": "Please fill in this field",
+  "enterValidField": "Please enter a valid {field}",
+  "@enterValidEmail":{
+    "field": {
+      "type": "string"
+    }
+  },
+  "password": "password",
+  "signIn": "Sign In",
+  "uppercase": "uppercase",
+  "lowercase": "lowercase",
+  "number": "number",
+  "specialCharacter": "special character",
+  "minimumCharacters": "minimum characters",
+  "name": "name",
+  "nameTooLong": "Name too long",
+  "signUp": "Sign Up"
+}

@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data.dart';
 
@@ -10,7 +11,14 @@ abstract class DataDI {
     _initRepositories(locator);
   }
 
-  static void _initApi(GetIt locator) {
+  static Future<void> _initApi(GetIt locator) async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+
+    locator.registerLazySingleton<SharedPreferences>(
+          () => sharedPreferences,
+    );
+
     locator.registerLazySingleton<DioConfig>(
       () => DioConfig(
         appConfig: locator<AppConfig>(),
@@ -54,6 +62,10 @@ abstract class DataDI {
     locator.registerLazySingleton<LocalDetailsProvider>(
       () => LocalDetailsProvider(locator<DatabaseConfig>()),
     );
+
+    locator.registerLazySingleton<LocalLocalizationProvider>(
+      () => LocalLocalizationProvider(locator<SharedPreferences>()),
+    );
   }
 
   static void _initRepositories(GetIt locator) {
@@ -80,6 +92,10 @@ abstract class DataDI {
 
     locator.registerFactory<DetailsRepository>(
       () => DetailsRepositoryImpl(locator<LocalDetailsProvider>()),
+    );
+
+    locator.registerLazySingleton<LocalizationRepository>(
+      () => LocalizationRepositoryImpl(locator<LocalLocalizationProvider>()),
     );
   }
 }

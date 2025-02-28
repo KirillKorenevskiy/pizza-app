@@ -1,0 +1,95 @@
+{
+  "cart": "Корзина",
+  "itemFor": "{quantity} товаров на {price}$",
+  "@itemFor": {
+    "placeholders": {
+      "quantity": {
+        "type": "int"
+      },
+      "price": {
+        "type": "double"
+      }
+    }
+  },
+  "minOrderPrice": "Минимальная сумма заказа - {price}$",
+  "@minOrderPrice": {
+    "placeholders": {
+      "price": {
+        "type": "double"
+      }
+    }
+  },
+  "cartIsEmpty": "Ваша корзина пуста...",
+  "addToYourOrder": "Добавить в заказ?",
+  "addMoreItems": "Добавьте ещё товаров до {price}$",
+  "@addMoreItems": {
+    "placeholders": {
+      "price": {
+        "type": "double"
+      }
+    }
+  },
+  "proceedToCheckout": "Оформить заказ на {price}$",
+  "@proceedToCheckout": {
+    "placeholders": {
+      "price": {
+        "type": "double"
+      }
+    }
+  },
+  "caloriesInCart": "Калории: {calories} (б: {proteins}, ж: {fat}, у: {carbs})",
+  "@caloriesInCart": {
+    "calories": {
+      "type": "int"
+    },
+    "proteins": {
+      "type": "int"
+    },
+    "fat": {
+      "type": "int"
+    },
+    "carbs": {
+      "type": "int"
+    }
+  },
+  "size": "Размер: {size}",
+  "@size": {
+    "size": {
+      "type": "int"
+    }
+  },
+  "enterPromoCode": "Введите промокод",
+  "addSomeIngredients": "Добавьте ингредиенты",
+  "calories": "Калории",
+  "proteins": "Белки",
+  "fat": "Жиры",
+  "carbs": "Углеводы",
+  "done": "Готово",
+  "addToCart": "+ В корзину",
+  "veg": "ВЕГ",
+  "nonVeg": "НЕ ВЕГ",
+  "bland": "\uD83C\uDF36\uFE0F НЕОСТРОЕ",
+  "balance": "\uD83C\uDF36\uFE0F БАЛАНС",
+  "spicy": "\uD83C\uDF36\uFE0F ОСТРОЕ",
+  "pizza": "ПИЦЦА",
+  "errorHasOccurred": "Произошла ошибка...",
+  "success": "Успешно!",
+  "email": "Электронная почта",
+  "philInField": "Пожалуйста, заполните это поле",
+  "enterValidField": "Пожалуйста, введите корректный {field}",
+  "@enterValidEmail": {
+    "field": {
+      "type": "string"
+    }
+  },
+  "password": "Пароль",
+  "signIn": "Войти",
+  "uppercase": "заглавная буква",
+  "lowercase": "строчная буква",
+  "number": "цифра",
+  "specialCharacter": "специальный символ",
+  "minimumCharacters": "минимальное количество символов",
+  "name": "Имя",
+  "nameTooLong": "Слишком длинное имя",
+  "signUp": "Регистрация"
+}

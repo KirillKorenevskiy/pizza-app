@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class PromoCodeTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
-        labelText: 'Enter promo code',
+        labelText: context.locale.enterPromoCode,
         labelStyle: TextStyle(
           color: colors.grey500,
         ),

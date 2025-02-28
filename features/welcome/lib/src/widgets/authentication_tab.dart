@@ -2,7 +2,6 @@ import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nested/nested.dart';
 
 import '../bloc/sign_in/sign_in_cubit.dart';
@@ -41,7 +40,11 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
               listener: (BuildContext context, SignInState state) {
                 final String? successMessage = state.successMessage;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(successMessage ?? 'success!!!')),
+                  SnackBar(
+                    content: Text(
+                      successMessage ?? context.locale.success,
+                    ),
+                  ),
                 );
               },
             ),
@@ -51,10 +54,14 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
               listener: (BuildContext context, SignInState state) {
                 final String? errorMessage = state.errorMessage;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(errorMessage ?? 'error(')),
+                  SnackBar(
+                    content: Text(
+                      errorMessage ?? context.locale.errorHasOccurred,
+                    ),
+                  ),
                 );
               },
-            )
+            ),
           ],
           child: Form(
             key: _formKey,
@@ -67,7 +74,7 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                   ),
                   child: FormTextField(
                     controller: _emailController,
-                    hintText: 'Email',
+                    hintText: context.locale.email,
                     obscureText: false,
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: const Icon(CupertinoIcons.mail_solid),
@@ -75,10 +82,11 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                     style: TextStyle(color: colors.black),
                     validator: (String? val) {
                       if (val!.isEmpty) {
-                        return 'Please fill in this field';
-                      } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                        return context.locale.philInField;
+                      } else if (!RegExp(AppConstants.EMAIL_REG_EXP)
                           .hasMatch(val)) {
-                        return 'Please enter a valid email';
+                        return context.locale
+                            .enterValidField(context.locale.email);
                       }
                       return null;
                     },
@@ -91,7 +99,7 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                   ),
                   child: FormTextField(
                     controller: _passwordController,
-                    hintText: 'Password',
+                    hintText: context.locale.password,
                     obscureText: state.obscurePassword,
                     keyboardType: TextInputType.visiblePassword,
                     prefixIcon: const Icon(CupertinoIcons.lock_fill),
@@ -99,11 +107,12 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                     errorMsg: widget.errorMsg,
                     validator: (String? val) {
                       if (val!.isEmpty) {
-                        return 'Please fill in this field';
+                        return context.locale.philInField;
                       } else if (!RegExp(
-                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)%\-(_+=;:,.<>/?"[\{\]}\\|^]).{8,}$')
-                          .hasMatch(val)) {
-                        return 'Please enter a valid password';
+                        AppConstants.PASSWORD_REG_EXP,
+                      ).hasMatch(val)) {
+                        return context.locale
+                            .enterValidField(context.locale.password);
                       }
                       return null;
                     },
@@ -146,7 +155,7 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                         vertical: 5,
                       ),
                       child: Text(
-                        'Sign In',
+                        context.locale.signIn,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: colors.white,

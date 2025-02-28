@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -59,15 +60,19 @@ class CartItemCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Calories: ${macros.calories} (p: ${macros.proteins}, '
-                      'f: ${macros.fat}, c: ${macros.carbs}) ',
+                      context.locale.caloriesInCart(
+                        macros.calories,
+                        macros.carbs,
+                        macros.fat,
+                        macros.proteins,
+                      ),
                       style: TextStyle(
                         color: colors.black,
                         fontSize: 15,
                       ),
                     ),
                     Text(
-                      'Size: $size',
+                      context.locale.size(size),
                       style: TextStyle(
                         color: colors.black,
                         fontSize: 15,

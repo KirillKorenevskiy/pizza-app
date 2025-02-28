@@ -28,7 +28,7 @@ class MacrosItem extends StatelessWidget {
             children: <Widget>[
               const SizedBox(height: 4),
               Text(
-                title == 'Calories' ? '$value \n$title' : '${value}g \n$title',
+                title == 'Calories' ? '$value \n$title' : '$value \n$title',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.of(context).black,

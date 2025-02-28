@@ -1,8 +1,8 @@
+import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:domain/src/models/pizza_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/pizzas_cubit.dart';
 import 'pizza_item_card.dart';
@@ -29,9 +29,9 @@ class PizzasScreenBody extends StatelessWidget {
                   scale: 14,
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'PIZZA',
-                  style: TextStyle(
+                Text(
+                  context.locale.pizza,
+                  style: const TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 30,
                   ),
@@ -39,6 +39,12 @@ class PizzasScreenBody extends StatelessWidget {
               ],
             ),
             actions: <Widget>[
+              IconButton(
+                onPressed: () {
+                  context.read<AppCubit>().changeLanguage();
+                },
+                icon: const Icon(CupertinoIcons.arrow_2_squarepath),
+              ),
               IconButton(
                 onPressed: () {
                   context.read<PizzasCubit>().goToCart();
@@ -60,8 +66,8 @@ class PizzasScreenBody extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   )
                 : state.errorMessage != null
-                    ? const Center(
-                        child: Text('An error has occurred...'),
+                    ? Center(
+                        child: Text(context.locale.errorHasOccurred),
                       )
                     : ListView.builder(
                         itemCount: state.pizzas.length,
