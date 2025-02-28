@@ -77,8 +77,9 @@ class _RegistrationTabState extends State<RegistrationTab> {
                     validator: (String? val) {
                       if (val!.isEmpty) {
                         return context.locale.philInField;
-                      } else if (!RegExp(r'^[\w-.]+@([\w-]+.)+[\w-]{2,4}$')
-                          .hasMatch(val)) {
+                      } else if (!RegExp(
+                        AppConstants.EMAIL_REG_EXP,
+                      ).hasMatch(val)) {
                         return context.locale
                             .enterValidField(context.locale.email);
                       }
@@ -115,7 +116,7 @@ class _RegistrationTabState extends State<RegistrationTab> {
                       if (val!.isEmpty) {
                         return context.locale.philInField;
                       } else if (!RegExp(
-                        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~`)%\-(_+=;:,.<>/?"[{\]}|^]).{8,}$',
+                        AppConstants.PASSWORD_REG_EXP,
                       ).hasMatch(val)) {
                         return context.locale
                             .enterValidField(context.locale.password);

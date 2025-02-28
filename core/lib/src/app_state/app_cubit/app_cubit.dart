@@ -60,10 +60,10 @@ class AppCubit extends Cubit<AppState> {
 
   Future<void> changeLanguage() async {
     try {
-      final LocalizationLanguages newLanguage =
-          state.language == LocalizationLanguages.english
-              ? LocalizationLanguages.russian
-              : LocalizationLanguages.english;
+      final LocalizationLanguages newLanguage = switch (state.language) {
+        LocalizationLanguages.english => LocalizationLanguages.russian,
+        LocalizationLanguages.russian => LocalizationLanguages.english,
+      };
 
       await _changeLanguageUseCase.execute(
         newLanguage,

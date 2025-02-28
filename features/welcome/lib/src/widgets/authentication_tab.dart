@@ -83,7 +83,7 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                     validator: (String? val) {
                       if (val!.isEmpty) {
                         return context.locale.philInField;
-                      } else if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$')
+                      } else if (!RegExp(AppConstants.EMAIL_REG_EXP)
                           .hasMatch(val)) {
                         return context.locale
                             .enterValidField(context.locale.email);
@@ -109,9 +109,10 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                       if (val!.isEmpty) {
                         return context.locale.philInField;
                       } else if (!RegExp(
-                        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$&*~`)%\-(_+=;:,.<>/?"[{\]}\\|^]).{8,}$',
+                        AppConstants.PASSWORD_REG_EXP,
                       ).hasMatch(val)) {
-                        return context.locale.enterValidField('password');
+                        return context.locale
+                            .enterValidField(context.locale.password);
                       }
                       return null;
                     },
