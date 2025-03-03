@@ -15,10 +15,6 @@ abstract class DataDI {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
 
-    locator.registerLazySingleton<SharedPreferences>(
-          () => sharedPreferences,
-    );
-
     locator.registerLazySingleton<DioConfig>(
       () => DioConfig(
         appConfig: locator<AppConfig>(),
@@ -39,6 +35,10 @@ abstract class DataDI {
 
     locator.registerLazySingleton<DatabaseConfig>(
       DatabaseConfig.new,
+    );
+
+    locator.registerLazySingleton<SharedPreferences>(
+          () => sharedPreferences,
     );
   }
 

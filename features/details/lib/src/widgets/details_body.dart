@@ -2,16 +2,18 @@ import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../bloc/details_cubit.dart';
+
 import 'ingredient_item.dart';
 import 'macros_item.dart';
 
 class DetailsBody extends StatefulWidget {
-  final Pizza pizza;
+  final String pizzaId;
 
   const DetailsBody({
-    required this.pizza,
+    required this.pizzaId,
     super.key,
   });
 
@@ -32,7 +34,8 @@ class _DetailsBodyState extends State<DetailsBody>
   @override
   void initState() {
     super.initState();
-    context.read<DetailsCubit>().getDetails(widget.pizza.pizzaId);
+    context.read<DetailsCubit>().getPizza(widget.pizzaId);
+    context.read<DetailsCubit>().getDetails(widget.pizzaId);
     _tabController = TabController(
       length: pizzaSizes.length,
       vsync: this,
@@ -54,6 +57,8 @@ class _DetailsBodyState extends State<DetailsBody>
       },
       child: BlocBuilder<DetailsCubit, DetailsState>(
         builder: (BuildContext context, DetailsState state) {
+          final Pizza pizza = state.pizza;
+
           return MaterialApp(
             home: Scaffold(
               backgroundColor: colors.grey,
@@ -75,11 +80,13 @@ class _DetailsBodyState extends State<DetailsBody>
                       },
                     ),
                     flexibleSpace: FlexibleSpaceBar(
-                      background: Image.asset(
-                        'core_ui/assets/${widget.pizza.picture}',
-                      ),
+                      background: pizza.picture.isNotEmpty
+                          ? Image.asset('core_ui/assets/${pizza.picture}')
+                          : Container(
+                              color: colors.grey,
+                            ),
                       title: Text(
-                        widget.pizza.name,
+                        pizza.name,
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                         ),
@@ -177,22 +184,22 @@ class _DetailsBodyState extends State<DetailsBody>
                             children: <Widget>[
                               MacrosItem(
                                 title: context.locale.calories,
-                                value: widget.pizza.macros.calories,
+                                value: pizza.macros.calories,
                                 icon: Icons.local_fire_department_rounded,
                               ),
                               MacrosItem(
                                 title: context.locale.proteins,
-                                value: widget.pizza.macros.proteins,
+                                value: pizza.macros.proteins,
                                 icon: Icons.sports_gymnastics,
                               ),
                               MacrosItem(
                                 title: context.locale.fat,
-                                value: widget.pizza.macros.fat,
+                                value: pizza.macros.fat,
                                 icon: Icons.fastfood_rounded,
                               ),
                               MacrosItem(
                                 title: context.locale.carbs,
-                                value: widget.pizza.macros.carbs,
+                                value: pizza.macros.carbs,
                                 icon: Icons.breakfast_dining,
                               ),
                             ],
@@ -205,13 +212,13 @@ class _DetailsBodyState extends State<DetailsBody>
                               onPressed: () {
                                 if (state.isInCart) {
                                   context.read<DetailsCubit>().updateDetails(
-                                        widget.pizza.pizzaId,
+                                        pizza.pizzaId,
                                         pizzaSizes[_tabController.index],
                                         state.selectedIngredients,
                                       );
                                 } else {
                                   context.read<DetailsCubit>().addToCart(
-                                        widget.pizza.pizzaId,
+                                        pizza.pizzaId,
                                         pizzaSizes[_tabController.index],
                                         state.selectedIngredients,
                                       );
@@ -240,6 +247,17 @@ class _DetailsBodyState extends State<DetailsBody>
                             ),
                           ),
                           const SizedBox(height: 30),
+                          IconButton(
+                            icon: Icon(
+                              Icons.share,
+                              color: colors.black,
+                            ),
+                            onPressed: () {
+                              final String shareLink =
+                                  'https://pizza_app.com/pizza/${pizza.pizzaId}';
+                              Share.share(shareLink);
+                            },
+                          ),
                         ],
                       ),
                     ),

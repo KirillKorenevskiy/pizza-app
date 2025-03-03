@@ -11,7 +11,7 @@ class Pizza {
   final int discount;
   final Macros macros;
 
-  Pizza({
+  const Pizza({
     required this.pizzaId,
     required this.picture,
     required this.isVegetarian,
@@ -22,6 +22,23 @@ class Pizza {
     required this.discount,
     required this.macros,
   });
+
+  static const Pizza empty = Pizza(
+    pizzaId: '',
+    picture: '',
+    isVegetarian: false,
+    spicy: 1,
+    name: '',
+    description: '',
+    price: 0,
+    discount: 0,
+    macros: Macros(
+      calories: 0,
+      proteins: 0,
+      fat: 0,
+      carbs: 0,
+    ),
+  );
 
   Pizza copyWith({
     String? pizzaId,

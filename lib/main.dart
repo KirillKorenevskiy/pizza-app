@@ -48,7 +48,11 @@ class App extends StatelessWidget {
           return AppErrorHandlerProvider(
             child: MaterialApp.router(
               debugShowCheckedModeBanner: false,
-              routerConfig: appRouter.config(),
+              routerConfig: appRouter.config(
+                deepLinkBuilder: (PlatformDeepLink link) {
+                  return link;
+                },
+              ),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               locale: Locale(state.language.language),

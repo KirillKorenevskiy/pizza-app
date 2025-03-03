@@ -93,9 +93,9 @@ class CartCubit extends Cubit<CartState> {
     );
   }
 
-  Future<void> goToDetails(Pizza pizza) async {
+  Future<void> goToDetails(String pizzaId) async {
     await _appRouter.push(
-      DetailsScreen(pizza: pizza),
+      DetailsScreen(id: pizzaId),
     );
     await getCart();
   }

@@ -34,7 +34,7 @@ class PizzaCard extends StatelessWidget {
           ),
           child: InkWell(
             onTap: () {
-              context.read<PizzasCubit>().goToDetails(pizza);
+              context.read<PizzasCubit>().goToDetails(pizza.pizzaId);
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,

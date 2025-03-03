@@ -23,21 +23,26 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => <AutoRoute>[
         AutoRoute(
+          path: '/',
           page: MainScreen.page,
           initial: true,
         ),
         AutoRoute(
+          path: '/welcome',
           page: WelcomeScreen.page,
         ),
         AutoRoute(
+          path: '/pizza',
           page: PizzasScreen.page,
-        ),
-        CustomRoute(
-          page: CartScreen.page,
-          customRouteBuilder: RouteBuilder.modalDialog,
         ),
         AutoRoute(
           page: DetailsScreen.page,
+          path: '/pizza/:id',
+        ),
+        CustomRoute(
+          path: '/cart',
+          page: CartScreen.page,
+          customRouteBuilder: RouteBuilder.modalDialog,
         ),
       ];
 }

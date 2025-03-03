@@ -11,6 +11,7 @@ class DetailsCubit extends Cubit<DetailsState> {
   final AddToCartUseCase _addToCartUseCase;
   final AddDetailsUseCase _addDetailsUseCase;
   final CheckCartUseCase _checkCartUseCase;
+  final GetPizzaByIdUseCase _getPizzaByIdUseCase;
   final AppRouter _appRouter;
 
   DetailsCubit(
@@ -20,9 +21,20 @@ class DetailsCubit extends Cubit<DetailsState> {
     this._addToCartUseCase,
     this._addDetailsUseCase,
     this._checkCartUseCase,
+    this._getPizzaByIdUseCase,
     this._appRouter,
   ) : super(DetailsState()) {
     getIngredients();
+  }
+
+  Future<void> getPizza(String id) async {
+    final Pizza pizza = await _getPizzaByIdUseCase.execute(id);
+
+    emit(
+      state.copyWith(
+        pizza: pizza,
+      ),
+    );
   }
 
   Future<void> getIngredients() async {
