@@ -4,7 +4,7 @@ class Macros {
   final int fat;
   final int carbs;
 
-  Macros({
+  const Macros({
     required this.calories,
     required this.proteins,
     required this.fat,

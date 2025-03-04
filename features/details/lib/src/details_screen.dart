@@ -8,10 +8,10 @@ import 'widgets/details_body.dart';
 
 @RoutePage()
 class DetailsScreen extends StatelessWidget {
-  final Pizza pizza;
+  final String id;
 
   const DetailsScreen({
-    required this.pizza,
+    @PathParam('id') required this.id,
     super.key,
   });
 
@@ -26,8 +26,9 @@ class DetailsScreen extends StatelessWidget {
         appLocator.get(),
         appLocator.get(),
         appLocator.get(),
+        appLocator.get(),
       ),
-      child: DetailsBody(pizza: pizza),
+      child: DetailsBody(pizzaId: id),
     );
   }
 }

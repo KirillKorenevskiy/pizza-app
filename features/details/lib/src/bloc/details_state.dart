@@ -1,6 +1,7 @@
 part of 'details_cubit.dart';
 
 class DetailsState {
+  final Pizza pizza;
   final List<Ingredient> ingredients;
   final int size;
   final List<String?> selectedIngredients;
@@ -8,6 +9,7 @@ class DetailsState {
   final String? errorMessage;
 
   DetailsState({
+    this.pizza = Pizza.empty,
     this.ingredients = const <Ingredient>[],
     this.size = 25,
     this.selectedIngredients = const <String>[],
@@ -16,6 +18,7 @@ class DetailsState {
   });
 
   DetailsState copyWith({
+    Pizza? pizza,
     List<Ingredient>? ingredients,
     int? size,
     List<String>? selectedIngredients,
@@ -23,6 +26,7 @@ class DetailsState {
     String? errorMessage,
   }) {
     return DetailsState(
+      pizza: pizza ?? this.pizza,
       ingredients: ingredients ?? this.ingredients,
       size: size ?? this.size,
       selectedIngredients: selectedIngredients ?? this.selectedIngredients,

@@ -130,7 +130,8 @@ class _CartBodyState extends State<CartBody> {
                                       child: InkWell(
                                         onTap: () {
                                           context.read<CartCubit>().goToDetails(
-                                                state.cartItems[i].pizza,
+                                                state
+                                                    .cartItems[i].pizza.pizzaId,
                                               );
                                         },
                                         child: CartItemCard(

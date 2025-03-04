@@ -129,10 +129,10 @@ class PizzasCubit extends Cubit<PizzasState> {
     _appRouter.push(const CartScreen());
   }
 
-  void goToDetails(Pizza pizza) {
+  void goToDetails(String pizzaId) {
     _appRouter.push(
       DetailsScreen(
-        pizza: pizza,
+        id: pizzaId,
       ),
     );
   }

@@ -40,12 +40,16 @@ class AppCubit extends Cubit<AppState> {
                 selectedLanguage,
               ),
             );
-            _appRouter.push(const PizzasScreen());
+            if (_appRouter.current.name != DetailsScreen.name) {
+              _appRouter.push(const PizzasScreen());
+            }
           } else {
             emit(
               AppState.unauthenticated(selectedLanguage),
             );
-            _appRouter.push(const WelcomeScreen());
+            if (_appRouter.current.name != WelcomeScreen.name) {
+              _appRouter.push(const WelcomeScreen());
+            }
           }
         },
       );
