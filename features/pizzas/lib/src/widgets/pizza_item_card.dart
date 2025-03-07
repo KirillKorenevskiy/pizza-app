@@ -149,17 +149,35 @@ class PizzaCard extends StatelessWidget {
                                 ),
                             ],
                           ),
-                          IconButton(
-                            onPressed: () {
-                              context
-                                  .read<PizzasCubit>()
-                                  .toggleCart(pizza.pizzaId);
-                            },
-                            icon: Icon(
-                              isInCart
-                                  ? CupertinoIcons.check_mark_circled_solid
-                                  : CupertinoIcons.add_circled_solid,
-                              color: isInCart ? colors.primaryBg : colors.black,
+                          const SizedBox(height: 30),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                context
+                                    .read<PizzasCubit>()
+                                    .toggleCart(pizza.pizzaId);
+                              },
+                              child: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 300),
+                                transitionBuilder: (Widget child,
+                                    Animation<double> animation) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                                child: Icon(
+                                  isInCart
+                                      ? CupertinoIcons.check_mark_circled_solid
+                                      : CupertinoIcons.add_circled_solid,
+                                  key: ValueKey<bool>(isInCart),
+                                  color: isInCart
+                                      ? colors.primaryBg
+                                      : colors.black,
+                                  size: 27,
+                                ),
+                              ),
                             ),
                           ),
                         ],

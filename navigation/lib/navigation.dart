@@ -4,6 +4,7 @@ export 'package:auto_route/auto_route.dart';
 export 'package:cart/cart.dart';
 export 'package:details/details.dart';
 export 'package:main/main.dart';
+export 'package:map/map.dart';
 export 'package:pizzas/pizzas.dart';
 export 'package:welcome/welcome.dart';
 

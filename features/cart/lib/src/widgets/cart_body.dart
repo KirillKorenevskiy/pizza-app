@@ -217,7 +217,9 @@ class _CartBodyState extends State<CartBody> {
                 ),
           bottomNavigationBar: BottomAppBar(
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                context.read<CartCubit>().goToMap();
+              },
               child: Text(
                 state.totalPrice < minOrderPrice
                     ? context.locale.addMoreItems(minOrderPrice)

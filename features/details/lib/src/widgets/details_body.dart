@@ -246,7 +246,6 @@ class _DetailsBodyState extends State<DetailsBody>
                               ),
                             ),
                           ),
-                          const SizedBox(height: 30),
                           IconButton(
                             icon: Icon(
                               Icons.share,
@@ -258,6 +257,7 @@ class _DetailsBodyState extends State<DetailsBody>
                               Share.share(shareLink);
                             },
                           ),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
