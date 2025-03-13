@@ -38,7 +38,7 @@ abstract class DataDI {
     );
 
     locator.registerLazySingleton<SharedPreferences>(
-          () => sharedPreferences,
+      () => sharedPreferences,
     );
   }
 
@@ -65,6 +65,10 @@ abstract class DataDI {
 
     locator.registerLazySingleton<LocalLocalizationProvider>(
       () => LocalLocalizationProvider(locator<SharedPreferences>()),
+    );
+
+    locator.registerLazySingleton<RemotePizzeriasProvider>(
+      RemotePizzeriasProvider.new,
     );
   }
 
@@ -96,6 +100,10 @@ abstract class DataDI {
 
     locator.registerLazySingleton<LocalizationRepository>(
       () => LocalizationRepositoryImpl(locator<LocalLocalizationProvider>()),
+    );
+
+    locator.registerLazySingleton<PizzeriasRepository>(
+      () => PizzeriasRepositoryImpl(locator<RemotePizzeriasProvider>()),
     );
   }
 }

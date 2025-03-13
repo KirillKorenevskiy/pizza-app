@@ -91,5 +91,9 @@ abstract class DomainDI {
     locator.registerFactory<GetLanguageUseCase>(
       () => GetLanguageUseCase(locator.get()),
     );
+
+    locator.registerFactory<GetPizzeriasAddressesUseCase>(
+      () => GetPizzeriasAddressesUseCase(locator.get()),
+    );
   }
 }

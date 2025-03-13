@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 
 class BottomSheetBody extends StatefulWidget {
-  const BottomSheetBody({super.key});
+  final String address;
+
+  const BottomSheetBody({required this.address, super.key});
 
   @override
   _BottomSheetBodyState createState() => _BottomSheetBodyState();
 }
 
 class _BottomSheetBodyState extends State<BottomSheetBody> {
-  final List<String> _streets = <String>[
-    'ул. Тестовая, 12',
-    'ул. Примерная, 25',
-    'ул. Вкусная, 7',
-  ];
   final String _workingHours = '10:00 - 22:00';
 
   final List<String> _deliveryTimes = <String>[
@@ -47,7 +44,7 @@ class _BottomSheetBodyState extends State<BottomSheetBody> {
             ),
             const SizedBox(height: 8),
             Text(
-              _streets[0],
+              widget.address,
               style: const TextStyle(
                 fontSize: 20,
                 color: Colors.black,

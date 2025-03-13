@@ -19,3 +19,4 @@ export 'localization/change_language_usecase.dart';
 export 'localization/get_language_usecase.dart';
 export 'pizzas/get_pizza_by_id_usecase.dart';
 export 'pizzas/get_pizzas_usecase.dart';
+export 'pizzerias/get_pizzerias_adresses_usecases.dart';
