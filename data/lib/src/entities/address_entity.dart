@@ -8,12 +8,14 @@ class AddressEntity {
   final String address;
   final double latitude;
   final double longitude;
+  final String type;
 
   AddressEntity({
     required this.id,
     required this.address,
     required this.latitude,
     required this.longitude,
+    required this.type,
   });
 
   factory AddressEntity.fromJson(Map<String, dynamic> json) =>
@@ -24,12 +26,14 @@ class AddressEntity {
     String? address,
     double? latitude,
     double? longitude,
+    String? type,
   }) {
     return AddressEntity(
       id: id ?? this.id,
       address: address ?? this.address,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+      type: type ?? this.type,
     );
   }
 }

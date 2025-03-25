@@ -12,6 +12,6 @@ class PizzeriasRepositoryImpl implements PizzeriasRepository {
     final List<AddressEntity> entities =
         await _pizzeriasProvider.getPizzeriasAddresses();
 
-    return entities.map(PizzeriaAddressMapper.fromEntity).toList();
+    return entities.map(AddressMapper.fromEntity).toList();
   }
 }

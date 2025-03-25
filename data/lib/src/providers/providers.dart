@@ -1,4 +1,5 @@
 export 'api_provider.dart';
+export 'local_addresses_provider.dart';
 export 'local_cart_provider.dart';
 export 'local_data_provider.dart';
 export 'local_details_provider.dart';

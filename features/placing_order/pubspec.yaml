@@ -1,4 +1,4 @@
-name: map
+name: placing_order
 publish_to: 'none'
 
 environment:
@@ -17,9 +17,7 @@ dependencies:
   navigation:
     path: ../../navigation
   flutter_svg: ^2.0.9
-  flutter_map: ^8.1.0
   latlong2: ^0.9.1
-  geocoding: ^3.0.0
 
 dev_dependencies:
   build_runner: ^2.4.13

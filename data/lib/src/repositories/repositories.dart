@@ -1,3 +1,4 @@
+export 'addresses_repository_impl.dart';
 export 'cart_repository_impl.dart';
 export 'details_repository_impl.dart';
 export 'ingredients_repository_impl.dart';

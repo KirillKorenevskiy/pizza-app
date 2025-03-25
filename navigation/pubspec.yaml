@@ -25,6 +25,10 @@ dependencies:
     path: ../features/details
   map:
     path: ../features/map
+  placing_order:
+    path: ../features/placing_order
+  add_edit_address:
+    path: ../features/add_edit_address
 
   auto_route: ^7.3.2
 

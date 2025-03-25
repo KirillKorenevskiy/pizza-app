@@ -2,13 +2,14 @@ import 'package:domain/domain.dart';
 
 import '../../data.dart';
 
-class PizzeriaAddressMapper {
+class AddressMapper {
   static Address fromEntity(AddressEntity entity) {
     return Address(
       id: entity.id,
       address: entity.address,
       latitude: entity.latitude,
       longitude: entity.longitude,
+      type: entity.type,
     );
   }
 
@@ -18,6 +19,7 @@ class PizzeriaAddressMapper {
       address: model.address,
       latitude: model.latitude,
       longitude: model.longitude,
+      type: model.type,
     );
   }
 }

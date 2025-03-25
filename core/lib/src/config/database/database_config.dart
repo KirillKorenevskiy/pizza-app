@@ -14,6 +14,7 @@ class DatabaseConfig {
       onCreate: (Database db, _) async {
         await db.execute(StorageConstants.cartCreateCommand);
         await db.execute(StorageConstants.detailsCreateCommand);
+        await db.execute(StorageConstants.addressesCreateCommand);
       },
     );
 
