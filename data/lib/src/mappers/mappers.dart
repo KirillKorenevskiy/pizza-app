@@ -1,3 +1,4 @@
+export 'address_mapper.dart';
 export 'cart_item_mapper.dart';
 export 'details_mapper.dart';
 export 'ingredients_mapper.dart';

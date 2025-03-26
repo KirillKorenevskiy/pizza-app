@@ -100,6 +100,12 @@ class CartCubit extends Cubit<CartState> {
     await getCart();
   }
 
+  void goToMap() {
+    _appRouter.push(
+      MapScreen(isEditingMode: false),
+    );
+  }
+
   void closeCart() {
     _appRouter.maybePop();
   }

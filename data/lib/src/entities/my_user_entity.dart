@@ -16,7 +16,8 @@ class UserEntity {
     required this.hasActiveCart,
   });
 
-  factory UserEntity.fromJson(Map<String, dynamic> json) => _$UserEntityFromJson(json);
+  factory UserEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserEntityToJson(this);
 

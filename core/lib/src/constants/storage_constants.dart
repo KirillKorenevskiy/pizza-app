@@ -10,6 +10,13 @@ abstract class StorageConstants {
   static const String sizeColumn = 'size';
   static const String ingredientsColumn = 'ingredients';
 
+  static const String addressesTableName = 'Addresses';
+  static const String addressIdColumn = 'id';
+  static const String addressColumn = 'address';
+  static const String latitudeColumn = 'latitude';
+  static const String longitudeColumn = 'longitude';
+  static const String addressTypeColumn = 'type';
+
   static const String cartCreateCommand = 'CREATE TABLE $cartTableName('
       '$cartIdColumn TEXT PRIMARY KEY, '
       '$cartQuantityColumn INTEGER)';
@@ -57,4 +64,34 @@ abstract class StorageConstants {
 
   static const String detailSelectByIdCommand =
       'SELECT * FROM $detailsTableName WHERE $pizzaIdColumn = ?';
+
+  static const String addressesCreateCommand =
+      'CREATE TABLE $addressesTableName('
+      '$addressIdColumn TEXT PRIMARY KEY, '
+      '$addressColumn TEXT, '
+      '$latitudeColumn REAL, '
+      '$longitudeColumn REAL, '
+      '$addressTypeColumn TEXT CHECK($addressTypeColumn IN ("home", "work")))';
+
+  static const String addressesInsertCommand =
+      'INSERT INTO $addressesTableName('
+      '$addressIdColumn, '
+      '$addressColumn, '
+      '$latitudeColumn, '
+      '$longitudeColumn, '
+      '$addressTypeColumn) '
+      'VALUES(?, ?, ?, ?, ?)';
+
+  static const String addressUpdateCommand = 'UPDATE $addressesTableName '
+      'SET $addressColumn = COALESCE(?, $addressColumn), '
+      '$latitudeColumn = COALESCE(?, $latitudeColumn), '
+      '$longitudeColumn = COALESCE(?, $longitudeColumn), '
+      '$addressTypeColumn = COALESCE(?, $addressTypeColumn) '
+      'WHERE $addressIdColumn = ?';
+
+  static const String addressesSelectAllCommand =
+      'SELECT * FROM $addressesTableName';
+
+  static const String addressesDeleteCommand =
+      'DELETE FROM $addressesTableName WHERE $addressIdColumn = ?';
 }
