@@ -16,14 +16,8 @@ class AddEditAddressCubit extends Cubit<AddEditAddressState> {
     this._updateAddressUseCase,
     this._deleteAddressUseCase,
     this._appRouter,
-  ) : super(const AddEditAddressState());
-
-  void updateAddressField(String newAddress) {
-    emit(
-      state.copyWith(
-        address: newAddress,
-      ),
-    );
+  ) : super(const AddEditAddressState()) {
+    updateCategory('home');
   }
 
   void updateCategory(String newCategory) {
@@ -34,7 +28,10 @@ class AddEditAddressCubit extends Cubit<AddEditAddressState> {
     );
   }
 
-  Future<void> saveAddress(LatLng latLng) async {
+  Future<void> saveAddress(
+    LatLng latLng,
+    String address,
+  ) async {
     emit(
       state.copyWith(
         isLoading: true,
@@ -47,7 +44,7 @@ class AddEditAddressCubit extends Cubit<AddEditAddressState> {
           id: DateTime.now().millisecondsSinceEpoch.toString(),
           latitude: latLng.latitude,
           longitude: latLng.longitude,
-          address: state.address,
+          address: address,
           type: state.category,
         ),
       );
@@ -65,6 +62,7 @@ class AddEditAddressCubit extends Cubit<AddEditAddressState> {
   Future<void> updateAddress(
     String addressId,
     LatLng latLng,
+    String address,
   ) async {
     emit(
       state.copyWith(
@@ -72,19 +70,19 @@ class AddEditAddressCubit extends Cubit<AddEditAddressState> {
       ),
     );
 
-    final Address address = Address(
+    final Address updatedAddress = Address(
       id: addressId,
       latitude: latLng.latitude,
       longitude: latLng.longitude,
-      address: state.address,
+      address: address,
       type: state.category,
     );
 
     try {
-      await _updateAddressUseCase.execute(address);
+      await _updateAddressUseCase.execute(updatedAddress);
       await _appRouter.replace(
         PlacingOrderScreen(
-          address: address,
+          address: updatedAddress,
         ),
       );
     } catch (e) {

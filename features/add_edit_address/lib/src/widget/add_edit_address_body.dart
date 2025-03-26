@@ -22,13 +22,10 @@ class AddEditAddressBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AddEditAddressCubit cubit = context.read<AddEditAddressCubit>();
-    cubit.updateAddressField(initialAddress);
-    cubit.updateCategory('home');
-
     return BlocBuilder<AddEditAddressCubit, AddEditAddressState>(
       builder: (BuildContext context, AddEditAddressState state) {
         final AppColors colors = AppColors.of(context);
+        final AddEditAddressCubit cubit = context.read<AddEditAddressCubit>();
 
         return Scaffold(
           body: Padding(
@@ -47,7 +44,7 @@ class AddEditAddressBody extends StatelessWidget {
                 const SizedBox(height: 10),
                 TextField(
                   controller: TextEditingController(
-                    text: state.address,
+                    text: initialAddress,
                   ),
                   style: TextStyle(
                     color: colors.black,
@@ -57,7 +54,6 @@ class AddEditAddressBody extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onChanged: cubit.updateAddressField,
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -76,9 +72,7 @@ class AddEditAddressBody extends StatelessWidget {
                       value: 'home',
                       text: context.locale.home,
                       isSelected: state.category == 'home',
-                      onCategorySelected: (String category) {
-                        cubit.updateCategory(category);
-                      },
+                      onCategorySelected: cubit.updateCategory,
                     ),
                     CategoryButton(
                       value: 'work',
@@ -100,6 +94,7 @@ class AddEditAddressBody extends StatelessWidget {
                               cubit.updateAddress(
                                 addressId!,
                                 latLng,
+                                initialAddress,
                               );
                             }
                           },
@@ -146,12 +141,12 @@ class AddEditAddressBody extends StatelessWidget {
                 ] else
                   ElevatedButton(
                     onPressed: () {
-                      cubit.saveAddress(latLng);
+                      cubit.saveAddress(latLng, initialAddress);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(15),
                       child: Text(
-                        'Save',
+                        context.locale.save,
                         style: TextStyle(
                           color: colors.black,
                           fontSize: 18,

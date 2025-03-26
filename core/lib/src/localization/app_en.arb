@@ -110,5 +110,6 @@
   "deliveryFee": "Delivery fee",
   "free": "Free",
   "confirmDelivery": "Confirm delivery",
-  "orderPrice": "Order price"
+  "orderPrice": "Order price",
+  "save": "Save"
 }

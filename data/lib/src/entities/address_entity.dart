@@ -20,20 +20,4 @@ class AddressEntity {
 
   factory AddressEntity.fromJson(Map<String, dynamic> json) =>
       _$AddressEntityFromJson(json);
-
-  AddressEntity copyWith({
-    String? id,
-    String? address,
-    double? latitude,
-    double? longitude,
-    String? type,
-  }) {
-    return AddressEntity(
-      id: id ?? this.id,
-      address: address ?? this.address,
-      latitude: latitude ?? this.latitude,
-      longitude: longitude ?? this.longitude,
-      type: type ?? this.type,
-    );
-  }
 }
