@@ -19,11 +19,12 @@ class PlacingOrderBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppColors colors = AppColors.of(context);
+    final PlacingOrderCubit cubit = context.read<PlacingOrderCubit>();
     final List<String> timeSlots = TimeUtils.generateTimeSlots();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Delivery'),
+        title: Text(context.locale.placingOrder),
         backgroundColor: colors.white,
         centerTitle: true,
       ),
@@ -35,7 +36,7 @@ class PlacingOrderBody extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Place to order:',
+                  context.locale.placeToOrder,
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
@@ -55,7 +56,7 @@ class PlacingOrderBody extends StatelessWidget {
                     vertical: 10,
                   ),
                   child: Text(
-                    'Working hours: ${AppConstants.WORKING_HOURS}',
+                    context.locale.workingHours + AppConstants.WORKING_HOURS,
                     style: TextStyle(
                       fontSize: 20,
                       color: colors.grey500,
@@ -65,7 +66,7 @@ class PlacingOrderBody extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Time to order:',
+                  context.locale.timeToOrder,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -85,9 +86,7 @@ class PlacingOrderBody extends StatelessWidget {
                       final String time = timeSlots[index];
                       return GestureDetector(
                         onTap: () {
-                          context
-                              .read<PlacingOrderCubit>()
-                              .selectDeliveryTime(time);
+                          cubit.selectDeliveryTime(time);
                         },
                         child: DeliveryTimeWidget(
                           deliveryTime: time,
@@ -102,7 +101,7 @@ class PlacingOrderBody extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Choose payment method:',
+                  context.locale.paymentMethods,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
@@ -121,9 +120,7 @@ class PlacingOrderBody extends StatelessWidget {
                       final PaymentMethod method = PaymentMethod.values[index];
                       return GestureDetector(
                         onTap: () {
-                          context
-                              .read<PlacingOrderCubit>()
-                              .selectPaymentMethod(method);
+                          cubit.selectPaymentMethod(method);
                         },
                         child: PaymentMethodItem(
                           paymentMethod: method,
@@ -143,30 +140,48 @@ class PlacingOrderBody extends StatelessWidget {
         height: 135,
         child: Column(
           children: <Widget>[
+            address.type == 'pizzeria'
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      const Icon(
+                        Icons.warning_amber_rounded,
+                        size: 24,
+                        color: Colors.red,
+                      ),
+                      Text(
+                        context.locale.onlyPickup,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: colors.red,
+                        ),
+                      ),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        context.locale.deliveryFee,
+                        style: TextStyle(
+                          color: colors.grey500,
+                          fontSize: 17,
+                        ),
+                      ),
+                      Text(
+                        context.locale.free,
+                        style: TextStyle(
+                          color: colors.grey500,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'Delivery fee',
-                  style: TextStyle(
-                    color: colors.grey500,
-                    fontSize: 17,
-                  ),
-                ),
-                Text(
-                  'Free',
-                  style: TextStyle(
-                    color: colors.grey500,
-                    fontSize: 17,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Order price',
+                  context.locale.orderPrice,
                   style: TextStyle(
                     color: colors.black,
                     fontSize: 20,
@@ -190,7 +205,7 @@ class PlacingOrderBody extends StatelessWidget {
                   backgroundColor: colors.primaryBg,
                 ),
                 child: Text(
-                  'Confirm delivery',
+                  context.locale.confirmDelivery,
                   style: TextStyle(
                     fontSize: 18,
                     color: colors.white,

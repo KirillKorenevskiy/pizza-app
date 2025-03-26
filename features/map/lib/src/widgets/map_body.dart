@@ -47,40 +47,41 @@ class _MapBodyState extends State<MapBody> {
   Future<void> _onMapTapped(
     BuildContext context,
     LatLng latLng,
+    bool isAddingMode,
+    bool isEditingMode,
   ) async {
-    final bool isAddingMode = context.read<MapCubit>().state.isAddingMode;
-    final bool isEditingMode = context.read<MapCubit>().state.isEditingMode;
-
     if (isAddingMode || isEditingMode) {
+      final String address = await _getAddressFromCoordinates(latLng);
       setState(() {
         _currentLatLng = latLng;
+        _currentAddress = address;
       });
-      await _getAddressFromCoordinates(latLng);
     }
   }
 
-  Future<void> _getAddressFromCoordinates(LatLng latLng) async {
+  Future<String> _getAddressFromCoordinates(LatLng latLng) async {
     final List<Placemark> placemarks = await placemarkFromCoordinates(
       latLng.latitude,
       latLng.longitude,
     );
+
     if (placemarks.isNotEmpty) {
-      setState(() {
-        _currentAddress =
-            '${placemarks.first.street}, ${placemarks.first.locality}';
-      });
+      return '${placemarks.first.street}, ${placemarks.first.locality}';
     }
+
+    return '';
   }
 
   @override
   Widget build(BuildContext context) {
     final AppColors colors = AppColors.of(context);
+    final MapCubit cubit = context.read<MapCubit>();
 
     return BlocListener<MapCubit, MapState>(
       listenWhen: (MapState previous, MapState current) =>
           previous.isEditingMode == true && current.isEditingMode == false,
       listener: (BuildContext context, MapState state) {
-        context.read<MapCubit>().goBack();
+        cubit.goBack();
       },
       child: BlocBuilder<MapCubit, MapState>(
         builder: (BuildContext context, MapState state) {
@@ -96,7 +97,14 @@ class _MapBodyState extends State<MapBody> {
                       TapPosition tapPosition,
                       LatLng latLng,
                     ) {
-                      _onMapTapped(context, latLng);
+                      final bool isAddingMode = cubit.state.isAddingMode;
+                      final bool isEditingMode = cubit.state.isEditingMode;
+                      _onMapTapped(
+                        context,
+                        latLng,
+                        isAddingMode,
+                        isEditingMode,
+                      );
                     },
                   ),
                   children: <Widget>[
@@ -115,9 +123,7 @@ class _MapBodyState extends State<MapBody> {
                             ),
                             child: GestureDetector(
                               onTap: () {
-                                context
-                                    .read<MapCubit>()
-                                    .goToPlacingOrder(address);
+                                cubit.goToPlacingOrder(address);
                               },
                               child: address.type == 'pizzeria'
                                   ? Icon(
@@ -164,9 +170,7 @@ class _MapBodyState extends State<MapBody> {
                             left: 20,
                           ),
                           child: FloatingActionButton(
-                            onPressed: () {
-                              context.read<MapCubit>().goBack();
-                            },
+                            onPressed: cubit.goBack,
                             backgroundColor: colors.white,
                             shape: const CircleBorder(),
                             child: Icon(
@@ -189,8 +193,8 @@ class _MapBodyState extends State<MapBody> {
                       backgroundColor: colors.white,
                       onPressed: () {
                         state.isEditingMode
-                            ? context.read<MapCubit>().switchEditingMode()
-                            : context.read<MapCubit>().switchAddingMode();
+                            ? cubit.switchEditingMode()
+                            : cubit.switchAddingMode();
                       },
                       child: Icon(
                         state.isAddingMode || state.isEditingMode
@@ -208,19 +212,19 @@ class _MapBodyState extends State<MapBody> {
                       padding: const EdgeInsets.only(bottom: 30),
                       child: ElevatedButton(
                         onPressed: () {
-                          context.read<MapCubit>().goToAddEditAddress(
-                                initialAddress: _currentAddress,
-                                latLng: _currentLatLng,
-                                isEditingMode: widget.isEditingMode,
-                                addressId: widget.address?.id,
-                              );
+                          cubit.goToAddEditAddress(
+                            initialAddress: _currentAddress,
+                            latLng: _currentLatLng,
+                            isEditingMode: widget.isEditingMode,
+                            addressId: widget.address?.id,
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(12),
                           child: Text(
                             state.isEditingMode
-                                ? 'Обновить адрес'
-                                : 'Добавить адрес',
+                                ? context.locale.updateAddress
+                                : context.locale.addAddress,
                             style: TextStyle(
                               color: colors.black,
                               fontSize: 20,

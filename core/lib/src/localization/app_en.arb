@@ -78,7 +78,7 @@
   "email": "email",
   "philInField": "Please fill in this field",
   "enterValidField": "Please enter a valid {field}",
-  "@enterValidEmail":{
+  "@enterValidEmail": {
     "field": {
       "type": "string"
     }
@@ -92,5 +92,23 @@
   "minimumCharacters": "minimum characters",
   "name": "name",
   "nameTooLong": "Name too long",
-  "signUp": "Sign Up"
+  "signUp": "Sign Up",
+  "updateAddress": "Update address",
+  "addAddress": "Add address",
+  "enterAddress": "Enter address",
+  "chooseCategory": "Choose category",
+  "home": "\uD83C\uDFE0 Home",
+  "work": "\uD83C\uDFE2 Work",
+  "update": "Update",
+  "delete": "Delete",
+  "placingOrder": "Placing order",
+  "placeToOrder": "Place to order: ",
+  "workingHours": "Working hours: ",
+  "timeToOrder": "Time to order: ",
+  "paymentMethods": "Choose payment method:",
+  "onlyPickup": "Pickup only from the pizzeria",
+  "deliveryFee": "Delivery fee",
+  "free": "Free",
+  "confirmDelivery": "Confirm delivery",
+  "orderPrice": "Order price"
 }

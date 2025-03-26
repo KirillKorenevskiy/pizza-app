@@ -1,6 +1,6 @@
 enum PaymentMethod {
   cash('Cash'),
-  card('Credit Card'),
+  card('Card'),
   applePay('Apple Pay'),
   googlePay('Google Pay');
 

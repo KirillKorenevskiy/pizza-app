@@ -83,7 +83,9 @@ class AddEditAddressCubit extends Cubit<AddEditAddressState> {
     try {
       await _updateAddressUseCase.execute(address);
       await _appRouter.replace(
-        PlacingOrderScreen(address: address),
+        PlacingOrderScreen(
+          address: address,
+        ),
       );
     } catch (e) {
       emit(

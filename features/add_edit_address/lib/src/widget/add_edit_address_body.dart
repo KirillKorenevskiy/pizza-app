@@ -22,8 +22,9 @@ class AddEditAddressBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<AddEditAddressCubit>().updateAddressField(initialAddress);
-    context.read<AddEditAddressCubit>().updateCategory('home');
+    final AddEditAddressCubit cubit = context.read<AddEditAddressCubit>();
+    cubit.updateAddressField(initialAddress);
+    cubit.updateCategory('home');
 
     return BlocBuilder<AddEditAddressCubit, AddEditAddressState>(
       builder: (BuildContext context, AddEditAddressState state) {
@@ -36,7 +37,7 @@ class AddEditAddressBody extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text(
-                  'Enter address',
+                  context.locale.enterAddress,
                   style: TextStyle(
                     color: colors.black,
                     fontSize: 22,
@@ -56,12 +57,11 @@ class AddEditAddressBody extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onChanged:
-                      context.read<AddEditAddressCubit>().updateAddressField,
+                  onChanged: cubit.updateAddressField,
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Choose category',
+                  context.locale.chooseCategory,
                   style: TextStyle(
                     color: colors.black,
                     fontSize: 18,
@@ -74,20 +74,17 @@ class AddEditAddressBody extends StatelessWidget {
                   children: <Widget>[
                     CategoryButton(
                       value: 'home',
-                      text: '🏠 Home',
+                      text: context.locale.home,
                       isSelected: state.category == 'home',
                       onCategorySelected: (String category) {
-                        context
-                            .read<AddEditAddressCubit>()
-                            .updateCategory(category);
+                        cubit.updateCategory(category);
                       },
                     ),
                     CategoryButton(
                       value: 'work',
-                      text: '🏢 Work',
+                      text: context.locale.work,
                       isSelected: state.category == 'work',
-                      onCategorySelected:
-                          context.read<AddEditAddressCubit>().updateCategory,
+                      onCategorySelected: cubit.updateCategory,
                     ),
                   ],
                 ),
@@ -100,10 +97,10 @@ class AddEditAddressBody extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             if (addressId != null) {
-                              context.read<AddEditAddressCubit>().updateAddress(
-                                    addressId!,
-                                    latLng,
-                                  );
+                              cubit.updateAddress(
+                                addressId!,
+                                latLng,
+                              );
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -112,7 +109,7 @@ class AddEditAddressBody extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(15),
                             child: Text(
-                              'Update',
+                              context.locale.update,
                               style: TextStyle(
                                 color: colors.black,
                                 fontSize: 18,
@@ -126,9 +123,7 @@ class AddEditAddressBody extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             if (addressId != null) {
-                              context
-                                  .read<AddEditAddressCubit>()
-                                  .deleteAddress(addressId!);
+                              cubit.deleteAddress(addressId!);
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -137,7 +132,7 @@ class AddEditAddressBody extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(15),
                             child: Text(
-                              'Delete',
+                              context.locale.delete,
                               style: TextStyle(
                                 color: colors.white,
                                 fontSize: 18,
@@ -151,7 +146,7 @@ class AddEditAddressBody extends StatelessWidget {
                 ] else
                   ElevatedButton(
                     onPressed: () {
-                      context.read<AddEditAddressCubit>().saveAddress(latLng);
+                      cubit.saveAddress(latLng);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(15),
