@@ -6,9 +6,10 @@ part 'order_entity.g.dart';
 class OrderEntity {
   final String id;
   final String userId;
-  final DateTime date;
+  final String date;
   final String address;
   final double price;
+  final List<String> items;
 
   OrderEntity({
     required this.id,
@@ -16,6 +17,7 @@ class OrderEntity {
     required this.date,
     required this.address,
     required this.price,
+    required this.items,
   });
 
   factory OrderEntity.fromJson(Map<String, dynamic> json) =>
@@ -26,9 +28,10 @@ class OrderEntity {
   OrderEntity copyWith({
     String? id,
     String? userId,
-    DateTime? date,
+    String? date,
     String? address,
     double? price,
+    List<String>? items,
   }) {
     return OrderEntity(
       id: id ?? this.id,
@@ -36,6 +39,7 @@ class OrderEntity {
       date: date ?? this.date,
       address: address ?? this.address,
       price: price ?? this.price,
+      items: items ?? this.items,
     );
   }
 }

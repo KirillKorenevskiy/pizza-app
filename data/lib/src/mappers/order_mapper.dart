@@ -10,6 +10,7 @@ class OrderMapper {
       date: entity.date,
       address: entity.address,
       price: entity.price,
+      items: entity.items,
     );
   }
 
@@ -20,6 +21,7 @@ class OrderMapper {
       date: model.date,
       address: model.address,
       price: model.price,
+      items: model.items,
     );
   }
 }
