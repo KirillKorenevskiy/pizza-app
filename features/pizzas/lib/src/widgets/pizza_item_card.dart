@@ -160,8 +160,10 @@ class PizzaCard extends StatelessWidget {
                               },
                               child: AnimatedSwitcher(
                                 duration: const Duration(milliseconds: 300),
-                                transitionBuilder: (Widget child,
-                                    Animation<double> animation) {
+                                transitionBuilder: (
+                                  Widget child,
+                                  Animation<double> animation,
+                                ) {
                                   return FadeTransition(
                                     opacity: animation,
                                     child: child,

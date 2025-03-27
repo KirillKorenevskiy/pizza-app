@@ -1,6 +1,5 @@
 import 'package:auto_route/annotations.dart';
 import 'package:core/core.dart';
-import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
 import 'bloc/details_cubit.dart';
