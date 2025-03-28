@@ -26,6 +26,8 @@ class PlacingOrderCubit extends Cubit<PlacingOrderState> {
 
     try {
       await _addOrderUseCase.execute(order);
+
+      await _appRouter.replace(const PizzasScreen());
     } catch (e) {
       emit(
         state.copyWith(

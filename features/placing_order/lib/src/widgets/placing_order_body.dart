@@ -26,6 +26,7 @@ class PlacingOrderBody extends StatelessWidget {
       builder: (BuildContext context, PlacingOrderState state) {
         final PlacingOrderCubit cubit = context.read<PlacingOrderCubit>();
 
+        // Проверка, выбран ли способ оплаты и время доставки
         final bool isOrderValid = state.selectedPaymentMethod.isNotEmpty &&
             state.selectedDeliveryTime.isNotEmpty;
 

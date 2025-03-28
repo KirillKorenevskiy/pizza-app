@@ -151,7 +151,9 @@ class _CartBodyState extends State<CartBody> {
                                             onQuantityChanged:
                                                 (int newQuantity) {
                                               _onQuantityChanged(
-                                                  i, newQuantity);
+                                                i,
+                                                newQuantity,
+                                              );
                                               if (newQuantity == 0) {
                                                 context
                                                     .read<CartCubit>()
