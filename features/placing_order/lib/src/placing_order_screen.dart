@@ -20,6 +20,8 @@ class PlacingOrderScreen extends StatelessWidget {
     return BlocProvider<PlacingOrderCubit>(
       create: (BuildContext context) => PlacingOrderCubit(
         appLocator.get(),
+        appLocator.get(),
+        appLocator.get(),
       ),
       child: PlacingOrderBody(
         address: address,

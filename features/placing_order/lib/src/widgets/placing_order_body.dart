@@ -3,6 +3,7 @@ import 'package:core_ui/core_ui.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import '../bloc/placing_order_cubit.dart';
+import '../utils/date_utils.dart';
 import '../utils/time_utils.dart';
 import 'address_card.dart';
 import 'delivery_time_item.dart';
@@ -19,18 +20,22 @@ class PlacingOrderBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppColors colors = AppColors.of(context);
-    final PlacingOrderCubit cubit = context.read<PlacingOrderCubit>();
     final List<String> timeSlots = TimeUtils.generateTimeSlots();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(context.locale.placingOrder),
-        backgroundColor: colors.white,
-        centerTitle: true,
-      ),
-      body: BlocBuilder<PlacingOrderCubit, PlacingOrderState>(
-        builder: (BuildContext context, PlacingOrderState state) {
-          return Column(
+    return BlocBuilder<PlacingOrderCubit, PlacingOrderState>(
+      builder: (BuildContext context, PlacingOrderState state) {
+        final PlacingOrderCubit orderCubit = context.read<PlacingOrderCubit>();
+        final List<String> cartItems = state.cartItems;
+        final bool isOrderValid = state.selectedPaymentMethod.isNotEmpty &&
+            state.selectedDeliveryTime.isNotEmpty;
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(context.locale.placingOrder),
+            backgroundColor: colors.white,
+            centerTitle: true,
+          ),
+          body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
@@ -86,7 +91,7 @@ class PlacingOrderBody extends StatelessWidget {
                       final String time = timeSlots[index];
                       return GestureDetector(
                         onTap: () {
-                          cubit.selectDeliveryTime(time);
+                          orderCubit.selectDeliveryTime(time);
                         },
                         child: DeliveryTimeWidget(
                           deliveryTime: time,
@@ -120,7 +125,7 @@ class PlacingOrderBody extends StatelessWidget {
                       final PaymentMethod method = PaymentMethod.values[index];
                       return GestureDetector(
                         onTap: () {
-                          cubit.selectPaymentMethod(method);
+                          orderCubit.selectPaymentMethod(method);
                         },
                         child: PaymentMethodItem(
                           paymentMethod: method,
@@ -133,89 +138,109 @@ class PlacingOrderBody extends StatelessWidget {
                 ),
               ),
             ],
-          );
-        },
-      ),
-      bottomNavigationBar: BottomAppBar(
-        height: 135,
-        child: Column(
-          children: <Widget>[
-            address.type == 'pizzeria'
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      const Icon(
-                        Icons.warning_amber_rounded,
-                        size: 24,
-                        color: Colors.red,
-                      ),
-                      Text(
-                        context.locale.onlyPickup,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: colors.red,
+          ),
+          bottomNavigationBar: BlocBuilder<AppCubit, AppState>(
+            builder: (BuildContext context, AppState state) {
+              return BottomAppBar(
+                height: 135,
+                child: Column(
+                  children: <Widget>[
+                    address.type == 'pizzeria'
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              const Icon(
+                                Icons.warning_amber_rounded,
+                                size: 24,
+                                color: Colors.red,
+                              ),
+                              Text(
+                                context.locale.onlyPickup,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: colors.red,
+                                ),
+                              ),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                context.locale.deliveryFee,
+                                style: TextStyle(
+                                  color: colors.grey500,
+                                  fontSize: 17,
+                                ),
+                              ),
+                              Text(
+                                context.locale.free,
+                                style: TextStyle(
+                                  color: colors.grey500,
+                                  fontSize: 17,
+                                ),
+                              ),
+                            ],
+                          ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          context.locale.orderPrice,
+                          style: TextStyle(
+                            color: colors.black,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          '${state.cartPrice}',
+                          style: TextStyle(
+                            color: colors.black,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: isOrderValid
+                            ? () {
+                                final String userId = state.user!.userId;
+                                final double price = state.cartPrice;
+
+                                final Order order = Order(
+                                  id: '',
+                                  userId: userId,
+                                  date: CustomDateUtils.getCurrentDate(),
+                                  address: address.address,
+                                  price: price,
+                                  items: cartItems,
+                                );
+
+                                orderCubit.addOrder(order);
+                              }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colors.primaryBg,
+                        ),
+                        child: Text(
+                          context.locale.confirmDelivery,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: colors.white,
+                          ),
                         ),
                       ),
-                    ],
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        context.locale.deliveryFee,
-                        style: TextStyle(
-                          color: colors.grey500,
-                          fontSize: 17,
-                        ),
-                      ),
-                      Text(
-                        context.locale.free,
-                        style: TextStyle(
-                          color: colors.grey500,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ],
-                  ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  context.locale.orderPrice,
-                  style: TextStyle(
-                    color: colors.black,
-                    fontSize: 20,
-                  ),
+                    ),
+                  ],
                 ),
-                Text(
-                  r'$12221',
-                  style: TextStyle(
-                    color: colors.black,
-                    fontSize: 20,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colors.primaryBg,
-                ),
-                child: Text(
-                  context.locale.confirmDelivery,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

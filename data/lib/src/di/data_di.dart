@@ -74,6 +74,10 @@ abstract class DataDI {
     locator.registerLazySingleton<LocalAddressesProvider>(
       () => LocalAddressesProvider(locator<DatabaseConfig>()),
     );
+
+    locator.registerLazySingleton<RemoteOrdersProvider>(
+      RemoteOrdersProvider.new,
+    );
   }
 
   static void _initRepositories(GetIt locator) {
@@ -112,6 +116,10 @@ abstract class DataDI {
 
     locator.registerLazySingleton<AddressesRepository>(
       () => AddressRepositoryImpl(locator<LocalAddressesProvider>()),
+    );
+
+    locator.registerLazySingleton<OrdersRepository>(
+      () => OrdersRepositoryImpl(locator<RemoteOrdersProvider>()),
     );
   }
 }

@@ -5,6 +5,7 @@ export 'local_data_provider.dart';
 export 'local_details_provider.dart';
 export 'local_localization_provider.dart';
 export 'remote_ingredients_provider.dart';
+export 'remote_orders_provider.dart';
 export 'remote_pizza_provider.dart';
 export 'remote_pizzerias_provider.dart';
 export 'remote_user_provider.dart';

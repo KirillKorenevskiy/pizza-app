@@ -86,6 +86,14 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
+  void updateCartPrice(double price) {
+    emit(
+      state.copyWith(
+        cartPrice: price,
+      ),
+    );
+  }
+
   @override
   Future<void> close() {
     _userSubscription.cancel();

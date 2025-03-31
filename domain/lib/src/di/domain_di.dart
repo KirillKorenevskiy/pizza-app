@@ -111,5 +111,17 @@ abstract class DomainDI {
     locator.registerFactory<UpdateAddressUseCase>(
       () => UpdateAddressUseCase(locator.get()),
     );
+
+    locator.registerFactory<AddOrderUseCase>(
+      () => AddOrderUseCase(locator.get()),
+    );
+
+    locator.registerFactory<GetUserOrdersUseCase>(
+      () => GetUserOrdersUseCase(locator.get()),
+    );
+
+    locator.registerFactory<GetOrderByIdUseCase>(
+      () => GetOrderByIdUseCase(locator.get()),
+    );
   }
 }

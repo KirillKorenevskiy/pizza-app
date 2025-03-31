@@ -30,7 +30,12 @@ class _CartBodyState extends State<CartBody> {
     final AppColors colors = AppColors.of(context);
     const double minOrderPrice = AppConstants.MIN_ORDER_PRICE;
 
-    return BlocBuilder<CartCubit, CartState>(
+    return BlocConsumer<CartCubit, CartState>(
+      listenWhen: (CartState previous, CartState current) =>
+          previous.totalPrice != current.totalPrice,
+      listener: (BuildContext context, CartState state) {
+        context.read<AppCubit>().updateCartPrice(state.totalPrice);
+      },
       builder: (BuildContext context, CartState state) {
         return Scaffold(
           resizeToAvoidBottomInset: true,
@@ -70,90 +75,74 @@ class _CartBodyState extends State<CartBody> {
                                 color: colors.black,
                               ),
                             ),
-                            state.totalPrice < minOrderPrice
-                                ? Text(
-                                    context.locale.minOrderPrice(minOrderPrice),
-                                    style: TextStyle(
-                                      color: colors.red,
-                                    ),
-                                  )
-                                : const SizedBox.shrink(),
+                            if (state.totalPrice < minOrderPrice)
+                              Text(
+                                context.locale.minOrderPrice(minOrderPrice),
+                                style: TextStyle(color: colors.red),
+                              ),
                           ],
                         ),
                       ),
-                      state.isLoading
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : state.cartItems.isEmpty
-                              ? Center(
-                                  child: Text(context.locale.cartIsEmpty),
-                                )
-                              : ListView.builder(
-                                  itemCount: state.cartItems.length,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (BuildContext context, int i) {
-                                    final CartItem cartItem =
-                                        state.cartItems[i];
+                      if (state.isLoading)
+                        const Center(child: CircularProgressIndicator())
+                      else if (state.cartItems.isEmpty)
+                        Center(
+                          child: Text(context.locale.cartIsEmpty),
+                        )
+                      else
+                        ListView.builder(
+                          itemCount: state.cartItems.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int i) {
+                            final CartItem cartItem = state.cartItems[i];
 
-                                    final Details pizzaDetails =
-                                        state.detailsItems.firstWhere(
-                                      (Details details) =>
-                                          details.pizzaId ==
-                                          cartItem.pizza.pizzaId,
-                                    );
+                            final Details pizzaDetails =
+                                state.detailsItems.firstWhere(
+                              (Details details) =>
+                                  details.pizzaId == cartItem.pizza.pizzaId,
+                            );
 
-                                    return Dismissible(
-                                      key: Key(
-                                        state.cartItems[i].pizza.pizzaId,
-                                      ),
-                                      direction: DismissDirection.endToStart,
-                                      background: Container(
-                                        color: colors.red,
-                                        alignment: Alignment.centerLeft,
-                                        padding:
-                                            const EdgeInsets.only(left: 16.0),
-                                        child: Icon(
-                                          Icons.delete,
-                                          color: colors.white,
-                                        ),
-                                      ),
-                                      onDismissed:
-                                          (DismissDirection direction) {
-                                        context
-                                            .read<CartCubit>()
-                                            .removeFromCart(
-                                              state.cartItems[i].pizza.pizzaId,
-                                            );
-                                      },
-                                      child: InkWell(
-                                        onTap: () {
-                                          context.read<CartCubit>().goToDetails(
-                                                state
-                                                    .cartItems[i].pizza.pizzaId,
-                                              );
-                                        },
-                                        child: CartItemCard(
-                                          cartItem: state.cartItems[i],
-                                          index: i,
-                                          onQuantityChanged: (int newQuantity) {
-                                            _onQuantityChanged(i, newQuantity);
-                                            if (newQuantity == 0) {
-                                              context
-                                                  .read<CartCubit>()
-                                                  .removeFromCart(
-                                                    state.cartItems[i].pizza
-                                                        .pizzaId,
-                                                  );
-                                            }
-                                          },
-                                          size: pizzaDetails.size,
-                                        ),
-                                      ),
-                                    );
-                                  },
+                            return Dismissible(
+                              key: Key(cartItem.pizza.pizzaId),
+                              direction: DismissDirection.endToStart,
+                              background: Container(
+                                color: colors.red,
+                                alignment: Alignment.centerLeft,
+                                padding: const EdgeInsets.only(left: 16.0),
+                                child: Icon(
+                                  Icons.delete,
+                                  color: colors.white,
                                 ),
+                              ),
+                              onDismissed: (DismissDirection direction) {
+                                context
+                                    .read<CartCubit>()
+                                    .removeFromCart(cartItem.pizza.pizzaId);
+                              },
+                              child: InkWell(
+                                onTap: () {
+                                  context
+                                      .read<CartCubit>()
+                                      .goToDetails(cartItem.pizza.pizzaId);
+                                },
+                                child: CartItemCard(
+                                  cartItem: cartItem,
+                                  index: i,
+                                  onQuantityChanged: (int newQuantity) {
+                                    _onQuantityChanged(i, newQuantity);
+                                    if (newQuantity == 0) {
+                                      context.read<CartCubit>().removeFromCart(
+                                            cartItem.pizza.pizzaId,
+                                          );
+                                    }
+                                  },
+                                  size: pizzaDetails.size,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
