@@ -29,6 +29,10 @@ dependencies:
     path: ../features/placing_order
   add_edit_address:
     path: ../features/add_edit_address
+  profile:
+    path: ../features/profile
+  orders:
+    path: ../features/orders
 
   auto_route: ^7.3.2
 

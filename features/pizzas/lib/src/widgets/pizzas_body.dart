@@ -41,21 +41,22 @@ class PizzasScreenBody extends StatelessWidget {
             actions: <Widget>[
               IconButton(
                 onPressed: () {
-                  context.read<AppCubit>().changeLanguage();
-                },
-                icon: const Icon(CupertinoIcons.arrow_2_squarepath),
-              ),
-              IconButton(
-                onPressed: () {
                   context.read<PizzasCubit>().goToCart();
                 },
-                icon: const Icon(CupertinoIcons.cart),
+                icon: const Icon(
+                  CupertinoIcons.cart,
+                  size: 30,
+                ),
               ),
               IconButton(
                 onPressed: () {
-                  context.read<PizzasCubit>().logOut();
+                  context.read<PizzasCubit>().goToProfile();
                 },
-                icon: const Icon(CupertinoIcons.arrow_right_to_line),
+                icon: const Icon(
+                  CupertinoIcons.profile_circled,
+                  size: 35,
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
               ),
             ],
           ),
