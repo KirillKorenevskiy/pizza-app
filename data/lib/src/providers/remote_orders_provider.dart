@@ -35,6 +35,7 @@ class RemoteOrdersProvider {
           'userId',
           isEqualTo: userId,
         )
+        .orderBy('date', descending: true)
         .get();
 
     if (snapshot.docs.isEmpty) {

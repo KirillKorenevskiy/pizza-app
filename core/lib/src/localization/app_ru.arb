@@ -110,5 +110,10 @@
   "free": "Бесплатно",
   "confirmDelivery": "Подтвердить",
   "orderPrice": "Стоимость заказа",
-  "save": "Сохранить"
+  "save": "Сохранить",
+  "profile": "Профиль",
+  "myOrders": "Мои заказы",
+  "changeLanguage": "Сменить язык",
+  "logOut": "Выйти",
+  "orders": "Заказы"
 }

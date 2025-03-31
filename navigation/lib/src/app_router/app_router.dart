@@ -4,8 +4,10 @@ import 'package:cart/cart.dart';
 import 'package:details/details.dart';
 import 'package:main/main.dart';
 import 'package:map/map.dart';
+import 'package:orders/orders.dart';
 import 'package:pizzas/pizzas.dart';
 import 'package:placing_order/placing_order.dart';
+import 'package:profile/profile.dart';
 import 'package:welcome/welcome.dart';
 
 import '../utils/route_builder.dart';
@@ -23,6 +25,8 @@ part 'app_router.gr.dart';
     MapModule,
     PlacingOrderModule,
     AddEditAddressModule,
+    ProfileModule,
+    OrdersModule,
   ],
 )
 class AppRouter extends _$AppRouter {
@@ -59,6 +63,13 @@ class AppRouter extends _$AppRouter {
         ),
         CustomRoute(
           page: PlacingOrderScreen.page,
+          customRouteBuilder: RouteBuilder.modalDialog,
+        ),
+        AutoRoute(
+          page: ProfileScreen.page,
+        ),
+        CustomRoute(
+          page: OrdersScreen.page,
           customRouteBuilder: RouteBuilder.modalDialog,
         ),
       ];

@@ -111,5 +111,10 @@
   "free": "Free",
   "confirmDelivery": "Confirm delivery",
   "orderPrice": "Order price",
-  "save": "Save"
+  "save": "Save",
+  "profile": "Profile",
+  "myOrders": "My orders",
+  "changeLanguage": "Change language",
+  "logOut": "Log out",
+  "orders": "Orders"
 }

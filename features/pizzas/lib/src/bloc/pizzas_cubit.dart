@@ -8,7 +8,6 @@ part 'pizzas_state.dart';
 
 class PizzasCubit extends Cubit<PizzasState> {
   final GetPizzasUseCase _getPizzasUseCase;
-  final LogOutUseCase _logOutUseCase;
   final AddToCartUseCase _addToCartUseCase;
   final RemoveFromCartUseCase _removeFromCartUseCase;
   final CheckCartUseCase _checkCartUseCase;
@@ -21,7 +20,6 @@ class PizzasCubit extends Cubit<PizzasState> {
 
   PizzasCubit(
     this._getPizzasUseCase,
-    this._logOutUseCase,
     this._addToCartUseCase,
     this._removeFromCartUseCase,
     this._checkCartUseCase,
@@ -137,8 +135,8 @@ class PizzasCubit extends Cubit<PizzasState> {
     );
   }
 
-  Future<void> logOut() async {
-    await _logOutUseCase.execute();
+  void goToProfile() {
+    _appRouter.push(const ProfileScreen());
   }
 
   @override

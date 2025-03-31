@@ -109,8 +109,8 @@ class _ModalRouteBuilderState extends State<_ModalRouteBuilder> {
         },
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(10),
-            topLeft: Radius.circular(10),
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20),
           ),
           child: widget.child,
         ),
