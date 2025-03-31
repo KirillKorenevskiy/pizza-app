@@ -41,14 +41,14 @@ class AppCubit extends Cubit<AppState> {
               ),
             );
             if (_appRouter.current.name != DetailsScreen.name) {
-              _appRouter.push(const PizzasScreen());
+              _appRouter.replace(const PizzasScreen());
             }
           } else {
             emit(
               AppState.unauthenticated(selectedLanguage),
             );
             if (_appRouter.current.name != WelcomeScreen.name) {
-              _appRouter.push(const WelcomeScreen());
+              _appRouter.replace(const WelcomeScreen());
             }
           }
         },
