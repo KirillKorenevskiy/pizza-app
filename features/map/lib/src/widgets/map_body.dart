@@ -113,7 +113,10 @@ class _MapBodyState extends State<MapBody> {
                     MarkerLayer(
                       markers: state.addresses.map((Address address) {
                         return Marker(
-                          point: LatLng(address.latitude, address.longitude),
+                          point: LatLng(
+                            address.latitude,
+                            address.longitude,
+                          ),
                           child: GestureDetector(
                             onTap: () {
                               cubit.goToPlacingOrder(address);
@@ -158,7 +161,10 @@ class _MapBodyState extends State<MapBody> {
                   ? Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 45, left: 20),
+                        padding: const EdgeInsets.only(
+                          top: 45,
+                          left: 20,
+                        ),
                         child: FloatingActionButton(
                           onPressed: cubit.goBack,
                           backgroundColor: colors.white,
@@ -174,7 +180,10 @@ class _MapBodyState extends State<MapBody> {
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 45, right: 20),
+                  padding: const EdgeInsets.only(
+                    top: 45,
+                    right: 20,
+                  ),
                   child: FloatingActionButton(
                     shape: const CircleBorder(),
                     backgroundColor: colors.white,

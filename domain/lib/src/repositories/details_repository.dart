@@ -1,8 +1,8 @@
 import '../../domain.dart';
 
-abstract interface class DetailsRepository{
+abstract interface class DetailsRepository {
   Future<void> addDetails(DetailPayload payload);
-  
+
   Future<List<Details>> getDetails();
 
   Future<Details?> getDetailById(String id);
@@ -10,4 +10,6 @@ abstract interface class DetailsRepository{
   Future<void> updateDetail(DetailPayload payload);
 
   Future<void> deleteDetail(String id);
+
+  Future<void> clearDetails();
 }

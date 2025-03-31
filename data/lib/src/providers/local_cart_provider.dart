@@ -91,6 +91,12 @@ class LocalCartProvider {
     await _notifyCartChanged();
   }
 
+  Future<void> clearCart() async {
+    final Database database = await _databaseConfig.database;
+
+    await database.execute(StorageConstants.cartClearCommand);
+  }
+
   Future<void> _notifyCartChanged() async {
     final List<CartItemEntity> updatedCart = await getCarts();
 

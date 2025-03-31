@@ -40,6 +40,8 @@ abstract class StorageConstants {
   static const String cartDeleteCommand =
       'DELETE FROM $cartTableName WHERE $cartIdColumn = ?';
 
+  static const String cartClearCommand = 'DELETE FROM $cartTableName';
+
   static const String detailsCreateCommand = 'CREATE TABLE $detailsTableName('
       '$pizzaIdColumn TEXT PRIMARY KEY, '
       '$sizeColumn INTEGER, '
@@ -64,6 +66,8 @@ abstract class StorageConstants {
 
   static const String detailSelectByIdCommand =
       'SELECT * FROM $detailsTableName WHERE $pizzaIdColumn = ?';
+
+  static const String detailsClearCommand = 'DELETE FROM $detailsTableName';
 
   static const String addressesCreateCommand =
       'CREATE TABLE $addressesTableName('

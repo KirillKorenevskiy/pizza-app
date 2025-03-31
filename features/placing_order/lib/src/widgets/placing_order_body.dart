@@ -220,6 +220,24 @@ class PlacingOrderBody extends StatelessWidget {
                                 );
 
                                 orderCubit.addOrder(order);
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Row(
+                                      children: <Widget>[
+                                        Center(
+                                          child: Icon(
+                                            Icons.check_circle,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                      ],
+                                    ),
+                                    backgroundColor: Colors.green,
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
                               }
                             : null,
                         style: ElevatedButton.styleFrom(

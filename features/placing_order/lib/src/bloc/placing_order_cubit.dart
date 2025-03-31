@@ -7,11 +7,15 @@ part 'placing_order_state.dart';
 class PlacingOrderCubit extends Cubit<PlacingOrderState> {
   final AddOrderUseCase _addOrderUseCase;
   final GetCartsUseCase _getCartsUseCase;
+  final ClearCartUseCase _clearCartUseCase;
+  final ClearDetailsUseCase _clearDetailsUseCase;
   final AppRouter _appRouter;
 
   PlacingOrderCubit(
     this._addOrderUseCase,
     this._getCartsUseCase,
+    this._clearCartUseCase,
+    this._clearDetailsUseCase,
     this._appRouter,
   ) : super(PlacingOrderState()) {
     getCartItems();
@@ -26,6 +30,8 @@ class PlacingOrderCubit extends Cubit<PlacingOrderState> {
 
     try {
       await _addOrderUseCase.execute(order);
+      await _clearDetailsUseCase.execute();
+      await _clearCartUseCase.execute();
 
       await _appRouter.replace(const PizzasScreen());
     } catch (e) {
