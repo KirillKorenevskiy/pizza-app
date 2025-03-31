@@ -99,4 +99,9 @@ class CartRepositoryImpl implements CartRepository {
       payload.quantity,
     );
   }
+
+  @override
+  Future<void> clearCart() async {
+    await _cartProvider.clearCart();
+  }
 }

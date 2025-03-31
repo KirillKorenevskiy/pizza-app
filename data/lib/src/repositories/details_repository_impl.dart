@@ -45,4 +45,9 @@ class DetailsRepositoryImpl implements DetailsRepository {
       ingredients: payload.ingredients,
     );
   }
+
+  @override
+  Future<void> clearDetails() async {
+    await _detailsProvider.clearDetails();
+  }
 }

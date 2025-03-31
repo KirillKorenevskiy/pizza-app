@@ -12,4 +12,6 @@ abstract interface class CartRepository {
   Future<bool> isInCart(String pizzaId);
 
   Future<void> updateQuantity(UpdateQuantityPayload payload);
+
+  Future<void> clearCart();
 }

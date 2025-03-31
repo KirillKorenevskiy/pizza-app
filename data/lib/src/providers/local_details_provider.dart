@@ -95,4 +95,10 @@ class LocalDetailsProvider {
       ],
     );
   }
+
+  Future<void> clearDetails() async {
+    final Database database = await _databaseConfig.database;
+
+    await database.execute(StorageConstants.detailsClearCommand);
+  }
 }

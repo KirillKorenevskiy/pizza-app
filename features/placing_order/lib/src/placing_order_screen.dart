@@ -22,6 +22,8 @@ class PlacingOrderScreen extends StatelessWidget {
         appLocator.get(),
         appLocator.get(),
         appLocator.get(),
+        appLocator.get(),
+        appLocator.get(),
       ),
       child: PlacingOrderBody(
         address: address,
