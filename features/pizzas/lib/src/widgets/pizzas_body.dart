@@ -44,8 +44,8 @@ class PizzasScreenBody extends StatelessWidget {
                   context.read<PizzasCubit>().goToCart();
                 },
                 icon: const Icon(
-                  CupertinoIcons.cart,
-                  size: 30,
+                  CupertinoIcons.cart_fill,
+                  size: 35,
                 ),
               ),
               IconButton(

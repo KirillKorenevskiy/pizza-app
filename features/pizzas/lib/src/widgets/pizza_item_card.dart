@@ -106,7 +106,7 @@ class PizzaCard extends StatelessWidget {
                       Text(
                         pizza.name,
                         style: const TextStyle(
-                          fontSize: 19,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -116,7 +116,7 @@ class PizzaCard extends StatelessWidget {
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                           color: colors.grey500,
                         ),
                       ),
@@ -131,7 +131,7 @@ class PizzaCard extends StatelessWidget {
                                     ? '\$${(price - (price * discount / 100)).toStringAsFixed(2)}'
                                     : '\$${pizza.price}.00',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 17,
                                   color: colors.primaryBg,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -141,7 +141,7 @@ class PizzaCard extends StatelessWidget {
                                 Text(
                                   '\$$price.00',
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     color: colors.grey500,
                                     fontWeight: FontWeight.w700,
                                     decoration: TextDecoration.lineThrough,
@@ -177,7 +177,7 @@ class PizzaCard extends StatelessWidget {
                                   color: isInCart
                                       ? colors.primaryBg
                                       : colors.black,
-                                  size: 27,
+                                  size: 28,
                                 ),
                               ),
                             ),
