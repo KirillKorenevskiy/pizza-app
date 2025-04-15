@@ -1,13 +1,13 @@
 import '../../../domain.dart';
 import '../use_case.dart';
 
-class ClearCartUseCase implements FutureUseCase<void, void> {
+class ClearCartUseCase implements FutureUseCase<String, void> {
   final CartRepository _cartRepository;
 
   const ClearCartUseCase(this._cartRepository);
 
   @override
-  Future<void> execute([void input]) {
-    return _cartRepository.clearCart();
+  Future<void> execute(String input) {
+    return _cartRepository.clearCart(input);
   }
 }

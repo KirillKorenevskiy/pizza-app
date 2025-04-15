@@ -13,6 +13,7 @@ class CartCubit extends Cubit<CartState> {
   final DeleteDetailsUseCase _deleteDetailsUseCase;
   final GetDetailsUseCase _getDetailsUseCase;
   final AppRouter _appRouter;
+  final ListenUserUseCase _listenUserUseCase;
 
   CartCubit(
     this._getCartsUseCase,
@@ -20,6 +21,7 @@ class CartCubit extends Cubit<CartState> {
     this._updateQuantityUseCase,
     this._deleteDetailsUseCase,
     this._getDetailsUseCase,
+    this._listenUserUseCase,
     this._appRouter,
   ) : super(const CartState()) {
     getCart();
@@ -32,8 +34,13 @@ class CartCubit extends Cubit<CartState> {
       ),
     );
     try {
-      final List<CartItem> cartItems = await _getCartsUseCase.execute();
-      final List<Details> detailsItems = await _getDetailsUseCase.execute();
+      final String userId = await _getUserId();
+      final List<CartItem> cartItems = await _getCartsUseCase.execute(
+        userId,
+      );
+
+      final List<Details> detailsItems =
+          await _getDetailsUseCase.execute(userId);
 
       emit(
         state.copyWith(
@@ -52,13 +59,21 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<void> removeFromCart(String id) async {
+  Future<void> removeFromCart(String pizzaId) async {
     try {
+      final String userId = await _getUserId();
+
       await _removeFromCartUseCase.execute(
-        id,
+        CartPayload(
+          pizzaId: pizzaId,
+          userId: userId,
+        ),
       );
       await _deleteDetailsUseCase.execute(
-        id,
+        GetDeleteDetailPayload(
+          id: pizzaId,
+          userId: userId,
+        ),
       );
       await getCart();
     } catch (e) {
@@ -77,10 +92,13 @@ class CartCubit extends Cubit<CartState> {
       quantity: newQuantity,
     );
 
+    final String userId = await _getUserId();
+
     await _updateQuantityUseCase.execute(
       UpdateQuantityPayload(
         cartId: updatedItem.pizza.pizzaId,
         quantity: newQuantity,
+        userId: userId,
       ),
     );
 
@@ -91,6 +109,13 @@ class CartCubit extends Cubit<CartState> {
         cartItems: updatedCart,
       ),
     );
+  }
+
+  Future<String> _getUserId() async {
+    final MyUser? currentUser = await _listenUserUseCase.execute().first;
+    final String userId = currentUser!.userId;
+
+    return userId;
   }
 
   Future<void> goToDetails(String pizzaId) async {
