@@ -31,10 +31,13 @@ class LocalCartProvider {
     await _notifyCartChanged();
   }
 
-  Future<List<CartItemEntity>> getCarts() async {
+  Future<List<CartItemEntity>> getCarts(String userId) async {
     final Database database = await _databaseConfig.database;
     final List<Map<String, Object?>> rawCarts = await database.rawQuery(
       StorageConstants.cartSelectAllCommand,
+      <Object?>[
+        userId,
+      ],
     );
 
     final List<CartItemEntity> result = rawCarts.map(
@@ -42,6 +45,7 @@ class LocalCartProvider {
         return CartItemEntity(
           id: item['id'] as String? ?? ' ',
           quantity: item['quantity'] as int? ?? 0,
+          userId: item['userId'] as String? ?? ' ',
         );
       },
     ).toList();
@@ -52,32 +56,38 @@ class LocalCartProvider {
     return result;
   }
 
-  Future<void> removeFromCart(String id) async {
+  Future<void> removeFromCart(String id, String userId) async {
     final Database database = await _databaseConfig.database;
 
     await database.rawDelete(
       StorageConstants.cartDeleteCommand,
       <Object?>[
         id,
+        userId,
       ],
     );
 
     await _notifyCartChanged();
   }
 
-  Future<bool> isInCart(String id) async {
+  Future<bool> isInCart(String pizzaId, String userId) async {
     final Database database = await _databaseConfig.database;
     final List<Map<String, Object?>> rawCart = await database.rawQuery(
       StorageConstants.cartSelectByIdCommand,
       <Object?>[
-        id,
+        pizzaId,
+        userId,
       ],
     );
 
     return rawCart.isNotEmpty;
   }
 
-  Future<void> updateQuantity(String id, int newQuantity) async {
+  Future<void> updateQuantity(
+    String id,
+    int newQuantity,
+    String userId,
+  ) async {
     final Database database = await _databaseConfig.database;
 
     await database.rawUpdate(
@@ -85,20 +95,26 @@ class LocalCartProvider {
       <Object?>[
         newQuantity,
         id,
+        userId,
       ],
     );
 
     await _notifyCartChanged();
   }
 
-  Future<void> clearCart() async {
+  Future<void> clearCart(String userId) async {
     final Database database = await _databaseConfig.database;
 
-    await database.execute(StorageConstants.cartClearCommand);
+    await database.execute(
+      StorageConstants.cartClearCommand,
+      <Object?>[
+        userId,
+      ],
+    );
   }
 
   Future<void> _notifyCartChanged() async {
-    final List<CartItemEntity> updatedCart = await getCarts();
+    final List<CartItemEntity> updatedCart = await getCarts('');
 
     _cartStreamController.sink.add(updatedCart);
   }

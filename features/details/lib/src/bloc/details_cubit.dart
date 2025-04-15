@@ -12,6 +12,7 @@ class DetailsCubit extends Cubit<DetailsState> {
   final AddDetailsUseCase _addDetailsUseCase;
   final CheckCartUseCase _checkCartUseCase;
   final GetPizzaByIdUseCase _getPizzaByIdUseCase;
+  final ListenUserUseCase _listenUserUseCase;
   final AppRouter _appRouter;
 
   DetailsCubit(
@@ -22,6 +23,7 @@ class DetailsCubit extends Cubit<DetailsState> {
     this._addDetailsUseCase,
     this._checkCartUseCase,
     this._getPizzaByIdUseCase,
+    this._listenUserUseCase,
     this._appRouter,
   ) : super(DetailsState()) {
     getIngredients();
@@ -74,24 +76,30 @@ class DetailsCubit extends Cubit<DetailsState> {
   }
 
   Future<void> addToCart(
-    String id,
+    String pizzaId,
     int size,
     List<String?> ingredients,
   ) async {
     try {
+      final String userId = await _getUserId();
+
       final String? ingredientsString =
           _convertIngredientsToString(ingredients);
 
       await _addDetailsUseCase.execute(
         DetailPayload(
-          id: id,
+          id: pizzaId,
+          userId: userId,
           size: size,
           ingredients: ingredientsString,
         ),
       );
 
       await _addToCartUseCase.execute(
-        id,
+        CartPayload(
+          pizzaId: pizzaId,
+          userId: userId,
+        ),
       );
 
       await _appRouter.replace(const CartScreen());
@@ -104,13 +112,21 @@ class DetailsCubit extends Cubit<DetailsState> {
     }
   }
 
-  Future<void> getDetails(String id) async {
+  Future<void> getDetails(String pizzaId) async {
     try {
+      final String userId = await _getUserId();
+
       final Details? detail = await _getDetailByIdUseCase.execute(
-        id,
+        GetDeleteDetailPayload(
+          id: pizzaId,
+          userId: userId,
+        ),
       );
       final bool isInCart = await _checkCartUseCase.execute(
-        id,
+        CartPayload(
+          pizzaId: pizzaId,
+          userId: userId,
+        ),
       );
 
       if (detail != null) {
@@ -145,6 +161,7 @@ class DetailsCubit extends Cubit<DetailsState> {
       await _updateDetailsUseCase.execute(
         DetailPayload(
           id: id,
+          userId: await _getUserId(),
           size: size,
           ingredients: ingredientsString,
         ),
@@ -179,5 +196,12 @@ class DetailsCubit extends Cubit<DetailsState> {
 
   void goBack() {
     _appRouter.maybePop();
+  }
+
+  Future<String> _getUserId() async {
+    final MyUser? currentUser = await _listenUserUseCase.execute().first;
+    final String userId = currentUser!.userId;
+
+    return userId;
   }
 }

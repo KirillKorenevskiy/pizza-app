@@ -22,7 +22,10 @@ class CartRepositoryImpl implements CartRepository {
       cartItemEntities.expand(
         (CartItemEntity entity) => <Future<dynamic>>[
           _pizzaProvider.getPizzaById(entity.id),
-          _detailsProvider.getDetailById(entity.id),
+          _detailsProvider.getDetailById(
+            entity.id,
+            entity.userId,
+          ),
         ],
       ),
     );
@@ -60,8 +63,8 @@ class CartRepositoryImpl implements CartRepository {
   }
 
   @override
-  Future<List<CartItem>> getCarts() async {
-    final List<CartItemEntity> entities = await _cartProvider.getCarts();
+  Future<List<CartItem>> getCarts(String userId) async {
+    final List<CartItemEntity> entities = await _cartProvider.getCarts(userId);
     return _mapCartItems(entities);
   }
 
@@ -73,23 +76,24 @@ class CartRepositoryImpl implements CartRepository {
       );
 
   @override
-  Future<void> addToCart(String pizzaId) {
+  Future<void> addToCart(CartPayload payload) {
     final CartItemEntity entity = CartItemEntity(
-      id: pizzaId,
+      id: payload.pizzaId,
       quantity: 1,
+      userId: payload.userId,
     );
 
     return _cartProvider.addToCart(entity);
   }
 
   @override
-  Future<bool> isInCart(String pizzaId) async {
-    return _cartProvider.isInCart(pizzaId);
+  Future<bool> isInCart(CartPayload payload) async {
+    return _cartProvider.isInCart(payload.pizzaId, payload.userId);
   }
 
   @override
-  Future<void> removeFromCart(String pizzaId) async {
-    await _cartProvider.removeFromCart(pizzaId);
+  Future<void> removeFromCart(CartPayload payload) async {
+    await _cartProvider.removeFromCart(payload.pizzaId, payload.userId);
   }
 
   @override
@@ -97,11 +101,12 @@ class CartRepositoryImpl implements CartRepository {
     await _cartProvider.updateQuantity(
       payload.cartId,
       payload.quantity,
+      payload.userId,
     );
   }
 
   @override
-  Future<void> clearCart() async {
-    await _cartProvider.clearCart();
+  Future<void> clearCart(String userId) async {
+    await _cartProvider.clearCart(userId);
   }
 }

@@ -4,21 +4,25 @@ class CartItem {
   final Pizza pizza;
   final int quantity;
   final List<Ingredient> additionalIngredients;
+  final String userId;
 
   const CartItem({
     required this.pizza,
     required this.quantity,
+    required this.userId,
     this.additionalIngredients = const <Ingredient>[],
   });
 
   CartItem copyWith({
     Pizza? pizza,
     int? quantity,
+    String? userId,
     List<Ingredient>? additionalIngredients,
   }) {
     return CartItem(
       pizza: pizza ?? this.pizza,
       quantity: quantity ?? this.quantity,
+      userId: userId ?? this.userId,
       additionalIngredients:
           additionalIngredients ?? this.additionalIngredients,
     );
