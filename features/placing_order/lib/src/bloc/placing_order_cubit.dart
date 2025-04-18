@@ -9,6 +9,7 @@ class PlacingOrderCubit extends Cubit<PlacingOrderState> {
   final GetCartsUseCase _getCartsUseCase;
   final ClearCartUseCase _clearCartUseCase;
   final ClearDetailsUseCase _clearDetailsUseCase;
+  final ListenUserUseCase _listenUserUseCase;
   final AppRouter _appRouter;
 
   PlacingOrderCubit(
@@ -16,6 +17,7 @@ class PlacingOrderCubit extends Cubit<PlacingOrderState> {
     this._getCartsUseCase,
     this._clearCartUseCase,
     this._clearDetailsUseCase,
+    this._listenUserUseCase,
     this._appRouter,
   ) : super(PlacingOrderState()) {
     getCartItems();
@@ -28,10 +30,18 @@ class PlacingOrderCubit extends Cubit<PlacingOrderState> {
       ),
     );
 
+    final String userId = await _getUserId();
+
     try {
-      await _addOrderUseCase.execute(order);
-      await _clearDetailsUseCase.execute();
-      await _clearCartUseCase.execute();
+      await _addOrderUseCase.execute(
+        order,
+      );
+      await _clearDetailsUseCase.execute(
+        userId,
+      );
+      await _clearCartUseCase.execute(
+        userId,
+      );
 
       await _appRouter.replace(const PizzasScreen());
     } catch (e) {
@@ -45,7 +55,11 @@ class PlacingOrderCubit extends Cubit<PlacingOrderState> {
   }
 
   Future<void> getCartItems() async {
-    final List<CartItem> cartItems = await _getCartsUseCase.execute();
+    final String userId = await _getUserId();
+
+    final List<CartItem> cartItems = await _getCartsUseCase.execute(
+      userId,
+    );
 
     final List<String> pizzasNames =
         cartItems.map((CartItem item) => item.pizza.name).toList();
@@ -80,5 +94,12 @@ class PlacingOrderCubit extends Cubit<PlacingOrderState> {
         address: address,
       ),
     );
+  }
+
+  Future<String> _getUserId() async {
+    final MyUser? currentUser = await _listenUserUseCase.execute().first;
+    final String userId = currentUser!.userId;
+
+    return userId;
   }
 }

@@ -1,6 +1,3 @@
-#!/bin/bash
-# run function in all dirs
-# expects a function name
 allDirs() {
   dirs=()
   while IFS='' read -r line; do dirs+=("$line"); done < <(find . -maxdepth 2 -type d)

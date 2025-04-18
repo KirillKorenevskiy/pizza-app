@@ -2,6 +2,7 @@ abstract class StorageConstants {
   static const String databaseName = 'pizza_app.db';
 
   static const String cartTableName = 'Cart';
+  static const String userIdColumn = 'userId';
   static const String cartIdColumn = 'id';
   static const String cartQuantityColumn = 'quantity';
 
@@ -18,56 +19,66 @@ abstract class StorageConstants {
   static const String addressTypeColumn = 'type';
 
   static const String cartCreateCommand = 'CREATE TABLE $cartTableName('
-      '$cartIdColumn TEXT PRIMARY KEY, '
-      '$cartQuantityColumn INTEGER)';
+      '$cartIdColumn TEXT, '
+      '$cartQuantityColumn INTEGER, '
+      '$userIdColumn TEXT, '
+      'PRIMARY KEY($cartIdColumn, $userIdColumn))';
 
   static const String cartInsertCommand = 'INSERT INTO $cartTableName('
       '$cartIdColumn, '
-      '$cartQuantityColumn) '
-      'VALUES(?, ?)';
+      '$cartQuantityColumn,'
+      '$userIdColumn) '
+      'VALUES(?, ?, ?)';
 
   static const String quantityUpdateCommand = 'UPDATE $cartTableName SET '
-      '$cartQuantityColumn = ? WHERE $cartIdColumn = ?';
+      '$cartQuantityColumn = ? WHERE $cartIdColumn = ? AND $userIdColumn = ?';
 
   static const String quantitySelectCommand =
-      'SELECT $cartQuantityColumn FROM $cartTableName WHERE $cartIdColumn = ?';
+      'SELECT $cartQuantityColumn FROM $cartTableName WHERE $cartIdColumn = ? '
+      'AND $userIdColumn = ?';
 
-  static const String cartSelectAllCommand = 'SELECT * FROM $cartTableName';
+  static const String cartSelectAllCommand =
+      'SELECT * FROM $cartTableName WHERE $userIdColumn = ?';
 
   static const String cartSelectByIdCommand =
-      'SELECT * FROM $cartTableName WHERE $cartIdColumn = ?';
+      'SELECT * FROM $cartTableName WHERE $cartIdColumn = ? AND $userIdColumn = ?';
 
   static const String cartDeleteCommand =
-      'DELETE FROM $cartTableName WHERE $cartIdColumn = ?';
+      'DELETE FROM $cartTableName WHERE $cartIdColumn = ? AND $userIdColumn = ?';
 
-  static const String cartClearCommand = 'DELETE FROM $cartTableName';
+  static const String cartClearCommand =
+      'DELETE FROM $cartTableName WHERE $userIdColumn = ?';
 
   static const String detailsCreateCommand = 'CREATE TABLE $detailsTableName('
-      '$pizzaIdColumn TEXT PRIMARY KEY, '
+      '$pizzaIdColumn TEXT, '
       '$sizeColumn INTEGER, '
-      '$ingredientsColumn TEXT)';
+      '$ingredientsColumn TEXT, '
+      '$userIdColumn TEXT, '
+      'PRIMARY KEY(pizzaId, userId))';
 
   static const String detailsInsertCommand = 'INSERT INTO $detailsTableName('
       '$pizzaIdColumn, '
       '$sizeColumn, '
-      '$ingredientsColumn) '
-      'VALUES(?, ?, ?)';
+      '$ingredientsColumn, '
+      '$userIdColumn) '
+      'VALUES(?, ?, ?, ?)';
 
   static const String updateDetailCommand = 'UPDATE $detailsTableName '
       'SET $sizeColumn = COALESCE(?, $sizeColumn), '
       '$ingredientsColumn = COALESCE(?, $ingredientsColumn) '
-      'WHERE $pizzaIdColumn = ?';
+      'WHERE $pizzaIdColumn = ? AND $userIdColumn = ?';
 
   static const String detailDeleteCommand =
-      'DELETE FROM $detailsTableName WHERE $pizzaIdColumn = ?';
+      'DELETE FROM $detailsTableName WHERE $pizzaIdColumn = ? AND $userIdColumn = ?';
 
   static const String detailsSelectAllCommand =
-      'SELECT * FROM $detailsTableName';
+      'SELECT * FROM $detailsTableName WHERE $userIdColumn = ?';
 
   static const String detailSelectByIdCommand =
-      'SELECT * FROM $detailsTableName WHERE $pizzaIdColumn = ?';
+      'SELECT * FROM $detailsTableName WHERE $pizzaIdColumn = ? AND $userIdColumn = ?';
 
-  static const String detailsClearCommand = 'DELETE FROM $detailsTableName';
+  static const String detailsClearCommand =
+      'DELETE FROM $detailsTableName WHERE $userIdColumn = ?';
 
   static const String addressesCreateCommand =
       'CREATE TABLE $addressesTableName('

@@ -26,6 +26,7 @@ class DetailsScreen extends StatelessWidget {
         appLocator.get(),
         appLocator.get(),
         appLocator.get(),
+        appLocator.get(),
       ),
       child: DetailsBody(pizzaId: id),
     );

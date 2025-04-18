@@ -15,6 +15,7 @@ class CartItemMapper {
     return CartItem(
       pizza: pizza,
       quantity: entity.quantity,
+      userId: entity.userId,
       additionalIngredients: ingredients,
     );
   }
@@ -23,6 +24,7 @@ class CartItemMapper {
     return CartItemEntity(
       id: model.pizza.pizzaId,
       quantity: model.quantity,
+      userId: model.userId,
     );
   }
 }

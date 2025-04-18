@@ -8,17 +8,21 @@ class LocalDetailsProvider {
 
   LocalDetailsProvider(this._databaseConfig);
 
-  Future<List<DetailsEntity>> getDetails() async {
+  Future<List<DetailsEntity>> getDetails(String userId) async {
     final Database database = await _databaseConfig.database;
 
     final List<Map<String, Object?>> rawDetails = await database.rawQuery(
       StorageConstants.detailsSelectAllCommand,
+      <Object?>[
+        userId,
+      ],
     );
 
     final List<DetailsEntity> result = rawDetails.map(
       (Map<String, Object?> item) {
         return DetailsEntity(
           pizzaId: item['pizzaId'] as String? ?? ' ',
+          userId: item['userId'] as String? ?? ' ',
           size: item['size'] as int? ?? 0,
           ingredients: item['ingredients'] as String? ?? ' ',
         );
@@ -28,13 +32,14 @@ class LocalDetailsProvider {
     return result;
   }
 
-  Future<DetailsEntity?> getDetailById(String id) async {
+  Future<DetailsEntity?> getDetailById(String id, String userId) async {
     final Database database = await _databaseConfig.database;
 
     final List<Map<String, Object?>> rawDetail = await database.rawQuery(
       StorageConstants.detailSelectByIdCommand,
       <Object?>[
         id,
+        userId,
       ],
     );
 
@@ -46,6 +51,7 @@ class LocalDetailsProvider {
 
     return DetailsEntity(
       pizzaId: item['id'] as String? ?? ' ',
+      userId: item['userId'] as String? ?? ' ',
       size: item['size'] as int? ?? 0,
       ingredients: item['ingredients'] as String? ?? ' ',
     );
@@ -53,6 +59,7 @@ class LocalDetailsProvider {
 
   Future<void> updateDetail({
     required String id,
+    required String userId,
     int? size,
     String? ingredients,
   }) async {
@@ -64,23 +71,26 @@ class LocalDetailsProvider {
         size,
         ingredients,
         id,
+        userId,
       ],
     );
   }
 
-  Future<void> deleteDetail(String id) async {
+  Future<void> deleteDetail(String id, String userId) async {
     final Database database = await _databaseConfig.database;
 
     await database.rawDelete(
       StorageConstants.detailDeleteCommand,
       <Object?>[
         id,
+        userId,
       ],
     );
   }
 
   Future<void> addDetails({
     required String id,
+    required String userId,
     required int? size,
     required String? ingredients,
   }) async {
@@ -92,6 +102,7 @@ class LocalDetailsProvider {
         id,
         size,
         ingredients,
+        userId,
       ],
     );
   }

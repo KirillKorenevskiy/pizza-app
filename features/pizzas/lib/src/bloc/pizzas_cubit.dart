@@ -14,6 +14,7 @@ class PizzasCubit extends Cubit<PizzasState> {
   final ListenCartUseCase _listenCartUseCase;
   final DeleteDetailsUseCase _deleteDetailsUseCase;
   final AddDetailsUseCase _addDetailsUseCase;
+  final ListenUserUseCase _listenUserUseCase;
   final AppRouter _appRouter;
 
   late StreamSubscription<List<CartItem>> _cartSubscription;
@@ -26,6 +27,7 @@ class PizzasCubit extends Cubit<PizzasState> {
     this._listenCartUseCase,
     this._deleteDetailsUseCase,
     this._addDetailsUseCase,
+    this._listenUserUseCase,
     this._appRouter,
   ) : super(const PizzasState()) {
     _init();
@@ -55,10 +57,14 @@ class PizzasCubit extends Cubit<PizzasState> {
     try {
       final List<Pizza> pizzas = await _getPizzasUseCase.execute();
       final Set<String> cartItems = <String>{};
+      final String userId = await _getUserId();
 
       for (final Pizza pizza in pizzas) {
         final bool isInCart = await _checkCartUseCase.execute(
-          pizza.pizzaId,
+          CartPayload(
+            pizzaId: pizza.pizzaId,
+            userId: userId,
+          ),
         );
 
         if (isInCart) {
@@ -86,22 +92,33 @@ class PizzasCubit extends Cubit<PizzasState> {
   Future<void> toggleCart(String pizzaId) async {
     try {
       final Set<String> updatedCart = Set<String>.from(state.cartItems);
+      final String userId = await _getUserId();
 
       if (updatedCart.contains(pizzaId)) {
         await _removeFromCartUseCase.execute(
-          pizzaId,
+          CartPayload(
+            pizzaId: pizzaId,
+            userId: userId,
+          ),
         );
         await _deleteDetailsUseCase.execute(
-          pizzaId,
+          GetDeleteDetailPayload(
+            id: pizzaId,
+            userId: userId,
+          ),
         );
         updatedCart.remove(pizzaId);
       } else {
         await _addToCartUseCase.execute(
-          pizzaId,
+          CartPayload(
+            pizzaId: pizzaId,
+            userId: userId,
+          ),
         );
         await _addDetailsUseCase.execute(
           DetailPayload(
             id: pizzaId,
+            userId: userId,
             size: 25,
             ingredients: null,
           ),
@@ -137,6 +154,13 @@ class PizzasCubit extends Cubit<PizzasState> {
 
   void goToProfile() {
     _appRouter.push(const ProfileScreen());
+  }
+
+  Future<String> _getUserId() async {
+    final MyUser? currentUser = await _listenUserUseCase.execute().first;
+    final String userId = currentUser!.userId;
+
+    return userId;
   }
 
   @override
