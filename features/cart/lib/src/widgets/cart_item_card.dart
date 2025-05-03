@@ -41,8 +41,8 @@ class CartItemCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Image.asset(
-                'core_ui/assets/${cartItem.pizza.picture}',
+              Image.network(
+                'https://ympofjjzwcdlmiaoxeik.supabase.co/storage/v1/object/public/pizzas//${cartItem.pizza.picture}',
                 width: 120,
                 height: 120,
               ),

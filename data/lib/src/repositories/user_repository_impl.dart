@@ -45,4 +45,9 @@ class UserRepositoryImpl implements UserRepository {
   Future<void> setUserData(MyUser user) async {
     await _userProvider.setUserData(UserMapper.toEntity(user));
   }
+
+  @override
+  Future<void> signInWithGoogle() async {
+    await _userProvider.signInWithGoogle();
+  }
 }

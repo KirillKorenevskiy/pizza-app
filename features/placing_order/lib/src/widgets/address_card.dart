@@ -47,13 +47,6 @@ class AddressCard extends StatelessWidget {
                       fontSize: 18,
                     ),
                   ),
-                  Text(
-                    'Дополнительная информация',
-                    style: TextStyle(
-                      color: AppColors.of(context).grey500,
-                      fontSize: 16,
-                    ),
-                  ),
                 ],
               ),
             ),

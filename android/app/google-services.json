@@ -12,7 +12,20 @@
           "package_name": "com.example.pizza_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "716769043989-vairum23gcm2kc4ssustqiu8227aj9fo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pizza_app",
+            "certificate_hash": "0a273af8c8a0f3bfb22609b9bebdd4540d703ea6"
+          }
+        },
+        {
+          "client_id": "716769043989-ki7shvtgs17h08h4a4p3k3190lgk0svi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDhl7qE4NF-Pe9n01Wmf7mtFdYqR6MuJuk"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716769043989-ki7shvtgs17h08h4a4p3k3190lgk0svi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -31,7 +49,12 @@
           "package_name": "com.example.pizza_pet_project"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "716769043989-ki7shvtgs17h08h4a4p3k3190lgk0svi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDhl7qE4NF-Pe9n01Wmf7mtFdYqR6MuJuk"
@@ -39,7 +62,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716769043989-ki7shvtgs17h08h4a4p3k3190lgk0svi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -50,7 +78,20 @@
           "package_name": "com.example.pizzaapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "716769043989-fh35vuuoui5vfi86g67m45b4vok8ll2b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pizzaapp",
+            "certificate_hash": "0a273af8c8a0f3bfb22609b9bebdd4540d703ea6"
+          }
+        },
+        {
+          "client_id": "716769043989-ki7shvtgs17h08h4a4p3k3190lgk0svi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDhl7qE4NF-Pe9n01Wmf7mtFdYqR6MuJuk"
@@ -58,7 +99,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716769043989-ki7shvtgs17h08h4a4p3k3190lgk0svi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

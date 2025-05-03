@@ -66,8 +66,8 @@ class RecommendationCard extends StatelessWidget {
               ),
             ),
           ),
-          Image.asset(
-            'core_ui/assets/$image',
+          Image.network(
+            'https://ympofjjzwcdlmiaoxeik.supabase.co/storage/v1/object/public/pizzas//$image',
             height: 110,
             width: 120,
           ),

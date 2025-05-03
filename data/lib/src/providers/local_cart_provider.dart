@@ -25,10 +25,11 @@ class LocalCartProvider {
       <Object?>[
         entity.id,
         1,
+        entity.userId,
       ],
     );
 
-    await _notifyCartChanged();
+    await _notifyCartChanged(entity.userId);
   }
 
   Future<List<CartItemEntity>> getCarts(String userId) async {
@@ -67,7 +68,7 @@ class LocalCartProvider {
       ],
     );
 
-    await _notifyCartChanged();
+    await _notifyCartChanged(userId);
   }
 
   Future<bool> isInCart(String pizzaId, String userId) async {
@@ -99,7 +100,7 @@ class LocalCartProvider {
       ],
     );
 
-    await _notifyCartChanged();
+    await _notifyCartChanged(userId);
   }
 
   Future<void> clearCart(String userId) async {
@@ -113,8 +114,8 @@ class LocalCartProvider {
     );
   }
 
-  Future<void> _notifyCartChanged() async {
-    final List<CartItemEntity> updatedCart = await getCarts('');
+  Future<void> _notifyCartChanged(String userId) async {
+    final List<CartItemEntity> updatedCart = await getCarts(userId);
 
     _cartStreamController.sink.add(updatedCart);
   }

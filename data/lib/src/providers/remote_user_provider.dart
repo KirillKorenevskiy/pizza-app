@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../data.dart';
@@ -79,6 +80,33 @@ class RemoteUserProvider {
     } catch (e) {
       log(e.toString());
       rethrow;
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    await FirebaseAuth.instance.signInWithCredential(credential);
+
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      final UserEntity newUser = UserEntity(
+        userId: user.uid,
+        email: user.email ?? '',
+        name: user.displayName ?? '',
+        hasActiveCart: false,
+      );
+
+      await setUserData(newUser);
     }
   }
 }
