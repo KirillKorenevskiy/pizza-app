@@ -1,6 +1,7 @@
 export 'auth/listen_user_usecase.dart';
 export 'auth/log_out_usecase.dart';
 export 'auth/sign_in_usecase.dart';
+export 'auth/sign_in_with_google_usecase.dart';
 export 'auth/sign_up_usecase.dart';
 export 'cart/add_to_cart_usecase.dart';
 export 'cart/check_cart_usecase.dart';

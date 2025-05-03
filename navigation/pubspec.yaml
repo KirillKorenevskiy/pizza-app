@@ -33,6 +33,8 @@ dependencies:
     path: ../features/profile
   orders:
     path: ../features/orders
+  adminka:
+    path: ../features/adminka
 
   auto_route: ^7.3.2
 

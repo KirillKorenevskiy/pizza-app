@@ -18,6 +18,8 @@ dependencies:
     path: ../../core_ui
   navigation:
     path: ../../navigation
+  google_sign_in: 6.3.0
+  firebase_auth: ^5.5.3
 
 dev_dependencies:
   flutter_test:

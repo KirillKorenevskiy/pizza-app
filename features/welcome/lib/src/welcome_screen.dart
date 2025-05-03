@@ -18,6 +18,7 @@ class WelcomeScreen extends StatelessWidget {
         BlocProvider<SignInCubit>(
           create: (BuildContext context) => SignInCubit(
             appLocator.get(),
+            appLocator.get(),
           ),
         ),
         BlocProvider<SignUpCubit>(

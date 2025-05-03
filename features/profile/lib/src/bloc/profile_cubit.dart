@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:domain/domain.dart';
 import 'package:navigation/navigation.dart';
@@ -20,6 +22,14 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> logOut() async {
-    await _logOutUseCase.execute();
+    try {
+      await _logOutUseCase.execute();
+    }catch(e){
+      log(e.toString());
+    }
+  }
+
+  void goToAdminPanel() {
+    _appRouter.push(AdminkaScreen());
   }
 }

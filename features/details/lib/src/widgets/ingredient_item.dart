@@ -23,8 +23,8 @@ class IngredientItem extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Expanded(
-            child: Image.asset(
-              'core_ui/assets/${ingredient.image}',
+            child: Image.network(
+              'https://ympofjjzwcdlmiaoxeik.supabase.co/storage/v1/object/public/pizzas//${ingredient.image}',
               width: 100,
             ),
           ),

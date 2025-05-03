@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'authentication_tab.dart';
 import 'registration_tab.dart';
@@ -18,6 +19,7 @@ class _WelcomeScreenBodyState extends State<WelcomeScreenBody>
 
   @override
   void initState() {
+    print(FirebaseAuth.instance.currentUser);
     _tabController = TabController(
       length: 2,
       vsync: this,

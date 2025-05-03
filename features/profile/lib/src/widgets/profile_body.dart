@@ -14,6 +14,7 @@ class ProfileBody extends StatelessWidget {
         final AppColors colors = AppColors.of(context);
         final AppCubit appCubit = context.read<AppCubit>();
         final String userId = state.user!.userId;
+        final String email = state.user!.email;
 
         return Scaffold(
           appBar: AppBar(
@@ -87,6 +88,25 @@ class ProfileBody extends StatelessWidget {
                         ),
                         onTap: profileCubit.logOut,
                       ),
+                      email == 'admin@gmail.com'
+                          ? ListTile(
+                              leading: const Icon(
+                                Icons.exit_to_app,
+                                color: Colors.black,
+                                size: 30,
+                              ),
+                              title: const Text(
+                                'Admin panel',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              onTap: () {
+                                context.read<ProfileCubit>().goToAdminPanel();
+                              },
+                            )
+                          : const SizedBox.shrink(),
                     ],
                   );
                 },

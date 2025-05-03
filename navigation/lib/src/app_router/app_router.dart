@@ -1,4 +1,5 @@
 import 'package:add_edit_address/add_edit_address.dart';
+import 'package:adminka/adminka.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cart/cart.dart';
 import 'package:details/details.dart';
@@ -27,6 +28,7 @@ part 'app_router.gr.dart';
     AddEditAddressModule,
     ProfileModule,
     OrdersModule,
+    AdminkaModule,
   ],
 )
 class AppRouter extends _$AppRouter {
@@ -71,6 +73,9 @@ class AppRouter extends _$AppRouter {
         CustomRoute(
           page: OrdersScreen.page,
           customRouteBuilder: RouteBuilder.modalDialog,
+        ),
+        AutoRoute(
+          page: AdminkaScreen.page,
         ),
       ];
 }

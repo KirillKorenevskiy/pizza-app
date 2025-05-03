@@ -81,7 +81,9 @@ class _DetailsBodyState extends State<DetailsBody>
                     ),
                     flexibleSpace: FlexibleSpaceBar(
                       background: pizza.picture.isNotEmpty
-                          ? Image.asset('core_ui/assets/${pizza.picture}')
+                          ? Image.network(
+                              'https://ympofjjzwcdlmiaoxeik.supabase.co/storage/v1/object/public/pizzas//${pizza.picture}',
+                            )
                           : Container(
                               color: colors.grey,
                             ),

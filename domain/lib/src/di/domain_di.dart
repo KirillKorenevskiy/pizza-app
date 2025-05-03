@@ -24,6 +24,10 @@ abstract class DomainDI {
       () => ListenUserUseCase(locator.get()),
     );
 
+    locator.registerFactory<SignInWithGoogleUseCase>(
+      () => SignInWithGoogleUseCase(locator.get()),
+    );
+
     locator.registerFactory<GetPizzasUseCase>(
       () => GetPizzasUseCase(locator.get()),
     );

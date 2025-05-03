@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:domain/domain.dart';
@@ -38,6 +39,8 @@ class CartCubit extends Cubit<CartState> {
       final List<CartItem> cartItems = await _getCartsUseCase.execute(
         userId,
       );
+
+      log(cartItems.toString());
 
       final List<Details> detailsItems =
           await _getDetailsUseCase.execute(userId);

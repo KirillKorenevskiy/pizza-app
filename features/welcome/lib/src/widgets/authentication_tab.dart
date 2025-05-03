@@ -132,38 +132,71 @@ class _AuthenticationTabState extends State<AuthenticationTab> {
                 if (state.isLoading)
                   const CircularProgressIndicator()
                 else
-                  TextButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        context.read<SignInCubit>().signIn(
-                              _emailController.text.trim(),
-                              _passwordController.text.trim(),
-                            );
-                      }
-                    },
-                    style: TextButton.styleFrom(
-                      elevation: 3.0,
-                      backgroundColor: colors.primaryBg,
-                      foregroundColor: colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(60),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 25,
-                        vertical: 5,
-                      ),
-                      child: Text(
-                        context.locale.signIn,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                  Column(
+                    spacing: 10,
+                    children: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            context.read<SignInCubit>().signIn(
+                                  _emailController.text.trim(),
+                                  _passwordController.text.trim(),
+                                );
+                          }
+                        },
+                        style: TextButton.styleFrom(
+                          elevation: 3.0,
+                          backgroundColor: colors.primaryBg,
+                          foregroundColor: colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(60),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 5,
+                          ),
+                          child: Text(
+                            context.locale.signIn,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      TextButton(
+                        onPressed: () async {
+                          await context.read<SignInCubit>().signInWithGoogle();
+                        },
+                        style: TextButton.styleFrom(
+                          elevation: 3,
+                          backgroundColor: colors.primaryBg,
+                          foregroundColor: colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(60),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 5,
+                          ),
+                          child: Text(
+                            'Sign in with google',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 const Spacer(flex: 15),
               ],

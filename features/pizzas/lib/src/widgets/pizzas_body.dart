@@ -24,8 +24,8 @@ class PizzasScreenBody extends StatelessWidget {
             backgroundColor: colors.grey,
             title: Row(
               children: <Widget>[
-                Image.asset(
-                  'core_ui/assets/8.png',
+                Image.network(
+                  'https://ympofjjzwcdlmiaoxeik.supabase.co/storage/v1/object/public/pizzas//8.png',
                   scale: 14,
                 ),
                 const SizedBox(width: 8),
@@ -60,26 +60,31 @@ class PizzasScreenBody extends StatelessWidget {
               ),
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: state.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : state.errorMessage != null
-                    ? Center(
-                        child: Text(context.locale.errorHasOccurred),
-                      )
-                    : ListView.builder(
-                        itemCount: state.pizzas.length,
-                        itemBuilder: (BuildContext context, int i) {
-                          final Pizza pizza = state.pizzas[i];
+          body: RefreshIndicator(
+            onRefresh: () async {
+              await context.read<PizzasCubit>().getPizzas();
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: state.isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : state.errorMessage != null
+                      ? Center(
+                          child: Text(context.locale.errorHasOccurred),
+                        )
+                      : ListView.builder(
+                          itemCount: state.pizzas.length,
+                          itemBuilder: (BuildContext context, int i) {
+                            final Pizza pizza = state.pizzas[i];
 
-                          return PizzaCard(
-                            pizza: pizza,
-                          );
-                        },
-                      ),
+                            return PizzaCard(
+                              pizza: pizza,
+                            );
+                          },
+                        ),
+            ),
           ),
         );
       },

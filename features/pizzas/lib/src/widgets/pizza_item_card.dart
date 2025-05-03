@@ -39,8 +39,8 @@ class PizzaCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Image.asset(
-                  'core_ui/assets/${pizza.picture}',
+                Image.network(
+                  'https://ympofjjzwcdlmiaoxeik.supabase.co/storage/v1/object/public/pizzas//${pizza.picture}',
                   height: 150,
                   width: 150,
                 ),

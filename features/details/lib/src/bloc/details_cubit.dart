@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:domain/domain.dart';
 import 'package:navigation/navigation.dart';
@@ -109,6 +111,8 @@ class DetailsCubit extends Cubit<DetailsState> {
           errorMessage: e.toString(),
         ),
       );
+
+      log(e.toString());
     }
   }
 
